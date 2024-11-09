@@ -1,3 +1,6 @@
+import config from "./config"
+import "./utils/Constants"
+
 let commandOutputs;
 try {
     const jsonPath = "./data/SbeChatCommands.json";
@@ -87,6 +90,44 @@ register("chat", (name, message, event) => {
    
     let commandParts = message.split(" ");
     let command = commandParts[0].toLowerCase();
+
+    // Check if commands are enabled globally
+    if (!config.enableAllCommands) return;
+
+    // Check individual command toggles
+    switch(command) {
+        case "!rng":
+            if (!config.rngCommand) return;
+            break;
+        case "!cf":
+            if (!config.cfCommand) return;
+            break;
+        case "!8ball":
+            if (!config.eightBallCommand) return;
+            break;
+        case "!throw":
+            if (!config.throwCommand) return;
+            break;
+        case "!dice":
+            if (!config.diceCommand) return;
+            break;
+        case "!simp":
+            if (!config.simpCommand) return;
+            break;
+        case "!sus":
+            if (!config.susCommand) return;
+            break;
+        case "!p":
+            if (!config.partyCommand) return;
+            break;
+        case "!commands":
+        case "!command":
+            if (!config.commandsCommand) return;
+            break;
+        default:
+            return;
+    }
+
     let senderName = name.replace(/\[.*?\]\s*/, '');
     let targetName = commandParts[1] && !commandParts[1].startsWith('!') ? commandParts[1] : senderName;
     
@@ -95,9 +136,9 @@ register("chat", (name, message, event) => {
     switch(command) {
         case "!rng":
             let rng = Math.floor(Math.random() * 101);
-            let item = commandParts.slice(1).join(" ").toLowerCase() || null;
+            let item = commandParts.slice(2).join(" ").toLowerCase() || null;
             generatedMessage = generateMessage("rng", {
-                playerName: senderName, 
+                playerName: targetName, 
                 rng, 
                 dropString: item ? ` for ${item}` : ''
             });
@@ -106,7 +147,7 @@ register("chat", (name, message, event) => {
         case "!cf":
             let result = Math.random() < 0.5 ? "heads" : "tails";
             generatedMessage = generateMessage("cf", {
-                playerName: senderName, 
+                playerName: targetName, 
                 result: result
             });
             break;
@@ -133,7 +174,7 @@ register("chat", (name, message, event) => {
         case "!dice":
             let diceResult = Math.floor(Math.random() * 6) + 1;
             generatedMessage = generateMessage("dice", {
-                playerName: senderName, 
+                playerName: targetName, 
                 result: diceResult
             });
             break;
@@ -165,4 +206,8 @@ register("chat", (name, message, event) => {
     if (generatedMessage) {
         ChatLib.command(`sbechat ${generatedMessage}`, true);
     }
-}).setCriteria("SBE Chat > ${name}: ${message}");
+}).setCriteria("SBE Chat > ${name}: ${message}"); //TODO: Include [Discord] or [SBE+] Users
+
+register("command", () => {
+    config.openGUI();
+}).setName("SbeChatCommands");
