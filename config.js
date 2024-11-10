@@ -127,6 +127,22 @@ class Config {
     })
     commandsCommand = true;
 
+    @SwitchProperty({
+        name: `Meow Command ${DARK_AQUA}!meow${RESET}`,
+        description: "Enable the Meow command for SBE Chat",
+        category: "General",
+        subcategory: "Commands"
+    })
+    meowCommand = true;
+
+    @SwitchProperty({
+        name: "Auto Meow Response",
+        description: "Automatically responds with 'meow' when someone says 'meow' in SBE Chat",
+        category: "General",
+        subcategory: "Auto Respnse"
+    })
+    autoMeowResponse = true;
+
     constructor() {
         this.initialize(this);
 
@@ -143,6 +159,8 @@ class Config {
         this.addDependency(`Sus Command ${DARK_AQUA}!sus${RESET}`, "SBE Chat Commands");
         this.addDependency(`Invite Command (Party) ${DARK_AQUA}!p${RESET}`, "SBE Chat Commands");
         this.addDependency(`Help Command ${DARK_AQUA}!<commands, command>${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Meow Command ${DARK_AQUA}!meow${RESET}`, "SBE Chat Commands");
+        
     }
 }
 

@@ -1,5 +1,6 @@
 import config from "./config"
 import "./utils/Constants"
+import MeowCounter from "./utils/MeowCounter"
 
 let commandOutputs;
 try {
@@ -49,6 +50,9 @@ function generateMessage(commandType, variables) {
                         variables.percentage <= 66 ? commandOutputs[commandType].medium :
                         commandOutputs[commandType].high;
             break;
+        case 'meow':
+            templates = commandOutputs.meow.responses;
+            break;
         default:
             templates = commandOutputs[commandType];
     }
@@ -70,7 +74,7 @@ function handleCommandsCommand(args) {
     if (args.length === 0 || args[0].toLowerCase() === "list") {
         const availableCommands = [
             "!rng", "!cf", "!8ball", "!throw", "!dice", 
-            "!simp", "!sus", "!p", "!commands"
+            "!simp", "!sus", "!p", "!commands", "!meow"
         ];
         return `Available commands: ${availableCommands.join(", ")}`;
     } else if (args[0].toLowerCase() === "help") {
@@ -86,6 +90,19 @@ function handleCommandsCommand(args) {
 }
 
 register("chat", (name, message, event) => {
+    // Auto respond to "meow" in SBE Chat
+    if (message.toLowerCase() === "meow" && 
+        config.enableAllCommands && 
+        //config.meowCommand && 
+        config.autoMeowResponse) {
+        if (MeowCounter.canMeow()) {
+            MeowCounter.increment();
+            ChatLib.command(`sbechat meow`, true);
+            //ChatLib.chat(`Output: meow`); //Just for Debugging
+        }
+        return;
+    }
+
     if (!message.startsWith("!")) return;
    
     let commandParts = message.split(" ");
@@ -119,6 +136,9 @@ register("chat", (name, message, event) => {
             break;
         case "!p":
             if (!config.partyCommand) return;
+            break;
+        case "!meow":
+            if (!config.meowCommand) return;
             break;
         case "!commands":
         case "!command":
@@ -199,14 +219,19 @@ register("chat", (name, message, event) => {
             return;
 
         case "!meow":
-            ChatLib.command(`sbechat meow`, true);
-            return;
+            let total = MeowCounter.getTotal();
+            generatedMessage = generateMessage("meow", { total });
+            if (generatedMessage === null) {
+                generatedMessage = `MEOW! There have been ${total} meows in SBE Chat!`;
+            }
+            break;
     }
 
     if (generatedMessage) {
         ChatLib.command(`sbechat ${generatedMessage}`, true);
+        //ChatLib.chat(`Output: ${generatedMessage}`); //Just for Debugging
     }
-}).setCriteria("SBE Chat > ${name}: ${message}"); //TODO: Include [Discord] or [SBE+] Users
+}).setCriteria("SBE Chat > ${name}: ${message}");
 
 register("command", () => {
     config.openGUI();
