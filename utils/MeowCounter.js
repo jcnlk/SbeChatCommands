@@ -18,9 +18,9 @@ class MeowCounter {
         return this.data.totalMeows;
     }
 
-    // Prevent spam by checking if last meow was within 2 seconds
+    // Prevent spam by checking if last meow was within 15 seconds
     canMeow() {
-        return Date.now() - this.data.lastMeow >= 2000;
+        return Date.now() - this.data.lastMeow >= 15000;
     }
 }
 

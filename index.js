@@ -90,12 +90,9 @@ function handleCommandsCommand(args) {
 }
 
 register("chat", (name, message, event) => {
-    // Auto respond to "meow" in SBE Chat
-    if (message.toLowerCase() === "meow" && 
-        config.enableAllCommands && 
-        //config.meowCommand && 
-        config.autoMeowResponse) {
-        if (MeowCounter.canMeow()) {
+    if (message.toLowerCase() === "meow") {
+        if (MeowCounter.canMeow() &&
+            config.autoMeowResponse) {
             MeowCounter.increment();
             ChatLib.command(`sbechat meow`, true);
             //ChatLib.chat(`Output: meow`); //Just for Debugging
