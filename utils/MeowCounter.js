@@ -4,13 +4,12 @@ class MeowCounter {
     constructor() {
         this.data = new PogData("SbeChatCommands", {
             totalMeows: 0,
-            lastMeow: 0
+            lastAutoResponse: 0
         }, "./data/Data.json");
     }
 
     increment() {
         this.data.totalMeows++;
-        this.data.lastMeow = Date.now();
         this.data.save();
     }
 
@@ -18,9 +17,13 @@ class MeowCounter {
         return this.data.totalMeows;
     }
 
-    // Prevent spam by checking if last meow was within 15 seconds
-    canMeow() {
-        return Date.now() - this.data.lastMeow >= 15000;
+    canAutoRespond() {
+        return Date.now() - this.data.lastAutoResponse >= 30000;
+    }
+
+    updateLastAutoResponse() {
+        this.data.lastAutoResponse = Date.now();
+        this.data.save();
     }
 }
 

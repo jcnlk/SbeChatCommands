@@ -15,7 +15,7 @@ try {
     }
 } catch (error) {
     console.error("Error loading SbeChatCommands.json:", error);
-    commandOutputs = {}; // Set an empty object fallback
+    commandOutputs = {};
 }
 
 function generateMessage(commandType, variables) {
@@ -91,11 +91,12 @@ function handleCommandsCommand(args) {
 
 register("chat", (name, message, event) => {
     if (message.toLowerCase() === "meow") {
-        if (MeowCounter.canMeow() &&
-            config.autoMeowResponse) {
-            MeowCounter.increment();
+        MeowCounter.increment();
+        
+        if (MeowCounter.canAutoRespond() && config.autoMeowResponse) {
+            MeowCounter.updateLastAutoResponse();
             ChatLib.command(`sbechat meow`, true);
-            //ChatLib.chat(`Output: meow`); //Just for Debugging
+            //ChatLib.chat("Output: meow") // Debug
         }
         return;
     }
@@ -105,10 +106,8 @@ register("chat", (name, message, event) => {
     let commandParts = message.split(" ");
     let command = commandParts[0].toLowerCase();
 
-    // Check if commands are enabled globally
     if (!config.enableAllCommands) return;
 
-    // Check individual command toggles
     switch(command) {
         case "!rng":
             if (!config.rngCommand) return;

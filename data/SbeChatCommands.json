@@ -198,7 +198,6 @@
             "MEOW! There have been ${total} meows in SBE Chat!",
             "Purr... ${total} meows and counting!",
             "Meow! Did you know there have been ${total} meows in chat?",
-            "A wild meow appears! That makes ${total} meows!",
             "*purrs* ${total} meows in SBE Chat so far!"
         ]
     },
