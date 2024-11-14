@@ -151,14 +151,15 @@ register("chat", (name, message, event) => {
 
     switch(command) {
         case "!rng":
+            if (!config.rngCommand) return;
             let rng = Math.floor(Math.random() * 101);
-            let item = commandParts.slice(2).join(" ").toLowerCase() || null;
+            let item = commandParts.slice(1).join(" ").toLowerCase() || null;
             generatedMessage = generateMessage("rng", {
-                playerName: targetName, 
+                playerName: senderName,
                 rng, 
                 dropString: item ? ` for ${item}` : ''
             });
-            break;
+        break;
 
         case "!cf":
             let result = Math.random() < 0.5 ? "heads" : "tails";
@@ -169,14 +170,10 @@ register("chat", (name, message, event) => {
             break;
 
         case "!8ball":
-            let question = commandParts.slice(1).join(" ");
-            if (!question) {
-                generatedMessage = "Please ask a question after !8ball";
-            } else {
-                generatedMessage = commandOutputs["8ballResponses"][
-                    Math.floor(Math.random() * commandOutputs["8ballResponses"].length)
-                ];
-            }
+            if (!config.eightBallCommand) return;
+            generatedMessage = commandOutputs["8ballResponses"][
+                Math.floor(Math.random() * commandOutputs["8ballResponses"].length)
+            ];
             break;
 
         case "!throw":
