@@ -1,6 +1,8 @@
-import config from "./config"
-import "./utils/Constants"
-import MeowCounter from "./utils/MeowCounter"
+import config from "./config";
+import "./utils/Constants";
+import MeowCounter from "./utils/MeowCounter";
+import { getCurrentArea } from "./utils/Area";
+import "./features/Mining";
 
 let commandOutputs;
 try {
@@ -96,7 +98,6 @@ register("chat", (name, message, event) => {
         if (MeowCounter.canAutoRespond() && config.autoMeowResponse) {
             MeowCounter.updateLastAutoResponse();
             ChatLib.command(`sbechat meow`, true);
-            //ChatLib.chat("Output: meow") // Debug
         }
         return;
     }
@@ -130,8 +131,8 @@ register("chat", (name, message, event) => {
         case "!sus":
             if (!config.susCommand) return;
             break;
-        case "!p":
-            if (!config.partyCommand) return;
+        case "!join":
+            if (!config.joinCommand) return;
             break;
         case "!meow":
             if (!config.meowCommand) return;
@@ -206,9 +207,17 @@ register("chat", (name, message, event) => {
             });
             break;
 
-        case "!p":
-            let playerToInvite = commandParts[1] || senderName;
-            ChatLib.command(`party ${playerToInvite}`);
+        case "!join":
+            let playerToJoinOrInvite = commandParts[1];
+            if (!playerToJoinOrInvite) {
+                return;
+            }
+    
+            let clientUsername = Player.getName();
+    
+            if (playerToJoinOrInvite.toLowerCase() === clientUsername.toLowerCase()) {
+                ChatLib.command(`party ${senderName}`);
+            }
             return;
 
         case "!meow":
@@ -222,7 +231,6 @@ register("chat", (name, message, event) => {
 
     if (generatedMessage) {
         ChatLib.command(`sbechat ${generatedMessage}`, true);
-        //ChatLib.chat(`Output: ${generatedMessage}`); //Just for Debugging
     }
 }).setCriteria("SBE Chat > ${name}: ${message}");
 

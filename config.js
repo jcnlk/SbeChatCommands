@@ -40,7 +40,7 @@ const ConfigHeader = `${Prefix} ${YELLOW}${ModuleVersion} \nMade by ${Creator}${
 
 @Vigilant(`${ModuleName}`, `${ModuleName}`, {
     getCategoryComparator: () => (a, b) => {
-        const order = ["General", "Commands", "WIP", "Dev Stuff"];
+        const order = ["General", "Mining", "Commands", "WIP", "Dev Stuff"];
         return order.indexOf(a.name) - order.indexOf(b.name);
     }
 })
@@ -112,12 +112,12 @@ class Config {
     susCommand = true;
 
     @SwitchProperty({
-        name: `Invite Command (Party) ${DARK_AQUA}!p${RESET}`,
-        description: "Enable the Invite (to Party) command for SBE Chat",
+        name: `Join Command ${DARK_AQUA}!join${RESET}`,
+        description: "Enable the Join command for SBE Chat (joins/invites player to party)",
         category: "General",
         subcategory: "Commands"
     })
-    partyCommand = true;
+    joinCommand = true;
 
     @SwitchProperty({
         name: `Help Command ${DARK_AQUA}!<commands, command>${RESET}`,
@@ -143,11 +143,21 @@ class Config {
     })
     autoMeowResponse = true;
 
+    // Mining Category
+    @SwitchProperty({
+        name: "Auto Warp Party in Mineshafts",
+        description: "Automatically warps your party into Mineshafts",
+        category: "Mining",
+        subcategory: "Mineshaft"
+    })
+    autoWarpPartyInMineshaft = false;
+
     constructor() {
         this.initialize(this);
 
         // Category descriptions
         this.setCategoryDescription("General", `${ConfigHeader}`);
+        this.setCategoryDescription("Mining", `${ConfigHeader}`);
     
         // Dependencies
         this.addDependency(`RNG Command ${DARK_AQUA}!rng${RESET}`, "SBE Chat Commands");
@@ -157,7 +167,7 @@ class Config {
         this.addDependency(`Dice Command ${DARK_AQUA}!dice${RESET}`, "SBE Chat Commands");
         this.addDependency(`Simp Command ${DARK_AQUA}!simp${RESET}`, "SBE Chat Commands");
         this.addDependency(`Sus Command ${DARK_AQUA}!sus${RESET}`, "SBE Chat Commands");
-        this.addDependency(`Invite Command (Party) ${DARK_AQUA}!p${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Join Command ${DARK_AQUA}!join${RESET}`, "SBE Chat Commands");
         this.addDependency(`Help Command ${DARK_AQUA}!<commands, command>${RESET}`, "SBE Chat Commands");
         this.addDependency(`Meow Command ${DARK_AQUA}!meow${RESET}`, "SBE Chat Commands");
         

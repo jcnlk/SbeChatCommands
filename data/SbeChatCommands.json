@@ -159,7 +159,7 @@
       "Very likely (unlike finding a lobby without 'quitting' players)"
     ],
     "commands": {
-      "list": "Available commands: !rng, !cf, !8ball, !throw, !dice, !commands",
+      "list": "Available commands: !rng, !cf, !8ball, !throw, !dice, !join, !commands",
       "help": "Use !commands help [command] for detailed help on a specific command.",
       "specific": {
         "rng": "!rng [player] [item]: Generates a random RNG percentage for a player and optional item.",
@@ -167,7 +167,8 @@
         "8ball": "!8ball [player] [question]: Asks the Magic 8-Ball a question for the specified player.",
         "throw": "!throw [player]: Shows how badly a player has thrown the run.",
         "dice": "!dice [player]: Rolls a six-sided die for the specified player.",
-        "commands": "!commands: Lists all available commands. !commands help: Shows this help message. !commands help [command]: Shows detailed help for a specific command."
+        "commands": "!commands: Lists all available commands. !commands help: Shows this help message. !commands help [command]: Shows detailed help for a specific command.",
+        "join": "!join [player]: Joins the specified player's party or invites them to yours if the player name matches your username."
       }
     },
   "simp": {
