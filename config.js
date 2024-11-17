@@ -34,7 +34,7 @@ import {
     @SelectorProperty, 
     @ColorProperty, 
     @ButtonProperty,    
-    @CheckboxProperty   } from 'Vigilance';
+    @SwitchProperty   } from 'Vigilance';
 
 const ConfigHeader = `${Prefix} ${YELLOW}${ModuleVersion} \nMade by ${Creator}${RESET}`
 
@@ -152,6 +152,142 @@ class Config {
     })
     autoWarpPartyInMineshaft = false;
 
+    @SwitchProperty({
+        name: "Enable Announce Mineshafts to SBE Chat",
+        description: "Announce Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    enableAnnounceMineshaftToSbeChat = false
+
+    @SwitchProperty({
+        name: "Announce Topaz Mineshaft",
+        description: "Announce Topaz Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceTopazMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Sapphire Mineshaft",
+        description: "Announce Sapphire Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceSapphireMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Amethyst Mineshaft",
+        description: "Announce Amethyst Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceAmethystMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Amber Mineshaft",
+        description: "Announce Amber Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceAmberMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Jade Mineshaft",
+        description: "Announce Jade Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceJadeMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Titanium Mineshaft",
+        description: "Announce Titanium Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceTitaniumMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Umber Mineshaft",
+        description: "Announce Umber Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceUmberMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Tungsten Mineshaft",
+        description: "Announce Tungsten Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceTungstenMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Vanguard Mineshaft",
+        description: "Announce Vanguard Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceVanguardMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Ruby Mineshaft",
+        description: "Announce Ruby Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceRubyMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Onyx Mineshaft",
+        description: "Announce Onyx Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceOnyxMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Aquamarine Mineshaft",
+        description: "Announce Aquamarine Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceAquamarineMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Citrine Mineshaft",
+        description: "Announce Citrine Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceCitrineMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Peridot Mineshaft",
+        description: "Announce Peridot Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announcePeridotMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Jasper Mineshaft",
+        description: "Announce Jasper Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceJasperMineshaft = false
+
+    @SwitchProperty({
+        name: "Announce Opal Mineshaft",
+        description: "Announce Opal Mineshafts to SBE Chat",
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceOpalMineshaft = false
+
     constructor() {
         this.initialize(this);
 
@@ -170,6 +306,23 @@ class Config {
         this.addDependency(`Join Command ${DARK_AQUA}!join${RESET}`, "SBE Chat Commands");
         this.addDependency(`Help Command ${DARK_AQUA}!<commands, command>${RESET}`, "SBE Chat Commands");
         this.addDependency(`Meow Command ${DARK_AQUA}!meow${RESET}`, "SBE Chat Commands");
+
+        this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Amethyst Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Amber Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Jade Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Titanium Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Umber Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Tungsten Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Vanguard Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Ruby Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Onyx Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Aquamarine Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Citrine Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Peridot Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Jasper Mineshaft", "Enable Announce Mineshafts to SBE Chat");
+        this.addDependency("Announce Opal Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         
     }
 }

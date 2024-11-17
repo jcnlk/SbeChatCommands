@@ -18,7 +18,7 @@ class MeowCounter {
     }
 
     canAutoRespond() {
-        return Date.now() - this.data.lastAutoResponse >= 30000;
+        return Date.now() - this.data.lastAutoResponse >= 60000;
     }
 
     updateLastAutoResponse() {
