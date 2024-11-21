@@ -69,114 +69,147 @@ const CLEAN_ROOM_NAMES = {
 let checkingForMineshaft = false;
 let currentRoom = "";
 
+// Function to check for corpses in the tab list
+function getAvailableCorpses() {
+    try {
+        const tabList = TabList.getNames();
+        if (!tabList) return [];
+
+        let corpses = [];
+        let foundCorpseHeader = false;
+
+        for (let i = 0; i < tabList.length; i++) {
+            const line = tabList[i]?.removeFormatting();
+            if (!line) continue;
+
+            if (line.includes('Frozen Corpses:')) {
+                foundCorpseHeader = true;
+                let counter = 1;
+
+                while (counter > 0 && (i + counter) < tabList.length) {
+                    const corpseLine = tabList[i + counter]?.removeFormatting();
+                    
+                    if (!corpseLine || corpseLine === '') {
+                        return corpses;
+                    }
+
+                    const corpseName = corpseLine.replace(':', '').split(' ')[1];
+                    if (corpseName) {
+                        corpses.push(corpseName);
+                    }
+                    
+                    counter++;
+                }
+            }
+        }
+
+        return corpses;
+    } catch (error) {
+        console.error("Error in getAvailableCorpses:", error);
+        return [];
+    }
+}
+
 // Function to announce special rooms in SBE Chat
 function announceSpecialRoom(roomType, isCrystal) {
     const playerName = Player.getName();
     const cleanName = CLEAN_ROOM_NAMES[roomType];
     const displayName = isCrystal ? `${cleanName} Crystal` : cleanName;
 
-    // Test output for each room type
+    // Get available corpses if enabled
+    let corpseMessage = "";
+    if (config.announceCorpsesWithMineshaft) {
+        const corpses = getAvailableCorpses();
+        if (corpses.length > 0) {
+            corpseMessage = ` (Corpses: ${corpses.join(", ")})`;
+        }
+    }
+
+    // Output for each room type
     switch(roomType) {
         case "TOPA":
             if (config.announceTopazMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "SAPP":
             if (config.announceSapphireMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "AMET":
             if (config.announceAmethystMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "AMBE":
             if (config.announceAmberMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "JADE":
             if (config.announceJadeMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "TITA":
             if (config.announceTitaniumMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "UMBE":
             if (config.announceUmberMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "TUNG":
             if (config.announceTungstenMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "FAIR":
             if (config.announceVanguardMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "RUBY":
             if (config.announceRubyMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "ONYX":
             if (config.announceOnyxMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "AQUA":
             if (config.announceAquamarineMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "CITR":
             if (config.announceCitrineMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "PERI":
             if (config.announcePeridotMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "JASP":
             if (config.announceJasperMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
         case "OPAL":
             if (config.announceOpalMineshaft) {
-            //ChatLib.chat(`[TEST] sbechat: ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`); //debug
-            ChatLib.command(`sbechat ${displayName} Mineshaft found! Type '!join ${playerName}' for invite.`, true);
+                ChatLib.command(`sbechat ${displayName} Mineshaft found! Type "!join ${playerName}" for invite.${corpseMessage}`, true);
             }
             break;
     }
 }
 
-// Function to detect room type
 function detectRoomType() {
     const scoreboard = Scoreboard.getLines();
     const lastLine = scoreboard[scoreboard.length - 1]?.toString()?.removeFormatting();
@@ -197,28 +230,51 @@ function detectRoomType() {
         // Only display if room changed
         if (currentRoom !== roomCode) {
             currentRoom = roomCode;
-            ChatLib.chat(`${Prefix}: ${displayName}${RESET}`);
             
-            // Check if room should be announced
+            // Mineshaft type message for chat
+            ChatLib.chat(`${Prefix}: ${displayName}${RESET}`);
+
+            // Combined party chat announcement
+            if (config.announceMineshaftTypeToParty || config.announceCorpsesToParty) {
+                let partyMessage = "";
+                const cleanName = CLEAN_ROOM_NAMES[roomType];
+                const displayName = isCrystal ? `${cleanName} Crystal` : cleanName;
+                
+                // Add mineshaft type if enabled
+                if (config.announceMineshaftTypeToParty) {
+                    partyMessage = `Current Mineshaft: ${displayName}`;
+                }
+                
+                // Add corpses if enabled and available
+                if (config.announceCorpsesToParty) {
+                    const corpses = getAvailableCorpses();
+                    if (corpses.length > 0) {
+                        partyMessage += config.announceMineshaftTypeToParty 
+                            ? ` | Corpses: ${corpses.join(", ")}`
+                            : `Available Corpses: ${corpses.join(", ")}`;
+                    }
+                }
+                
+                // Send the combined message if we have content
+                if (partyMessage) {
+                    ChatLib.command(`pc ${partyMessage}`);
+                }
+            }
+            
+            // Separate corpse message in module chat if enabled
+            if (config.announceCorpsesWithMineshaft) {
+                const corpses = getAvailableCorpses();
+                if (corpses.length > 0) {
+                    ChatLib.chat(`${Prefix}: ${GOLD}Available Corpses: ${corpses.join(", ")}${RESET}`);
+                }
+            }
+            
+            // Check if room should be announced in SBE Chat
             announceSpecialRoom(roomType, isCrystal);
         }
     }
 }
 
-register("chat", (rank, name) => {
-    //if (!config.autoWarpPartyInMineshaft) {
-    //    return;
-    //}
-   
-    checkingForMineshaft = true;
-   
-    // Initial check after delay
-    setTimeout(() => {
-        checkAreaAndWarp();
-    }, 1000);
-}).setCriteria("MINESHAFT! A Mineshaft portal spawned nearby!");
-
-// Enhanced check function with room type detection
 const checkAreaAndWarp = () => {
     if (!checkingForMineshaft) {
         return;
@@ -227,10 +283,7 @@ const checkAreaAndWarp = () => {
     const isMineshaft = currentArea.includes("Mineshaft");
    
     if (isMineshaft) {
-        //ChatLib.command("p warp");
-        // Start checking room type
         detectRoomType();
-        // Continue monitoring room type changes
         register("step", () => {
             if (getCurrentArea().includes("Mineshaft")) {
                 detectRoomType();
@@ -239,12 +292,19 @@ const checkAreaAndWarp = () => {
        
         checkingForMineshaft = false;
     } else if (checkingForMineshaft) {
-        // If not in Mineshaft yet, check again after a delay
         setTimeout(() => {
             checkAreaAndWarp();
         }, 500);
     }
 };
+
+register("chat", (rank, name) => {
+    checkingForMineshaft = true;
+   
+    setTimeout(() => {
+        checkAreaAndWarp();
+    }, 1000);
+}).setCriteria("MINESHAFT! A Mineshaft portal spawned nearby!");
 
 // Optional debug command to check room type manually
 register("command", () => {

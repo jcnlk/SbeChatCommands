@@ -31,12 +31,13 @@ import {
     @DecimalSliderProperty, 
     @TextProperty, 
     @SliderProperty, 
-    @SelectorProperty, 
+    @CheckboxProperty, 
     @ColorProperty, 
-    @ButtonProperty,    
-    @SwitchProperty   } from 'Vigilance';
+    @ButtonProperty,
+    @CheckboxProperty } from 'Vigilance';
 
-const ConfigHeader = `${Prefix} ${YELLOW}${ModuleVersion} \nMade by ${Creator}${RESET}`
+const ConfigHeader = `${Prefix} ${YELLOW}${ModuleVersion} \nMade by ${Creator}${RESET}`;
+let ClickedDebugButton = false;
 
 @Vigilant(`${ModuleName}`, `${ModuleName}`, {
     getCategoryComparator: () => (a, b) => {
@@ -146,21 +147,46 @@ class Config {
     // Mining Category
     @SwitchProperty({
         name: "Auto Warp Party in Mineshafts",
-        description: "Automatically warps your party into Mineshafts",
+        description: `Automatically warps your party into Mineshafts. \n${RED}DOES NOT WORK AT THE MOMENT!${RESET} \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
         category: "Mining",
         subcategory: "Mineshaft"
     })
     autoWarpPartyInMineshaft = false;
 
     @SwitchProperty({
-        name: "Enable Announce Mineshafts to SBE Chat",
-        description: "Announce Mineshafts to SBE Chat",
+        name: "Announce Corpses with Mineshaft",
+        description: `Include available Corpses in Mineshaft announcements. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
-    enableAnnounceMineshaftToSbeChat = false
+    announceCorpsesWithMineshaft = true
 
     @SwitchProperty({
+        name: "Announce Mineshaft Type to Party",
+        description: `Annouce Mineshaft Type tp Party. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceMineshaftTypeToParty = true
+
+    @SwitchProperty({
+        name: "Announce Corpses to Party",
+        description: `Announce available Corpses in Mineshaft to Party. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    announceCorpsesToParty = true
+
+    @SwitchProperty({
+        name: "Enable Announce Mineshafts to SBE Chat",
+        description: `Announce Mineshafts to SBE Chat. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
+        category: "Mining",
+        subcategory: "Mineshaft Announce"
+    })
+    enableAnnounceMineshaftToSbeChat = true
+
+
+    @CheckboxProperty({
         name: "Announce Topaz Mineshaft",
         description: "Announce Topaz Mineshafts to SBE Chat",
         category: "Mining",
@@ -168,7 +194,7 @@ class Config {
     })
     announceTopazMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Sapphire Mineshaft",
         description: "Announce Sapphire Mineshafts to SBE Chat",
         category: "Mining",
@@ -176,7 +202,7 @@ class Config {
     })
     announceSapphireMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Amethyst Mineshaft",
         description: "Announce Amethyst Mineshafts to SBE Chat",
         category: "Mining",
@@ -184,7 +210,7 @@ class Config {
     })
     announceAmethystMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Amber Mineshaft",
         description: "Announce Amber Mineshafts to SBE Chat",
         category: "Mining",
@@ -192,7 +218,7 @@ class Config {
     })
     announceAmberMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Jade Mineshaft",
         description: "Announce Jade Mineshafts to SBE Chat",
         category: "Mining",
@@ -200,7 +226,7 @@ class Config {
     })
     announceJadeMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Titanium Mineshaft",
         description: "Announce Titanium Mineshafts to SBE Chat",
         category: "Mining",
@@ -208,7 +234,7 @@ class Config {
     })
     announceTitaniumMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Umber Mineshaft",
         description: "Announce Umber Mineshafts to SBE Chat",
         category: "Mining",
@@ -216,7 +242,7 @@ class Config {
     })
     announceUmberMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Tungsten Mineshaft",
         description: "Announce Tungsten Mineshafts to SBE Chat",
         category: "Mining",
@@ -224,15 +250,15 @@ class Config {
     })
     announceTungstenMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Vanguard Mineshaft",
         description: "Announce Vanguard Mineshafts to SBE Chat",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
-    announceVanguardMineshaft = false
+    announceVanguardMineshaft = true
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Ruby Mineshaft",
         description: "Announce Ruby Mineshafts to SBE Chat",
         category: "Mining",
@@ -240,7 +266,7 @@ class Config {
     })
     announceRubyMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Onyx Mineshaft",
         description: "Announce Onyx Mineshafts to SBE Chat",
         category: "Mining",
@@ -248,7 +274,7 @@ class Config {
     })
     announceOnyxMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Aquamarine Mineshaft",
         description: "Announce Aquamarine Mineshafts to SBE Chat",
         category: "Mining",
@@ -256,7 +282,7 @@ class Config {
     })
     announceAquamarineMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Citrine Mineshaft",
         description: "Announce Citrine Mineshafts to SBE Chat",
         category: "Mining",
@@ -264,7 +290,7 @@ class Config {
     })
     announceCitrineMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Peridot Mineshaft",
         description: "Announce Peridot Mineshafts to SBE Chat",
         category: "Mining",
@@ -272,7 +298,7 @@ class Config {
     })
     announcePeridotMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Jasper Mineshaft",
         description: "Announce Jasper Mineshafts to SBE Chat",
         category: "Mining",
@@ -280,7 +306,7 @@ class Config {
     })
     announceJasperMineshaft = false
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Announce Opal Mineshaft",
         description: "Announce Opal Mineshafts to SBE Chat",
         category: "Mining",
@@ -288,12 +314,46 @@ class Config {
     })
     announceOpalMineshaft = false
 
+    // Dev Stuff
+    @ButtonProperty({
+        name: "Debug Mode",
+        description: "Just for debugging ig..",
+        category: "Dev Stuff",
+        subcategory: "Dev Stuff",
+        placeholder: "Click me!"
+    })
+    coolMessage() {
+        ClickedDebugButton = true;
+        ChatLib.chat(`${YELLOW}[NPC] ${GOLD}Debugron${RESET}: Welcome, brave adventurer! I see you're interested in the mysteries of technology.`);
+        
+        setTimeout(() => {
+            ChatLib.chat(`${YELLOW}[NPC] ${GOLD}Debugron${RESET}: Let me check your chat module... ${ITALIC}*taps glass screen*`);
+            ChatLib.command(`sbechat @Cinshay do you like cats??`, true);
+        }, 2000);
+        
+        setTimeout(() => {
+            ChatLib.chat(`${YELLOW}[NPC] ${GOLD}Debugron${RESET}: Oh my! Something strange appeared in the ancient circuits!`);
+        }, 3500);
+        
+        setTimeout(() => {
+            ChatLib.chat(`${YELLOW}[NPC] ${GOLD}Debugron${RESET}: Quick, we must stabilize the magical chat essence before it's too late!`);
+        }, 5000);
+        
+        setTimeout(() => {
+            const npcText = new TextComponent(`${YELLOW}[NPC] ${GOLD}Debugron${RESET}: ${GREEN}[Use Magical Debug Crystal]`);
+            npcText.setHover("show_text", "Click to answer");
+            npcText.setClick("run_command", "/getMeowed");
+            ChatLib.chat(npcText);
+        }, 6500);
+    }
+
     constructor() {
         this.initialize(this);
 
         // Category descriptions
         this.setCategoryDescription("General", `${ConfigHeader}`);
         this.setCategoryDescription("Mining", `${ConfigHeader}`);
+        this.setCategoryDescription("Dev Stuff", `${ConfigHeader}`);
     
         // Dependencies
         this.addDependency(`RNG Command ${DARK_AQUA}!rng${RESET}`, "SBE Chat Commands");
@@ -323,8 +383,22 @@ class Config {
         this.addDependency("Announce Peridot Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Jasper Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Opal Mineshaft", "Enable Announce Mineshafts to SBE Chat");
-        
     }
 }
 
 export default new Config();
+
+register("command", () => {
+    if (ClickedDebugButton) {
+        const playerName = Player.getName();
+        ChatLib.chat(`${YELLOW}[NPC] ${GOLD}Debugron${RESET}: OHOHO! You activated my trap card!`);
+        setTimeout(() => {
+            ChatLib.chat(`${YELLOW}[NPC] ${GOLD}Debugron${RESET}: ${ITALIC}*pulls magical lever*`);
+            ChatLib.command(`sbechat OH NO! ${playerName} just got ambushed and meowed by @jcnlk! How embarrassing!`, true);
+        }, 1000);
+        ClickedDebugButton = false
+    }
+    else {
+        ChatLib.chat(`${Prefix} ${RED}Stop running random commands!${RESET}`)
+    }
+}).setName("getMeowed");
