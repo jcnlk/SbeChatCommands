@@ -373,35 +373,35 @@ register("chat", (name, message, event) => {
     }
 
     switch(command) {
-        case "!rng":
+        case "rng":
             if (!config.rngCommand) return;
             break;
-        case "!cf":
+        case "cf":
             if (!config.cfCommand) return;
             break;
-        case "!8ball":
+        case "8ball":
             if (!config.eightBallCommand) return;
             break;
-        case "!throw":
+        case "throw":
             if (!config.throwCommand) return;
             break;
-        case "!dice":
+        case "dice":
             if (!config.diceCommand) return;
             break;
-        case "!simp":
+        case "simp":
             if (!config.simpCommand) return;
             break;
-        case "!sus":
+        case "sus":
             if (!config.susCommand) return;
             break;
-        case "!join":
+        case "join":
             if (!config.joinCommand) return;
             break;
-        case "!meow":
+        case "meow":
             if (!config.meowCommand) return;
             break;
-        case "!commands":
-        case "!command":
+        case "commands":
+        case "command":
             if (!config.commandsCommand) return;
             break;
         default:
@@ -413,7 +413,7 @@ register("chat", (name, message, event) => {
     let generatedMessage;
 
     switch(command) {
-        case "!rng":
+        case "rng":
             if (!config.rngCommand) return;
             let rng = Math.floor(Math.random() * 101);
             let item = commandParts.slice(1).join(" ").toLowerCase() || null;
@@ -424,7 +424,7 @@ register("chat", (name, message, event) => {
             });
             break;
 
-        case "!cf":
+        case "cf":
             let result = Math.random() < 0.5 ? "heads" : "tails";
             generatedMessage = generateMessage("cf", {
                 playerName: targetName, 
@@ -432,14 +432,14 @@ register("chat", (name, message, event) => {
             });
             break;
 
-        case "!8ball":
+        case "8ball":
             if (!config.eightBallCommand) return;
             generatedMessage = commandOutputs["8ballResponses"][
                 Math.floor(Math.random() * commandOutputs["8ballResponses"].length)
             ];
             break;
 
-        case "!throw":
+        case "throw":
             let throwIntensity = Math.floor(Math.random() * 101);
             generatedMessage = generateMessage("throw", {
                 playerName: targetName, 
@@ -447,7 +447,7 @@ register("chat", (name, message, event) => {
             });
             break;
 
-        case "!dice":
+        case "dice":
             let diceResult = Math.floor(Math.random() * 6) + 1;
             generatedMessage = generateMessage("dice", {
                 playerName: targetName, 
@@ -455,13 +455,13 @@ register("chat", (name, message, event) => {
             });
             break;
 
-        case "!commands":
-        case "!command":
+        case "commands":
+        case "command":
             generatedMessage = handleCommandsCommand(commandParts.slice(1));
             break;
 
-        case "!simp":
-        case "!sus":
+        case "simp":
+        case "sus":
             let percentage = Math.floor(Math.random() * 101);
             generatedMessage = generateMessage(command.slice(1), {
                 playerName: targetName, 
@@ -469,7 +469,7 @@ register("chat", (name, message, event) => {
             });
             break;
 
-        case "!join":
+        case "join":
             let playerToJoinOrInvite = commandParts[1];
             if (!playerToJoinOrInvite) {
                 return;
@@ -482,7 +482,7 @@ register("chat", (name, message, event) => {
             }
             return;
 
-        case "!meow":
+        case "meow":
             let total = defaultData.getMeowTotal();
             generatedMessage = generateMessage("meow", { total });
             if (generatedMessage === null) {
