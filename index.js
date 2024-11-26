@@ -161,7 +161,7 @@ function handleCommandsCommand(args) {
                     `Unknown command: ${specificCommand}. Use !commands list for a list of available commands.`;
         }
     }
-    return "Invalid usage. Try !commands list or !commands help [command]";
+    //return "Invalid usage. Try !commands list or !commands help [command]"; // Prevent chat spam idk
 }
 
 function handleBlacklistCommand(action, username) {

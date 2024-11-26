@@ -23,7 +23,7 @@ class defaultData {
         this.achievements = {
             FIRST_INSTALL: {
                 id: 'FIRST_INSTALL',
-                name: 'Welcome to SBE Chat',
+                name: 'True SBE Chat User',
                 description: 'Install SBE Chat Commands for the first time',
                 trigger: 'firstInstall'
             },
@@ -53,6 +53,27 @@ class defaultData {
                 description: 'Send "meow" 100 times in SBE Chat',
                 trigger: 'meowCount',
                 requirement: 100
+            },
+            MEOW_250: {
+                id: 'MEOW_250',
+                name: 'Meow Enthusiast',
+                description: 'Send "meow" 250 times in SBE Chat',
+                trigger: 'meowCount',
+                requirement: 250
+            },
+            MEOW_500: {
+                id: 'MEOW_500',
+                name: 'Professional Cat',
+                description: 'Send "meow" 500 times in SBE Chat',
+                trigger: 'meowCount',
+                requirement: 500
+            },
+            MEOW_1000: {
+                id: 'MEOW_1000',
+                name: 'Ultimate Feline',
+                description: 'Send "meow" 1000 times in SBE Chat',
+                trigger: 'meowCount',
+                requirement: 1000
             },
             COMMAND_MASTER: {
                 id: 'COMMAND_MASTER',
@@ -194,6 +215,7 @@ class defaultData {
         const achievement = this.achievements[achievementId];
         if (!achievement) return;
 
+        World.playSound('random.levelup', 1, 1); // maybe this is too loud idk
         ChatLib.chat(`${RESET}${YELLOW}${OBFUSCATED}a${GREEN}>>   ${GREEN}Achievement Unlocked: ${GOLD}${achievement.name}${GREEN}   <<${YELLOW}${OBFUSCATED}a${RESET}`);
         ChatLib.chat(`${Prefix} ${GREEN}${achievement.description}`);
     }

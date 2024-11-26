@@ -159,7 +159,7 @@ class Config {
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
-    announceMineshaftTypeToParty = true
+    announceMineshaftTypeToParty = false
 
     @SwitchProperty({
         name: "Announce Corpses to Party",
@@ -167,7 +167,7 @@ class Config {
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
-    announceCorpsesToParty = true
+    announceCorpsesToParty = false
 
     @SwitchProperty({
         name: "Enable Announce Mineshafts to SBE Chat",
