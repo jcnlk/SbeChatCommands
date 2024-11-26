@@ -285,7 +285,6 @@ function handleHelpCommand(topic) {
     }
 }
 
-// Main command handler
 const commandHandler = register("command", (...args) => {
     if (!args || args.length === 0 || !args[0]) {
         config.openGUI();
@@ -330,11 +329,9 @@ const commandHandler = register("command", (...args) => {
     }
 }).setName("sbechatcommands").setAliases(["scc"]);
 
-// Chat handler
 register("chat", (name, message, event) => {
     let senderName = name.replace(/\[.*?\]\s*/, '');
     
-    // Check if the sender is blocked or blacklisted
     if (defaultData.isBlocked(senderName) || defaultData.isBlacklisted(senderName)) {
         cancel(event);
         return;

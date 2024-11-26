@@ -47,7 +47,7 @@ let ClickedDebugButton = false;
 })
 
 class Config {
-    // General Settings
+    // ==================== General Commands Settings ====================
     @SwitchProperty({
         name: "SBE Chat Commands",
         description: "Enable all commands for SBE Chat",
@@ -58,7 +58,7 @@ class Config {
 
     @SwitchProperty({
         name: `RNG Command ${DARK_AQUA}!rng${RESET}`,
-        description: "Enable the RNG command for SBE Chat",
+        description: "Simulates RNG drops with percentages. Use '!rng [item]' to check your luck for specific items.",
         category: "General",
         subcategory: "Commands"
     })
@@ -66,7 +66,7 @@ class Config {
 
     @SwitchProperty({
         name: `Coinflip Command ${DARK_AQUA}!cf${RESET}`,
-        description: "Enable the Coinflip command for SBE Chat",
+        description: "Flip a virtual coin. Returns heads or tails with colorful messages.",
         category: "General",
         subcategory: "Commands"
     })
@@ -74,7 +74,7 @@ class Config {
 
     @SwitchProperty({
         name: `8Ball Command ${DARK_AQUA}!8ball${RESET}`,
-        description: "Enable the 8ball command for SBE Chat",
+        description: "Ask the magic 8-ball a question and receive a mystical answer. Perfect for decision making!",
         category: "General",
         subcategory: "Commands"
     })
@@ -82,7 +82,7 @@ class Config {
 
     @SwitchProperty({
         name: `Throw Command ${DARK_AQUA}!throw${RESET}`,
-        description: "Enable the Throw command for SBE Chat",
+        description: "Tells you how hard someone has thrown.",
         category: "General",
         subcategory: "Commands"
     })
@@ -90,7 +90,7 @@ class Config {
 
     @SwitchProperty({
         name: `Dice Command ${DARK_AQUA}!dice${RESET}`,
-        description: "Enable the Dice command for SBE Chat",
+        description: "Roll a six-sided die. Results come with custom messages based on your roll.",
         category: "General",
         subcategory: "Commands"
     })
@@ -98,7 +98,7 @@ class Config {
 
     @SwitchProperty({
         name: `Simp Command ${DARK_AQUA}!simp${RESET}`,
-        description: "Enable the Simp command for SBE Chat",
+        description: "Check someone's simp level with a percentage. Use '!simp [player]'.",
         category: "General",
         subcategory: "Commands"
     })
@@ -106,7 +106,7 @@ class Config {
 
     @SwitchProperty({
         name: `Sus Command ${DARK_AQUA}!sus${RESET}`,
-        description: "Enable the Sus command for SBE Chat",
+        description: "Measure how suspicious someone is with a percentage. Use '!sus [player]' to investigate.",
         category: "General",
         subcategory: "Commands"
     })
@@ -114,7 +114,7 @@ class Config {
 
     @SwitchProperty({
         name: `Join Command ${DARK_AQUA}!join${RESET}`,
-        description: "Enable the Join command for SBE Chat (joins/invites player to party)",
+        description: "Allows others to join your party using '!join [your_name]'. Automatically sends party invites.",
         category: "General",
         subcategory: "Commands"
     })
@@ -122,7 +122,7 @@ class Config {
 
     @SwitchProperty({
         name: `Help Command ${DARK_AQUA}!<commands, command>${RESET}`,
-        description: "Enable the Help command for SBE Chat",
+        description: "Displays available commands and their usage.",
         category: "General",
         subcategory: "Commands"
     })
@@ -130,7 +130,7 @@ class Config {
 
     @SwitchProperty({
         name: `Meow Command ${DARK_AQUA}!meow${RESET}`,
-        description: "Enable the Meow command for SBE Chat",
+        description: "Join the meow gang! Tracks total meows in SBE Chat and allows for chain reactions.",
         category: "General",
         subcategory: "Commands"
     })
@@ -138,16 +138,16 @@ class Config {
 
     @SwitchProperty({
         name: "Auto Meow Response",
-        description: "Automatically responds with 'meow' when someone says 'meow' in SBE Chat",
+        description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
         subcategory: "Auto Respnse"
     })
     autoMeowResponse = true;
 
-    // Mining Category
+    // ==================== Mining Features ====================
     @SwitchProperty({
         name: "Announce Corpses in Mineshaft",
-        description: `Announce available Corpses in Mineshaft. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
+        description: `Shows available Frozen Corpses when entering a Mineshaft. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -155,7 +155,7 @@ class Config {
 
     @SwitchProperty({
         name: "Announce Mineshaft Type to Party",
-        description: `Annouce Mineshaft Type to Party. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
+        description: `Automatically tells your party which type of Mineshaft you've discovered. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -163,7 +163,7 @@ class Config {
 
     @SwitchProperty({
         name: "Announce Corpses to Party",
-        description: `Announce available Corpses in Mineshaft to Party. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
+        description: `Shares available Frozen Corpses with your party members. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -177,10 +177,9 @@ class Config {
     })
     enableAnnounceMineshaftToSbeChat = true
 
-
     @CheckboxProperty({
         name: "Announce Topaz Mineshaft",
-        description: "Announce Topaz Mineshafts to SBE Chat",
+        description: "Announce Topaz Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -188,7 +187,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Sapphire Mineshaft",
-        description: "Announce Sapphire Mineshafts to SBE Chat",
+        description: "Announce Sapphire Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -196,7 +195,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Amethyst Mineshaft",
-        description: "Announce Amethyst Mineshafts to SBE Chat",
+        description: "Announce Amethyst Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -204,7 +203,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Amber Mineshaft",
-        description: "Announce Amber Mineshafts to SBE Chat",
+        description: "Announce Amber Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -212,7 +211,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Jade Mineshaft",
-        description: "Announce Jade Mineshafts to SBE Chat",
+        description: "Announce Jade Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -220,7 +219,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Titanium Mineshaft",
-        description: "Announce Titanium Mineshafts to SBE Chat",
+        description: "Announce Titanium Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -228,7 +227,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Umber Mineshaft",
-        description: "Announce Umber Mineshafts to SBE Chat",
+        description: "Announce Umber Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -236,7 +235,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Tungsten Mineshaft",
-        description: "Announce Tungsten Mineshafts to SBE Chat",
+        description: "Announce Tungsten Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -244,7 +243,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Vanguard Mineshaft",
-        description: "Announce Vanguard Mineshafts to SBE Chat",
+        description: "Announce Vanguard Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -252,7 +251,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Ruby Mineshaft",
-        description: "Announce Ruby Mineshafts to SBE Chat",
+        description: "Announce Ruby Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -260,7 +259,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Onyx Mineshaft",
-        description: "Announce Onyx Mineshafts to SBE Chat",
+        description: "Announce Onyx Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -268,7 +267,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Aquamarine Mineshaft",
-        description: "Announce Aquamarine Mineshafts to SBE Chat",
+        description: "Announce Aquamarine Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -276,7 +275,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Citrine Mineshaft",
-        description: "Announce Citrine Mineshafts to SBE Chat",
+        description: "Announce Citrine Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -284,7 +283,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Peridot Mineshaft",
-        description: "Announce Peridot Mineshafts to SBE Chat",
+        description: "Announce Peridot Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -292,7 +291,7 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Jasper Mineshaft",
-        description: "Announce Jasper Mineshafts to SBE Chat",
+        description: "Announce Jasper Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -300,13 +299,13 @@ class Config {
 
     @CheckboxProperty({
         name: "Announce Opal Mineshaft",
-        description: "Announce Opal Mineshafts to SBE Chat",
+        description: "Announce Opal Mineshafts to SBE Chat.",
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
     announceOpalMineshaft = false
 
-    // Dev Stuff
+    // ==================== Development Tools ====================
     @ButtonProperty({
         name: "Debug Mode",
         description: "Just for debugging ig..",
