@@ -24,9 +24,9 @@ export const RESET = "§r";
 
 //Basic Stuff
 export const ModuleName = "SBEChatCommands"
-export const ModuleVersion = "0.0.1" // IMPORTANT: This will define the module version (metadata.json excluded)
+export const ModuleVersion = "1.0.0" // IMPORTANT: This will define the module version (metadata.json excluded)
 export const Creator = "jcnlk"  // idk probably just me
-export const Prefix = `${DARK_GRAY}[${GOLD}SbeChatCommands${DARK_GRAY}]${RESET}`
+export const Prefix = `${DARK_GRAY}[${GOLD}SCC${DARK_GRAY}]${RESET}`
 
 // Checks if current server is hypixel
 export const InSkyblock = () => {

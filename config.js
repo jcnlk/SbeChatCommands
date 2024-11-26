@@ -146,16 +146,8 @@ class Config {
 
     // Mining Category
     @SwitchProperty({
-        name: "Auto Warp Party in Mineshafts",
-        description: `Automatically warps your party into Mineshafts. \n${RED}DOES NOT WORK AT THE MOMENT!${RESET} \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
-        category: "Mining",
-        subcategory: "Mineshaft"
-    })
-    autoWarpPartyInMineshaft = false;
-
-    @SwitchProperty({
-        name: "Announce Corpses with Mineshaft",
-        description: `Include available Corpses in Mineshaft announcements. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
+        name: "Announce Corpses in Mineshaft",
+        description: `Announce available Corpses in Mineshaft. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
@@ -163,7 +155,7 @@ class Config {
 
     @SwitchProperty({
         name: "Announce Mineshaft Type to Party",
-        description: `Annouce Mineshaft Type tp Party. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
+        description: `Annouce Mineshaft Type to Party. \n${RED}${BOLD}Note:${RESET} Currently the room/corpse detection can take a while.`,
         category: "Mining",
         subcategory: "Mineshaft Announce"
     })
