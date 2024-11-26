@@ -285,6 +285,10 @@ function handleHelpCommand(topic) {
     }
 }
 
+register("command", () => {
+    defaultData.displayAchievements();
+}).setName("sccachievements").setAliases(["scca"]);
+
 const commandHandler = register("command", (...args) => {
     if (!args || args.length === 0 || !args[0]) {
         config.openGUI();
@@ -337,8 +341,16 @@ register("chat", (name, message, event) => {
         return;
     }
 
+    if (senderName === Player.getName()) {
+        defaultData.setFirstMessageSent();
+    }
+
     if (message.toLowerCase() === "meow") {
         defaultData.incrementMeowCount();
+        
+        if (senderName === Player.getName()) {
+            defaultData.incrementPersonalMeowCount();
+        }
         
         if (senderName !== Player.getName() && 
             defaultData.canAutoRespondMeow() && 
@@ -352,9 +364,13 @@ register("chat", (name, message, event) => {
     if (!message.startsWith("!")) return;
    
     let commandParts = message.split(" ");
-    let command = commandParts[0].toLowerCase();
+    let command = commandParts[0].toLowerCase().slice(1); // Remove the '!'
 
     if (!config.enableAllCommands) return;
+
+    if (senderName === Player.getName()) {
+        defaultData.addUsedCommand(command);
+    }
 
     switch(command) {
         case "!rng":
