@@ -188,7 +188,7 @@ function formatCorpseName(corpse) {
             formatted = `${DARK_BLUE}${corpse.name}`;
             break;
         case 'FAIR':
-            formatted = `${DARK_AQUA}${corpse.name}`;
+            formatted = `${BLUE}${corpse.name}`;
             break;
         default:
             formatted = `${WHITE}${corpse.name}`;
@@ -209,9 +209,11 @@ function formatCorpseNameForParty(corpse) {
         'FAIR': 'Vanguard'
     };
     
-    return corpse.type in typePrefixes ? 
-        `${typePrefixes[corpse.type]} ${corpse.name}` : 
-        corpse.name;
+    if (corpse.type in typePrefixes && !corpse.name.startsWith(typePrefixes[corpse.type])) {
+        return `${typePrefixes[corpse.type]} ${corpse.name}`;
+    }
+    
+    return corpse.name;
 }
 
 // Function to announce special rooms in SBE Chat
