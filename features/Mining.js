@@ -185,10 +185,10 @@ function formatCorpseName(corpse) {
             formatted = `${GRAY}${corpse.name}`;
             break;
         case 'LAPI':
-            formatted = `${DARK_BLUE}${corpse.name}`;
+            formatted = `${BLUE}${corpse.name}`;
             break;
         case 'FAIR':
-            formatted = `${BLUE}${corpse.name}`;
+            formatted = `${DARK_AQUA}${corpse.name}`;
             break;
         default:
             formatted = `${WHITE}${corpse.name}`;
