@@ -383,7 +383,7 @@ function detectRoomType() {
                     .map(formatCorpseName)
                     .join(`${RESET}, `);
                     
-                ChatLib.chat(`${Prefix}: ${AQUA}Available Corpses: ${RESET}${formattedCorpses}`);
+                ChatLib.chat(`${Prefix}: ${YELLOW}Available Corpses: ${RESET}${formattedCorpses}`);
             }
         }
     }
