@@ -95,7 +95,8 @@ class defaultData {
                 unlockedAchievements: [],
                 usedCommands: [],
                 firstMessageSent: false
-            }
+            },
+            commandCooldowns: {}
         }, "./data/Data.json");
 
         // First install check
@@ -339,6 +340,44 @@ class defaultData {
         });
         
         ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+    }
+    // Commands Cooldown Stuff
+    /**
+    isBlocked(username) {
+        return this.data.blockedUsers.includes(username);
+    }
+
+    isBlacklisted(username) {
+        return this.data.blacklistedUsers.includes(username);
+    }
+    */
+
+    isOnCooldown(username) {
+        const now = Date.now();
+        const lastUse = this.data.commandCooldowns[username] || 0;
+        return (now - lastUse) < 5000; // 5000ms = 5 seconds
+    }
+
+    getRemainingCooldown(username) {
+        const now = Date.now();
+        const lastUse = this.data.commandCooldowns[username] || 0;
+        const remaining = 5000 - (now - lastUse);
+        return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
+    }
+
+    setCooldown(username) {
+        this.data.commandCooldowns[username] = Date.now();
+        this.data.save();
+    }
+
+    clearCooldown(username) {
+        delete this.data.commandCooldowns[username];
+        this.data.save();
+    }
+
+    clearAllCooldowns() {
+        this.data.commandCooldowns = {};
+        this.data.save();
     }
 }
 

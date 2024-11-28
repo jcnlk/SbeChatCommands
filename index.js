@@ -336,7 +336,7 @@ const commandHandler = register("command", (...args) => {
 register("chat", (name, message, event) => {
     let senderName = name.replace(/\[.*?\]\s*/, '');
     
-    if (defaultData.isBlocked(senderName) || defaultData.isBlacklisted(senderName)) {
+    if (defaultData.isBlocked(senderName)) {
         cancel(event);
         return;
     }
@@ -353,6 +353,7 @@ register("chat", (name, message, event) => {
         }
         
         if (senderName !== Player.getName() && 
+            !defaultData.isBlacklisted(senderName) &&
             defaultData.canAutoRespondMeow() && 
             config.autoMeowResponse) {
             defaultData.updateLastMeowResponse();
@@ -362,15 +363,26 @@ register("chat", (name, message, event) => {
     }
 
     if (!message.startsWith("!")) return;
-   
+    if (defaultData.isBlacklisted(senderName)) return;
+
+    if (defaultData.isOnCooldown(senderName)) {
+        if (senderName === Player.getName()) {
+            const remainingTime = defaultData.getRemainingCooldown(senderName);
+            ChatLib.chat(`${Prefix} ${RED}Please wait ${remainingTime} seconds before using another command!${RESET}`);
+        }
+        return;
+    }
+
     let commandParts = message.split(" ");
-    let command = commandParts[0].toLowerCase().slice(1); // Remove the '!'
+    let command = commandParts[0].toLowerCase().slice(1);
 
     if (!config.enableAllCommands) return;
 
     if (senderName === Player.getName()) {
         defaultData.addUsedCommand(command);
     }
+
+    defaultData.setCooldown(senderName);
 
     switch(command) {
         case "rng":
