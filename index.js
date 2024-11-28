@@ -475,7 +475,7 @@ register("chat", (name, message, event) => {
         case "simp":
         case "sus":
             let percentage = Math.floor(Math.random() * 101);
-            generatedMessage = generateMessage(command.slice(1), {
+            generatedMessage = generateMessage(command, {
                 playerName: targetName, 
                 percentage: percentage
             });
