@@ -145,6 +145,22 @@ class Config {
     quoteCommand = true;
 
     @SwitchProperty({
+        name: `TPS Command ${DARK_AQUA}!tps${RESET}`,
+        description: "Shows the current server TPS (Ticks Per Second)",
+        category: "General",
+        subcategory: "Commands"
+    })
+    tpsCommand = true;
+    
+    @SwitchProperty({
+        name: `Ping Command ${DARK_AQUA}!ping${RESET}`,
+        description: "Shows your current ping to the server",
+        category: "General",
+        subcategory: "Commands"
+    })
+    pingCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -365,6 +381,9 @@ class Config {
         this.addDependency(`Join Command ${DARK_AQUA}!join${RESET}`, "SBE Chat Commands");
         this.addDependency(`Help Command ${DARK_AQUA}!<commands, command>${RESET}`, "SBE Chat Commands");
         this.addDependency(`Meow Command ${DARK_AQUA}!meow${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Quote Command ${DARK_AQUA}!quote${RESET}`, "SBE Chat Commands");
+        this.addDependency(`TPS Command ${DARK_AQUA}!tps${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Ping Command ${DARK_AQUA}!ping${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");

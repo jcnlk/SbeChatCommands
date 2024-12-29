@@ -1,6 +1,7 @@
 import config from "./config";
 import defaultData from "./utils/Data";
 import { getCurrentArea } from "./utils/Area";
+import { getAverageTps, getCurrentTps, getPing } from "./utils/Network";
 import "./features/Mining";
 import { 
     BLACK, 
@@ -203,7 +204,8 @@ function handleCommandsCommand(args) {
     if (!args || args.length === 0 || args[0].toLowerCase() === "list") {
         const availableCommands = [
             "!rng", "!cf", "!8ball", "!throw", "!dice", 
-            "!simp", "!sus", "!join", "!commands", "!meow", "!quote"
+            "!simp", "!sus", "!join", "!commands", "!meow", "!quote",
+            "!tps", "!ping"
         ];
         return `Available commands: ${availableCommands.join(", ")}`;
     } else if (args[0].toLowerCase() === "help") {
@@ -303,6 +305,8 @@ function handleHelpCommand(topic) {
             ChatLib.chat(`${AQUA}!join <player> ${GRAY}- Join player's party (Player need to have this module to work)`);
             ChatLib.chat(`${AQUA}!meow ${GRAY}- Meow!`);
             ChatLib.chat(`${AQUA}!quote ${GRAY}- Get a random quote`);
+            ChatLib.chat(`${AQUA}!tps ${GRAY}- Show server TPS`);
+            ChatLib.chat(`${AQUA}!ping ${GRAY}- Show your ping to the server`);
             ChatLib.chat(`${AQUA}!commands ${GRAY}- Show available commands`);
             ChatLib.chat("");
             ChatLib.chat(`${YELLOW}TIP: ${GRAY}Commands can be enabled/disabled in config!`);
@@ -474,6 +478,12 @@ register("chat", (name, message, event) => {
         case "quote":
             if (!config.quoteCommand) return;
             break;
+        case "tps":
+            if (!config.tpsCommand) return;
+            break;
+        case "ping":
+            if (!config.pingCommand) return;
+            break;
         case "commands":
         case "command":
             if (!config.commandsCommand) return;
@@ -572,7 +582,33 @@ register("chat", (name, message, event) => {
                 generatedMessage = "No quotes found! Add some with /scc quote add <quote>";
             }
             break;
-    }
+
+        case "tps":
+            const avgTps = getAverageTps();
+            const currentTps = getCurrentTps();
+            /**
+            let tpsStatus = "";
+            
+            if (avgTps >= 19.0) {
+                tpsStatus = "excellent";
+            } else if (avgTps >= 15.0) {
+                tpsStatus = "moderate";
+            } else {
+                tpsStatus = "poor";
+            }
+            */
+
+        generatedMessage = `Current TPS: ${currentTps} | Average: ${avgTps}`; // Server Performance (${tpsStatus}):
+        break;
+
+        case "ping":
+            if (!config.pingCommand) return;
+            getPing((ping) => {
+                //let pingStatus = ping <= 100 ? "excellent" : ping <= 200 ? "good" : "high";
+                ChatLib.command(`sbechat Current Ping: ${ping}ms`, true);
+            });
+            return;
+        }
 
     if (generatedMessage) {
         ChatLib.command(`sbechat ${generatedMessage}`, true);
