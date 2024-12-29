@@ -96,7 +96,8 @@ class defaultData {
                 usedCommands: [],
                 firstMessageSent: false
             },
-            commandCooldowns: {}
+            commandCooldowns: {},
+            quotes: []
         }, "./data/Data.json");
 
         // First install check
@@ -379,6 +380,36 @@ class defaultData {
         this.data.commandCooldowns = {};
         this.data.save();
     }
+
+    // Quote Command Stuff
+    addQuote(quote) {
+        if (!this.data.quotes) {
+            this.data.quotes = [];
+        }
+        this.data.quotes.push(quote);
+        this.data.save();
+        return this.data.quotes.length; // Returns the index/number of the quote
+    }
+    
+    removeQuote(index) {
+        if (!this.data.quotes || index < 1 || index > this.data.quotes.length) {
+            return false;
+        }
+        this.data.quotes.splice(index - 1, 1);
+        this.data.save();
+        return true;
+    }
+    
+    getQuotes() {
+        return this.data.quotes || [];
+    }
+    
+    getRandomQuote() {
+        if (!this.data.quotes || this.data.quotes.length === 0) {
+            return null;
+        }
+        return this.data.quotes[Math.floor(Math.random() * this.data.quotes.length)];
+    }    
 }
 
 export default new defaultData();

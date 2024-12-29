@@ -83,12 +83,4 @@ register('worldUnload', () => {
     currentArea = '';
 });
 
-// Add a new command for testing
-register("command", () => {
-    const area = getCurrentArea();
-    const zone = getCurrentZone();
-    ChatLib.chat(`Current Area: ${area}`);
-    ChatLib.chat(`Current Zone: ${zone}`);
-}).setName("area");
-
 export { updateCurrentArea };

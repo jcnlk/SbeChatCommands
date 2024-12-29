@@ -137,6 +137,14 @@ class Config {
     meowCommand = true;
 
     @SwitchProperty({
+        name: `Quote Command ${DARK_AQUA}!quote${RESET}`,
+        description: "Share random quotes from your collection. Use '!quote' to get a random quote.",
+        category: "General",
+        subcategory: "Commands"
+    })
+    quoteCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",

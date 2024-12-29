@@ -141,6 +141,60 @@ function handleBlockCommand(action, username) {
     }
 }
 
+function handleQuoteCommand(action, ...args) {
+    switch (action) {
+        case "add":
+            if (args.length === 0) {
+                ChatLib.chat(`${Prefix} ${RED}Please provide a quote to add! ${GRAY}(/scc quote add <quote>)`);
+                return;
+            }
+            const quote = args.join(" ");
+            const quoteNumber = defaultData.addQuote(quote);
+            ChatLib.chat(`${Prefix} ${GREEN}Successfully added quote #${quoteNumber}!`);
+            break;
+
+        case "remove":
+            if (args.length === 0) {
+                ChatLib.chat(`${Prefix} ${RED}Please provide a quote number to remove! ${GRAY}(/scc quote remove <number>)`);
+                return;
+            }
+            const index = parseInt(args[0]);
+            if (defaultData.removeQuote(index)) {
+                ChatLib.chat(`${Prefix} ${GREEN}Successfully removed quote #${index}!`);
+            } else {
+                ChatLib.chat(`${Prefix} ${RED}Invalid quote number!`);
+            }
+            break;
+
+        case "list":
+            const quotes = defaultData.getQuotes();
+            if (quotes.length === 0) {
+                ChatLib.chat(`${Prefix} ${RED}No quotes found!`);
+                return;
+            }
+            ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+            ChatLib.chat(`${Prefix} ${YELLOW}Saved Quotes:`);
+            ChatLib.chat("");
+            quotes.forEach((quote, index) => {
+                ChatLib.chat(`${AQUA}#${index + 1} ${WHITE}${quote}`);
+            });
+            ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+            break;
+
+        default:
+            ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+            ChatLib.chat(`${Prefix} ${YELLOW}Quote Commands:`);
+            ChatLib.chat("");
+            ChatLib.chat(`${AQUA}/scc quote add <quote> ${GRAY}- Add a new quote`);
+            ChatLib.chat(`${AQUA}/scc quote remove <number> ${GRAY}- Remove a quote by its number`);
+            ChatLib.chat(`${AQUA}/scc quote list ${GRAY}- List all saved quotes`);
+            ChatLib.chat("");
+            ChatLib.chat(`${YELLOW}NOTE: ${GRAY}Use ${AQUA}!quote${GRAY} in SBE Chat to get a random quote!`);
+            ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+            break;
+    }
+}
+
 function handleCommandsCommand(args) {
     if (!commandOutputs.commands) {
         return "Error: Commands information not available";
@@ -149,7 +203,7 @@ function handleCommandsCommand(args) {
     if (!args || args.length === 0 || args[0].toLowerCase() === "list") {
         const availableCommands = [
             "!rng", "!cf", "!8ball", "!throw", "!dice", 
-            "!simp", "!sus", "!join", "!commands", "!meow"
+            "!simp", "!sus", "!join", "!commands", "!meow", "!quote"
         ];
         return `Available commands: ${availableCommands.join(", ")}`;
     } else if (args[0].toLowerCase() === "help") {
@@ -161,7 +215,6 @@ function handleCommandsCommand(args) {
                     `Unknown command: ${specificCommand}. Use !commands list for a list of available commands.`;
         }
     }
-    //return "Invalid usage. Try !commands list or !commands help [command]"; // Prevent chat spam idk
 }
 
 function handleBlacklistCommand(action, username) {
@@ -222,6 +275,7 @@ function showHelpMenu() {
     ChatLib.chat(`${AQUA}/scc help block ${GRAY}- Shows block help`);
     ChatLib.chat(`${AQUA}/scc bl ${GRAY}- Manage blacklisted users`);
     ChatLib.chat(`${AQUA}/scc block ${GRAY}- Manage blocked users`);
+    ChatLib.chat(`${AQUA}/scc quote ${GRAY}- Manage quotes`);
     ChatLib.chat(`${AQUA}/scc version ${GRAY}- Shows version info`);
     ChatLib.chat("");
     ChatLib.chat(`${YELLOW}TIP: ${GRAY}Use ${WHITE}/scc${GRAY} to open the config menu!`);
@@ -248,6 +302,7 @@ function handleHelpCommand(topic) {
             ChatLib.chat(`${AQUA}!sus [player] ${GRAY}- Check sus level`);
             ChatLib.chat(`${AQUA}!join <player> ${GRAY}- Join player's party (Player need to have this module to work)`);
             ChatLib.chat(`${AQUA}!meow ${GRAY}- Meow!`);
+            ChatLib.chat(`${AQUA}!quote ${GRAY}- Get a random quote`);
             ChatLib.chat(`${AQUA}!commands ${GRAY}- Show available commands`);
             ChatLib.chat("");
             ChatLib.chat(`${YELLOW}TIP: ${GRAY}Commands can be enabled/disabled in config!`);
@@ -307,6 +362,10 @@ const commandHandler = register("command", (...args) => {
         
         case "block":
             handleBlockCommand(action, username);
+            break;
+            
+        case "quote":
+            handleQuoteCommand(action, ...args.slice(2));
             break;
             
         case "config":
@@ -412,6 +471,9 @@ register("chat", (name, message, event) => {
         case "meow":
             if (!config.meowCommand) return;
             break;
+        case "quote":
+            if (!config.quoteCommand) return;
+            break;
         case "commands":
         case "command":
             if (!config.commandsCommand) return;
@@ -499,6 +561,15 @@ register("chat", (name, message, event) => {
             generatedMessage = generateMessage("meow", { total });
             if (generatedMessage === null) {
                 generatedMessage = `MEOW! There have been ${total} meows in SBE Chat!`;
+            }
+            break;
+
+        case "quote":
+            const randomQuote = defaultData.getRandomQuote();
+            if (randomQuote) {
+                generatedMessage = `Quote: "${randomQuote}"`;
+            } else {
+                generatedMessage = "No quotes found! Add some with /scc quote add <quote>";
             }
             break;
     }
