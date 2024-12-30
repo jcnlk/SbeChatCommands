@@ -79,14 +79,14 @@ class CommandHandler {
         }, 'rngCommand');
 
         // Coinflip Command
-        this.registerCommand('cf', (sender, args) => {
+        this.registerCommand(['cf', 'coinflip'], (sender, args) => {
             if (!config.cfCommand) return;
             const result = Math.random() < 0.5 ? 'heads' : 'tails';
             this.sendMessage('cf', { playerName: sender, result });
         }, 'cfCommand');
 
         // 8Ball Command
-        this.registerCommand('8ball', (sender, args) => {
+        this.registerCommand(['8ball', 'ask'], (sender, args) => {
             if (!config.eightBallCommand) return;
             const responses = commandMessages['8ballResponses'];
             const response = responses[Math.floor(Math.random() * responses.length)];
@@ -94,7 +94,7 @@ class CommandHandler {
         }, 'eightBallCommand');
 
         // Throw Command
-        this.registerCommand('throw', (sender, args) => {
+        this.registerCommand(['throw', 'shitter'], (sender, args) => {
             if (!config.throwCommand) return;
             const throwIntensity = Math.floor(Math.random() * 101);
             const target = args[0] || sender;
@@ -102,7 +102,7 @@ class CommandHandler {
         }, 'throwCommand');
 
         // Dice Command
-        this.registerCommand('dice', (sender, args) => {
+        this.registerCommand(['dice', 'roll'], (sender, args) => {
             if (!config.diceCommand) return;
             const result = Math.floor(Math.random() * 6) + 1;
             this.sendMessage('dice', { playerName: sender, result });
@@ -125,7 +125,7 @@ class CommandHandler {
         }, 'susCommand');
 
         // Join Command
-        this.registerCommand('join', (sender, args) => {
+        this.registerCommand(['join', 'j'], (sender, args) => {
             if (!config.joinCommand) return;
             const playerToJoin = args[0];
             if (!playerToJoin) return;
@@ -171,7 +171,7 @@ class CommandHandler {
         }, 'pingCommand');
 
         // Alpha Command
-        this.registerCommand('alpha', (sender, args) => {
+        this.registerCommand(['alpha', 'alphastatus', 'alphastate'], (sender, args) => {
             if (!config.alphaCommand) return;
             checkAlphaStatusSbe((status, slots) => {
                 const message = status === null ? 
@@ -184,7 +184,7 @@ class CommandHandler {
         }, 'alphaCommand');
 
         // Networth Command
-        this.registerCommand('nw', (sender, args) => {
+        this.registerCommand(['nw', 'networth'], (sender, args) => {
             if (!config.networthCommand) return;
             const playerToCheck = args[0] || sender;
             getPlayerNetworth(playerToCheck).then(result => {
@@ -237,7 +237,7 @@ class CommandHandler {
         }, 'slayerCommand');
 
         // Dungeon PBs Command
-        this.registerCommand('pbs', (sender, args) => {
+        this.registerCommand(['pbs', 'pb'], (sender, args) => {
             if (!config.pbsCommand) return;
             
             const params = parseParameters(args);
@@ -254,7 +254,7 @@ class CommandHandler {
         }, 'pbsCommand');
 
         // Completions Command
-        this.registerCommand('comp', (sender, args) => {
+        this.registerCommand(['comp', 'comps', 'runs'], (sender, args) => {
             if (!config.compCommand) return;
             
             const params = parseParameters(args);
@@ -271,7 +271,7 @@ class CommandHandler {
         }, 'compCommand');
 
         // Class Levels Command
-        this.registerCommand('class', (sender, args) => {
+        this.registerCommand(['class', 'classlvl', 'classlevel'], (sender, args) => {
             if (!config.classCommand) return;
             const playerToCheck = args[0] || sender;
             getDungeonData(playerToCheck).then(result => {
@@ -285,7 +285,7 @@ class CommandHandler {
         }, 'classCommand');
 
         // Catacombs Level Command
-        this.registerCommand('cata', (sender, args) => {
+        this.registerCommand(['cata', 'catalvl', 'catalevel'], (sender, args) => {
             if (!config.cataCommand) return;
             const playerToCheck = args[0] || sender;
             getDungeonData(playerToCheck).then(result => {
@@ -299,7 +299,7 @@ class CommandHandler {
         }, 'cataCommand');
 
         // Commands/Help Command
-        this.registerCommand('commands', (sender, args) => {
+        this.registerCommand(['commands', 'help'], (sender, args) => {
             if (!config.commandsCommand) return;
             if (!args || args.length === 0 || args[0].toLowerCase() === "list") {
                 ChatLib.command(`sbechat Available commands: !rng, !cf, !8ball, !throw, !dice, !simp, !sus, !join, !commands, !meow, !quote, !tps, !ping, !mayor, !election`, true);
@@ -318,10 +318,18 @@ class CommandHandler {
         }, 'commandsCommand');
     }
 
-    registerCommand(name, handler, configKey = null) {
-        this.commands.set(name.toLowerCase(), {
-            handler,
-            configKey
+    registerCommand(names, handler, configKey = null) {
+        const commandNames = (typeof names === 'string') ? [names] : names;
+        
+        commandNames.forEach(name => {
+            if (typeof name !== 'string') {
+                console.error('Invalid command name:', name);
+                return;
+            }
+            this.commands.set(name.toLowerCase(), {
+                handler,
+                configKey
+            });
         });
     }
 
@@ -381,11 +389,13 @@ class CommandHandler {
                            commandMessages.rng.high;
                 break;
             case 'throw':
+            case 'shitter':
                 templates = variables.throwIntensity <= 30 ? commandMessages.throw.low :
                            variables.throwIntensity <= 70 ? commandMessages.throw.medium :
                            commandMessages.throw.high;
                 break;
             case 'cf':
+            case 'coinflip':
                 templates = commandMessages.cf[variables.result];
                 break;
             case 'dice':
