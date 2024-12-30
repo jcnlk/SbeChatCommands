@@ -297,10 +297,20 @@ class defaultData {
     }
 
     checkCommandMasterProgress() {
+        // Only include commands that are actually implemented in the module
         const requiredCommands = [
-            'rng', 'cf', '8ball', 'throw', 'dice', 
-            'simp', 'sus', 'join', 'commands', 'meow',
-            'quote', 'tps', 'ping'
+            'rng',      // RNG chance command
+            'cf',       // Coinflip command
+            '8ball',    // Magic 8-ball command
+            'throw',    // Throw command
+            'dice',     // Dice roll command
+            'simp',     // Simp level command
+            'sus',      // Sus level command
+            'join',     // Party join command
+            'meow',     // Meow command
+            'quote',    // Quote command
+            'tps',      // TPS check command
+            'ping'      // Ping check command
         ];
         
         const usedCommands = this.data.playerData.usedCommands || [];
@@ -318,7 +328,7 @@ class defaultData {
                 };
             case 'commandMaster':
                 const usedCommands = this.data.playerData.usedCommands || [];
-                const totalCommands = 13; // Updated to include new commands
+                const totalCommands = 12; // Total number of implemented commands (excluding help commands)
                 return {
                     current: usedCommands.length,
                     required: totalCommands
