@@ -3,6 +3,7 @@ import defaultData from "./utils/Data";
 import { getCurrentArea } from "./utils/Area";
 import { getAverageTps, getCurrentTps, getPing } from "./utils/Network";
 import { checkAlphaStatusSbe } from "./utils/AlphaCheck";
+import { getPlayerNetworth, formatNetworthMessage } from "./utils/Networth";
 import "./features/Mining";
 import { 
     BLACK, 
@@ -492,6 +493,9 @@ register("chat", (name, message, event) => {
         case "alpha":
             if (!config.alphaCommand) return;
             break;
+        case "nw":
+            if (!config.networthCommand) return;
+            break;
         case "commands":
         case "command":
             if (!config.commandsCommand) return;
@@ -616,6 +620,18 @@ register("chat", (name, message, event) => {
                         : `Alpha Server is currently closed. (${slots} slots)`;
                 }
                 ChatLib.command(`sbechat ${message}`, true);
+            });
+            return;
+            
+        case "nw":
+            if (!config.networthCommand) return;
+            let playerToCheck = commandParts[1] || senderName;
+            getPlayerNetworth(playerToCheck).then(result => {
+                if (result.success) {
+                    ChatLib.command(`sbechat ${formatNetworthMessage(result.data)}`, true);
+                } else {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                }
             });
             return;
         }

@@ -169,6 +169,14 @@ class Config {
     alphaCommand = true;
 
     @SwitchProperty({
+        name: `Networth Command ${DARK_AQUA}!nw${RESET}`,
+        description: "Check player's networth using SkyCrypt API. Use '!nw [player]' to check specific players.",
+        category: "General",
+        subcategory: "Commands"
+    })
+    networthCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -392,6 +400,8 @@ class Config {
         this.addDependency(`Quote Command ${DARK_AQUA}!quote${RESET}`, "SBE Chat Commands");
         this.addDependency(`TPS Command ${DARK_AQUA}!tps${RESET}`, "SBE Chat Commands");
         this.addDependency(`Ping Command ${DARK_AQUA}!ping${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Alpha Command ${DARK_AQUA}!alpha${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Networth Command ${DARK_AQUA}!nw${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");
