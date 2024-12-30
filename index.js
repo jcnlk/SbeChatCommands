@@ -1,7 +1,7 @@
 import config from "./config";
 import defaultData from "./utils/Data";
 import { getCurrentArea } from "./utils/Area";
-import { getAverageTps, getCurrentTps, getPing } from "./utils/Network";
+import { getAverageTps, getCurrentTps, getPing } from "./utils/ServerUtils";
 import { checkAlphaStatusSbe } from "./utils/AlphaCheck";
 import { getPlayerNetworth, formatNetworthMessage } from "./utils/Networth";
 import "./features/Mining";
