@@ -2,6 +2,7 @@ import config from "./config";
 import defaultData from "./utils/Data";
 import { getCurrentArea } from "./utils/Area";
 import { getAverageTps, getCurrentTps, getPing } from "./utils/Network";
+import { checkAlphaStatusSbe } from "./utils/AlphaCheck";
 import "./features/Mining";
 import { 
     BLACK, 
@@ -29,7 +30,8 @@ import {
     ModuleVersion, 
     ModuleName,  
     Creator,
-    Prefix  } from "./utils/Constants";
+    Prefix 
+} from "./utils/Constants";
 
 let commandOutputs;
 try {
@@ -81,6 +83,9 @@ function generateMessage(commandType, variables) {
             break;
         case 'meow':
             templates = commandOutputs.meow.responses;
+            break;
+        case 'alpha':
+            templates = commandOutputs.alpha.responses;
             break;
         default:
             templates = commandOutputs[commandType];
@@ -484,6 +489,9 @@ register("chat", (name, message, event) => {
         case "ping":
             if (!config.pingCommand) return;
             break;
+        case "alpha":
+            if (!config.alphaCommand) return;
+            break;
         case "commands":
         case "command":
             if (!config.commandsCommand) return;
@@ -586,14 +594,28 @@ register("chat", (name, message, event) => {
         case "tps":
             const avgTps = getAverageTps();
             const currentTps = getCurrentTps();
-
-        generatedMessage = `Current TPS: ${currentTps} | Average: ${avgTps}`;
-        break;
+            generatedMessage = `Current TPS: ${currentTps} | Average: ${avgTps}`;
+            break;
 
         case "ping":
             if (!config.pingCommand) return;
             getPing((ping) => {
                 ChatLib.command(`sbechat Current Ping: ${ping}ms`, true);
+            });
+            return;
+
+        case "alpha":
+            if (!config.alphaCommand) return;
+            checkAlphaStatusSbe((status, slots) => {
+                let message;
+                if (status === null) {
+                    message = "Could not fetch Alpha Server status. Try again later.";
+                } else {
+                    message = status 
+                        ? `Alpha Server might be open! (${slots} slots)` 
+                        : `Alpha Server is currently closed. (${slots} slots)`;
+                }
+                ChatLib.command(`sbechat ${message}`, true);
             });
             return;
         }

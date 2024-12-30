@@ -223,5 +223,12 @@
         "${playerName} is ${percentage}% sus. They've been seen trying to sell 'Totally Legit Hyperion, Not Sculpted' in Hub 1!",
         "With ${percentage}% sus power, ${playerName} is more suspicious than a player with 'Totally Legit' in their IGN!"
       ]
-    }
+    },
+    "alpha": {
+    "responses": [
+        "Alpha Server status could not be determined.",
+        "Alpha Server might be open! (${slots} slots)",
+        "Alpha Server is currently closed. (${slots} slots)"
+    ]
   }
+}

@@ -161,6 +161,14 @@ class Config {
     pingCommand = true;
 
     @SwitchProperty({
+        name: `Alpha Command ${DARK_AQUA}!alpha${RESET}`,
+        description: "Check the status of the Alpha Server and available slots.",
+        category: "General",
+        subcategory: "Commands"
+    })
+    alphaCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
