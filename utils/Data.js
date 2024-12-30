@@ -97,7 +97,8 @@ class defaultData {
                 firstMessageSent: false
             },
             commandCooldowns: {},
-            quotes: []
+            quotes: [],
+            lastQuote: -1
         }, "./data/Data.json");
 
         // First install check
@@ -131,6 +132,39 @@ class defaultData {
             ChatLib.chat(`${GOLD}TIP: ${WHITE}Type ${AQUA}!commands help ${WHITE}for detailed information!`);
             ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
         }, 2000);
+    }
+
+    // Quote methods
+    addQuote(quote) {
+        if (!this.data.quotes) {
+            this.data.quotes = [];
+        }
+        this.data.quotes.push(quote);
+        this.data.save();
+        return this.data.quotes.length;
+    }
+
+    removeQuote(index) {
+        if (!this.data.quotes || index < 1 || index > this.data.quotes.length) {
+            return false;
+        }
+        this.data.quotes.splice(index - 1, 1);
+        this.data.save();
+        return true;
+    }
+
+    getQuotes() {
+        return this.data.quotes || [];
+    }
+
+    getRandomQuote() {
+        if (!this.data.quotes || this.data.quotes.length === 0) {
+            return null;
+        }
+        
+        // Simply select a random quote from the array
+        const randomIndex = Math.floor(Math.random() * this.data.quotes.length);
+        return this.data.quotes[randomIndex];
     }
 
     // Blacklist methods
@@ -217,7 +251,7 @@ class defaultData {
         const achievement = this.achievements[achievementId];
         if (!achievement) return;
 
-        World.playSound('random.levelup', 1, 1); // maybe this is too loud idk
+        World.playSound('random.levelup', 1, 1);
         ChatLib.chat(`${RESET}${YELLOW}${OBFUSCATED}a${GREEN}>>   ${GREEN}Achievement Unlocked: ${GOLD}${achievement.name}${GREEN}   <<${YELLOW}${OBFUSCATED}a${RESET}`);
         ChatLib.chat(`${Prefix} ${GREEN}${achievement.description}`);
     }
@@ -265,7 +299,8 @@ class defaultData {
     checkCommandMasterProgress() {
         const requiredCommands = [
             'rng', 'cf', '8ball', 'throw', 'dice', 
-            'simp', 'sus', 'join', 'commands', 'meow'
+            'simp', 'sus', 'join', 'commands', 'meow',
+            'quote', 'tps', 'ping'
         ];
         
         const usedCommands = this.data.playerData.usedCommands || [];
@@ -283,7 +318,7 @@ class defaultData {
                 };
             case 'commandMaster':
                 const usedCommands = this.data.playerData.usedCommands || [];
-                const totalCommands = 10;
+                const totalCommands = 13; // Updated to include new commands
                 return {
                     current: usedCommands.length,
                     required: totalCommands
@@ -342,17 +377,8 @@ class defaultData {
         
         ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
     }
-    // Commands Cooldown Stuff
-    /**
-    isBlocked(username) {
-        return this.data.blockedUsers.includes(username);
-    }
 
-    isBlacklisted(username) {
-        return this.data.blacklistedUsers.includes(username);
-    }
-    */
-
+    // Commands Cooldown Methods
     isOnCooldown(username) {
         const now = Date.now();
         const lastUse = this.data.commandCooldowns[username] || 0;
@@ -380,36 +406,6 @@ class defaultData {
         this.data.commandCooldowns = {};
         this.data.save();
     }
-
-    // Quote Command Stuff
-    addQuote(quote) {
-        if (!this.data.quotes) {
-            this.data.quotes = [];
-        }
-        this.data.quotes.push(quote);
-        this.data.save();
-        return this.data.quotes.length; // Returns the index/number of the quote
-    }
-    
-    removeQuote(index) {
-        if (!this.data.quotes || index < 1 || index > this.data.quotes.length) {
-            return false;
-        }
-        this.data.quotes.splice(index - 1, 1);
-        this.data.save();
-        return true;
-    }
-    
-    getQuotes() {
-        return this.data.quotes || [];
-    }
-    
-    getRandomQuote() {
-        if (!this.data.quotes || this.data.quotes.length === 0) {
-            return null;
-        }
-        return this.data.quotes[Math.floor(Math.random() * this.data.quotes.length)];
-    }    
 }
 
 export default new defaultData();

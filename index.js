@@ -586,25 +586,13 @@ register("chat", (name, message, event) => {
         case "tps":
             const avgTps = getAverageTps();
             const currentTps = getCurrentTps();
-            /**
-            let tpsStatus = "";
-            
-            if (avgTps >= 19.0) {
-                tpsStatus = "excellent";
-            } else if (avgTps >= 15.0) {
-                tpsStatus = "moderate";
-            } else {
-                tpsStatus = "poor";
-            }
-            */
 
-        generatedMessage = `Current TPS: ${currentTps} | Average: ${avgTps}`; // Server Performance (${tpsStatus}):
+        generatedMessage = `Current TPS: ${currentTps} | Average: ${avgTps}`;
         break;
 
         case "ping":
             if (!config.pingCommand) return;
             getPing((ping) => {
-                //let pingStatus = ping <= 100 ? "excellent" : ping <= 200 ? "good" : "high";
                 ChatLib.command(`sbechat Current Ping: ${ping}ms`, true);
             });
             return;
