@@ -6,7 +6,7 @@ import { checkAlphaStatusSbe } from '../utils/AlphaCheck';
 import { getPlayerNetworth, formatNetworthMessage } from '../utils/Networth';
 import { getElectionData, formatMayorData, formatElectionData } from '../utils/Election';
 import { getSlayerData, formatSlayerData } from './Slayer';
-import { getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions } from './Dungeon';
+import { getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from './Dungeon';
 import { 
     Prefix, 
     RED, 
@@ -183,76 +183,6 @@ class CommandHandler {
             });
         }, 'alphaCommand');
 
-        // Slayer Command
-        this.registerCommand('slayer', (sender, args) => {
-            if (!config.slayerCommand) return;
-            const playerToCheck = args[0] || sender;
-            getSlayerData(playerToCheck).then(result => {
-                if (!result.success) {
-                    ChatLib.command(`sbechat ${result.error}`, true);
-                    return;
-                }
-                const message = formatSlayerData(result.data, playerToCheck);
-                ChatLib.command(`sbechat ${message}`, true);
-            });
-        }, 'slayerCommand');
-
-        // Catacombs Level Command
-        this.registerCommand('cata', (sender, args) => {
-            if (!config.cataCommand) return;
-            const playerToCheck = args[0] || sender;
-            getDungeonData(playerToCheck).then(result => {
-                if (!result.success) {
-                    ChatLib.command(`sbechat ${result.error}`, true);
-                    return;
-                }
-                const message = formatCataLevel(result.data, playerToCheck);
-                ChatLib.command(`sbechat ${message}`, true);
-            });
-        }, 'cataCommand');
-
-        // Dungeon PBs Command
-        this.registerCommand('pbs', (sender, args) => {
-            if (!config.pbsCommand) return;
-            const playerToCheck = args[0] || sender;
-            getDungeonData(playerToCheck).then(result => {
-                if (!result.success) {
-                    ChatLib.command(`sbechat ${result.error}`, true);
-                    return;
-                }
-                const message = formatPBs(result.data, playerToCheck);
-                ChatLib.command(`sbechat ${message}`, true);
-            });
-        }, 'pbsCommand');
-
-        // Class Levels Command
-        this.registerCommand('class', (sender, args) => {
-            if (!config.classCommand) return;
-            const playerToCheck = args[0] || sender;
-            getDungeonData(playerToCheck).then(result => {
-                if (!result.success) {
-                    ChatLib.command(`sbechat ${result.error}`, true);
-                    return;
-                }
-                const message = formatClassLevels(result.data, playerToCheck);
-                ChatLib.command(`sbechat ${message}`, true);
-            });
-        }, 'classCommand');
-
-        // Completions Command
-        this.registerCommand('comp', (sender, args) => {
-            if (!config.compCommand) return;
-            const playerToCheck = args[0] || sender;
-            getDungeonData(playerToCheck).then(result => {
-                if (!result.success) {
-                    ChatLib.command(`sbechat ${result.error}`, true);
-                    return;
-                }
-                const message = formatCompletions(result.data, playerToCheck);
-                ChatLib.command(`sbechat ${message}`, true);
-            });
-        }, 'compCommand');
-
         // Networth Command
         this.registerCommand('nw', (sender, args) => {
             if (!config.networthCommand) return;
@@ -291,6 +221,82 @@ class CommandHandler {
                 ChatLib.command(`sbechat ${message}`, true);
             });
         }, 'electionCommand');
+
+        // Slayer Command
+        this.registerCommand('slayer', (sender, args) => {
+            if (!config.slayerCommand) return;
+            const playerToCheck = args[0] || sender;
+            getSlayerData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatSlayerData(result.data, playerToCheck);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'slayerCommand');
+
+        // Dungeon PBs Command
+        this.registerCommand('pbs', (sender, args) => {
+            if (!config.pbsCommand) return;
+            
+            const params = parseParameters(args);
+            const playerToCheck = params.playerName || sender;
+            
+            getDungeonData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatPBs(result.data, playerToCheck, params.isMasterMode);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'pbsCommand');
+
+        // Completions Command
+        this.registerCommand('comp', (sender, args) => {
+            if (!config.compCommand) return;
+            
+            const params = parseParameters(args);
+            const playerToCheck = params.playerName || sender;
+            
+            getDungeonData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatCompletions(result.data, playerToCheck, params.isMasterMode);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'compCommand');
+
+        // Class Levels Command
+        this.registerCommand('class', (sender, args) => {
+            if (!config.classCommand) return;
+            const playerToCheck = args[0] || sender;
+            getDungeonData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command('sbechat ' + result.error, true);
+                    return;
+                }
+                const message = formatClassLevels(result.data, playerToCheck);
+                ChatLib.command('sbechat ' + message, true);
+            });
+        }, 'classCommand');
+
+        // Catacombs Level Command
+        this.registerCommand('cata', (sender, args) => {
+            if (!config.cataCommand) return;
+            const playerToCheck = args[0] || sender;
+            getDungeonData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command('sbechat ' + result.error, true);
+                    return;
+                }
+                const message = formatCataLevel(result.data, playerToCheck);
+                ChatLib.command('sbechat ' + message, true);
+            });
+        }, 'cataCommand');
 
         // Commands/Help Command
         this.registerCommand('commands', (sender, args) => {
