@@ -7,6 +7,7 @@ import { getPlayerNetworth, formatNetworthMessage } from '../utils/Networth';
 import { getElectionData, formatMayorData, formatElectionData } from '../utils/Election';
 import { getSlayerData, formatSlayerData } from './Slayer';
 import { getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from './Dungeon';
+import { getMagicalPower, formatMagicalPower } from './MagicalPower';
 import { 
     Prefix, 
     RED, 
@@ -235,6 +236,22 @@ class CommandHandler {
                 ChatLib.command(`sbechat ${message}`, true);
             });
         }, 'slayerCommand');
+
+        // Magical Power Command
+        this.registerCommand(['mp', 'magicalpower'], (sender, args) => {
+            if (!config.magicalPowerCommand) return;
+            
+            const playerToCheck = args[0] || sender;
+            
+            getMagicalPower(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatMagicalPower(result.data, playerToCheck);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'magicalPowerCommand'); 
 
         // Dungeon PBs Command
         this.registerCommand(['pbs', 'pb'], (sender, args) => {

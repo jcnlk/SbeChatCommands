@@ -9,6 +9,7 @@ import "./utils/CommandHandler";
 import "./utils/Election";
 import "./utils/Slayer";
 import "./utils/Dungeon";
+import './utils/MagicalPower';
 import { 
     BLACK, 
     DARK_BLUE, 
