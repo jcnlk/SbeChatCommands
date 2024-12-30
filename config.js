@@ -209,6 +209,14 @@ class Config {
     magicalPowerCommand = true;
 
     @SwitchProperty({
+        name: `Level Command ${DARK_AQUA}!level${RESET}`,
+        description: "Shows player's Skyblock level",
+        category: "General",
+        subcategory: "Commands"
+    })
+    levelCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -474,6 +482,7 @@ class Config {
         this.addDependency(`Class Levels Command ${DARK_AQUA}!class${RESET}`, "SBE Chat Commands");
         this.addDependency(`Completions Command ${DARK_AQUA}!comp${RESET}`, "SBE Chat Commands");
         this.addDependency(`Magical Power Command ${DARK_AQUA}!mp${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Level Command ${DARK_AQUA}!level${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");

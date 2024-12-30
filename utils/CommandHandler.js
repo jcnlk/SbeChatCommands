@@ -8,6 +8,7 @@ import { getElectionData, formatMayorData, formatElectionData } from '../utils/E
 import { getSlayerData, formatSlayerData } from './Slayer';
 import { getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from './Dungeon';
 import { getMagicalPower, formatMagicalPower } from './MagicalPower';
+import { getSkyblockLevel, formatLevelData } from './Level';
 import { 
     Prefix, 
     RED, 
@@ -236,6 +237,21 @@ class CommandHandler {
                 ChatLib.command(`sbechat ${message}`, true);
             });
         }, 'slayerCommand');
+
+        // Level Command
+        this.registerCommand(['level', 'lvl', 'sblvl', 'sblevel', 'skyblocklvl', 'skyblocklevel'], (sender, args) => {
+            if (!config.levelCommand) return;
+            const playerToCheck = args[0] || sender;
+    
+            getSkyblockLevel(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatLevelData(result.data, playerToCheck);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'levelCommand');
 
         // Magical Power Command
         this.registerCommand(['mp', 'magicalpower'], (sender, args) => {

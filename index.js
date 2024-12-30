@@ -10,6 +10,7 @@ import "./utils/Election";
 import "./utils/Slayer";
 import "./utils/Dungeon";
 import './utils/MagicalPower';
+import './utils/Level';
 import { 
     BLACK, 
     DARK_BLUE, 
