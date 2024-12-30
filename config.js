@@ -241,6 +241,38 @@ class Config {
     })
     enableAnnounceMineshaftToSbeChat = true
 
+    @SwitchProperty({
+        name: `Catacombs Level Command ${DARK_AQUA}!cata${RESET}`,
+        description: "Shows player's Catacombs level and progress",
+        category: "General",
+        subcategory: "Commands"
+    })
+    cataCommand = true;
+    
+    @SwitchProperty({
+        name: `Dungeon PBs Command ${DARK_AQUA}!pbs${RESET}`,
+        description: "Shows player's personal best times for each floor",
+        category: "General",
+        subcategory: "Commands"
+    })
+    pbsCommand = true;
+    
+    @SwitchProperty({
+        name: `Class Levels Command ${DARK_AQUA}!class${RESET}`,
+        description: "Shows player's dungeon class levels",
+        category: "General",
+        subcategory: "Commands"
+    })
+    classCommand = true;
+    
+    @SwitchProperty({
+        name: `Completions Command ${DARK_AQUA}!comp${RESET}`,
+        description: "Shows player's floor completion counts",
+        category: "General",
+        subcategory: "Commands"
+    })
+    compCommand = true;
+
     @CheckboxProperty({
         name: "Announce Topaz Mineshaft",
         description: "Announce Topaz Mineshafts to SBE Chat.",
@@ -429,6 +461,10 @@ class Config {
         this.addDependency(`Mayor Command ${DARK_AQUA}!mayor${RESET}`, "SBE Chat Commands");
         this.addDependency(`Election Command ${DARK_AQUA}!election${RESET}`, "SBE Chat Commands");
         this.addDependency(`Slayer Command ${DARK_AQUA}!slayer${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Catacombs Level Command ${DARK_AQUA}!cata${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Dungeon PBs Command ${DARK_AQUA}!pbs${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Class Levels Command ${DARK_AQUA}!class${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Completions Command ${DARK_AQUA}!comp${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");

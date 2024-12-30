@@ -7,7 +7,8 @@ import { getPlayerNetworth, formatNetworthMessage } from "./utils/Networth";
 import "./features/Mining";
 import "./utils/CommandHandler";
 import "./utils/Election";
-import "./utils/Slayer"
+import "./utils/Slayer";
+import "./utils/Dungeon";
 import { 
     BLACK, 
     DARK_BLUE, 
