@@ -177,6 +177,22 @@ class Config {
     networthCommand = true;
 
     @SwitchProperty({
+        name: `Mayor Command ${DARK_AQUA}!mayor${RESET}`,
+        description: "Shows current Skyblock Mayor and their active perks",
+        category: "General",
+        subcategory: "Commands"
+    })
+    mayorCommand = true;
+    
+    @SwitchProperty({
+        name: `Election Command ${DARK_AQUA}!election${RESET}`,
+        description: "Shows current Skyblock election information and candidates",
+        category: "General",
+        subcategory: "Commands"
+    })
+    electionCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -402,6 +418,8 @@ class Config {
         this.addDependency(`Ping Command ${DARK_AQUA}!ping${RESET}`, "SBE Chat Commands");
         this.addDependency(`Alpha Command ${DARK_AQUA}!alpha${RESET}`, "SBE Chat Commands");
         this.addDependency(`Networth Command ${DARK_AQUA}!nw${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Mayor Command ${DARK_AQUA}!mayor${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Election Command ${DARK_AQUA}!election${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");

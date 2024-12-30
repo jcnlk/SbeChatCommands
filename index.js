@@ -6,6 +6,7 @@ import { checkAlphaStatusSbe } from "./utils/AlphaCheck";
 import { getPlayerNetworth, formatNetworthMessage } from "./utils/Networth";
 import "./features/Mining";
 import "./utils/CommandHandler";
+import "./utils/Election";
 import { 
     BLACK, 
     DARK_BLUE, 

@@ -1,9 +1,10 @@
 import config from '../config';
 import defaultData from '../utils/Data';
 import { getCurrentArea } from '../utils/Area';
-import { getAverageTps, getCurrentTps, getPing } from './ServerUtils';
+import { getAverageTps, getCurrentTps, getPing } from '../utils/ServerUtils';
 import { checkAlphaStatusSbe } from '../utils/AlphaCheck';
 import { getPlayerNetworth, formatNetworthMessage } from '../utils/Networth';
+import { getElectionData, formatMayorData, formatElectionData } from '../utils/Election';
 import { 
     Prefix, 
     RED, 
@@ -193,11 +194,37 @@ class CommandHandler {
             });
         }, 'networthCommand');
 
-        // Commands Command
+        // Mayor Command
+        this.registerCommand('mayor', (sender, args) => {
+            if (!config.mayorCommand) return;
+            getElectionData().then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatMayorData(result.data);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'mayorCommand');
+
+        // Election Command
+        this.registerCommand('election', (sender, args) => {
+            if (!config.electionCommand) return;
+            getElectionData().then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatElectionData(result.data);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'electionCommand');
+
+        // Commands/Help Command
         this.registerCommand('commands', (sender, args) => {
             if (!config.commandsCommand) return;
             if (!args || args.length === 0 || args[0].toLowerCase() === "list") {
-                ChatLib.command(`sbechat Available commands: !rng, !cf, !8ball, !throw, !dice, !simp, !sus, !join, !commands, !meow, !quote, !tps, !ping`, true);
+                ChatLib.command(`sbechat Available commands: !rng, !cf, !8ball, !throw, !dice, !simp, !sus, !join, !commands, !meow, !quote, !tps, !ping, !mayor, !election`, true);
                 return;
             }
             if (args[0].toLowerCase() === "help") {
