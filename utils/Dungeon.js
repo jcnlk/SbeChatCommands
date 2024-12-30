@@ -8,7 +8,7 @@ function filterByMode(items, isMasterMode) {
 function getDungeonData(username) {
     return new Promise(function(resolve) {
         request({
-            url: 'https://sky.shiiyu.moe/api/v2/dungeons/' + username,
+            url: 'https://sky.shiiyu.moe/api/v2/profile/' + username,
             method: 'GET',
             headers: {
                 'User-Agent': 'Mozilla/5.0'
@@ -16,10 +16,17 @@ function getDungeonData(username) {
         }).then(function(response) {
             try {
                 const data = JSON.parse(response);
-                const profiles = Object.values(data.profiles);
-                const selectedProfile = profiles.find(function(profile) { return profile.selected; });
                 
-                if (!selectedProfile || !selectedProfile.dungeons) {
+                // Find the selected profile
+                let selectedProfile = null;
+                for (const profileId in data.profiles) {
+                    if (data.profiles[profileId].current) {
+                        selectedProfile = data.profiles[profileId];
+                        break;
+                    }
+                }
+                
+                if (!selectedProfile || !selectedProfile.data || !selectedProfile.data.dungeons) {
                     resolve({ 
                         success: false, 
                         error: 'No dungeon data found for ' + username
@@ -29,15 +36,17 @@ function getDungeonData(username) {
 
                 resolve({
                     success: true,
-                    data: selectedProfile.dungeons
+                    data: selectedProfile.data.dungeons
                 });
             } catch (error) {
+                console.error('Error processing dungeon data:', error);
                 resolve({
                     success: false,
                     error: 'Failed to process dungeon data for ' + username
                 });
             }
         }).catch(function(error) {
+            console.error('Error fetching dungeon data:', error);
             resolve({
                 success: false,
                 error: 'Failed to fetch dungeon data for ' + username
