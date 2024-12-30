@@ -5,6 +5,7 @@ import { getAverageTps, getCurrentTps, getPing } from '../utils/ServerUtils';
 import { checkAlphaStatusSbe } from '../utils/AlphaCheck';
 import { getPlayerNetworth, formatNetworthMessage } from '../utils/Networth';
 import { getElectionData, formatMayorData, formatElectionData } from '../utils/Election';
+import { getSlayerData, formatSlayerData } from './Slayer';
 import { 
     Prefix, 
     RED, 
@@ -180,6 +181,20 @@ class CommandHandler {
                 ChatLib.command(`sbechat ${message}`, true);
             });
         }, 'alphaCommand');
+
+        // Slayer Command
+        this.registerCommand('slayer', (sender, args) => {
+            if (!config.slayerCommand) return;
+            const playerToCheck = args[0] || sender;
+            getSlayerData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatSlayerData(result.data, playerToCheck);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'slayerCommand');
 
         // Networth Command
         this.registerCommand('nw', (sender, args) => {

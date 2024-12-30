@@ -193,6 +193,14 @@ class Config {
     electionCommand = true;
 
     @SwitchProperty({
+        name: `Slayer Command ${DARK_AQUA}!slayer${RESET}`,
+        description: "Shows player's Slayer levels using SkyCrypt API",
+        category: "General",
+        subcategory: "Commands"
+    })
+    slayerCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -420,6 +428,7 @@ class Config {
         this.addDependency(`Networth Command ${DARK_AQUA}!nw${RESET}`, "SBE Chat Commands");
         this.addDependency(`Mayor Command ${DARK_AQUA}!mayor${RESET}`, "SBE Chat Commands");
         this.addDependency(`Election Command ${DARK_AQUA}!election${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Slayer Command ${DARK_AQUA}!slayer${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");
