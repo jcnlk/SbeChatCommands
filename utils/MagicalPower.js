@@ -1,7 +1,8 @@
 import request from "../../requestV2";
 import Promise from "../../PromiseV2";
+import { CleanPrefix } from "./Constants";
 
-function getMagicalPower(username) {
+export function getMagicalPower(username) {
     return new Promise(function(resolve) {
         request({
             url: "https://sky.shiiyu.moe/api/v2/profile/" + username,
@@ -39,14 +40,14 @@ function getMagicalPower(username) {
                     }
                 });
             } catch (error) {
-                console.error("Error processing magical power data:", error);
+                console.error(`${CleanPrefix} Error processing magical power data:`, error);
                 resolve({
                     success: false,
                     error: "Failed to process magical power data for " + username
                 });
             }
         }).catch(function(error) {
-            console.error("Error fetching magical power data:", error);
+            console.error(`${CleanPrefix} Error fetching magical power data:`, error);
             resolve({
                 success: false,
                 error: "Failed to fetch magical power data for " + username
@@ -55,8 +56,6 @@ function getMagicalPower(username) {
     });
 }
 
-function formatMagicalPower(data, username) {
+export function formatMagicalPower(data, username) {
     return username + "'s Magical Power: " + data.magicalPower.toLocaleString();
 }
-
-export { getMagicalPower, formatMagicalPower };

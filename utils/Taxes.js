@@ -1,5 +1,6 @@
 import { getElectionData } from "./Election";
 import Promise from "../../PromiseV2";
+import { CleanPrefix } from "./Constants";
 
 // Cache system for mayor status
 let mayorCache = {
@@ -14,7 +15,7 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
  * @param {string} input - Input string (e.g., "100k", "1.5m", "100000")
  * @returns {number|null} - Converted number or null if invalid
  */
-function parseNumberInput(input) {
+export function parseNumberInput(input) {
     if (!input) return null;
     
     input = input.toLowerCase().replace(/\s+/g, "");
@@ -43,7 +44,7 @@ function parseNumberInput(input) {
  * @param {number} num - Number to format
  * @returns {string} - Formatted string (e.g., "1.5M", "100k")
  */
-function formatNumber(num) {
+export function formatNumber(num) {
     if (num >= 1000000000) {
         return (num / 1000000000).toFixed(1) + "B";
     }
@@ -80,7 +81,7 @@ function isDerpyMayor() {
             
             resolve(mayorCache.isDerpy);
         }).catch(error => {
-            console.error("Error checking mayor status:", error);
+            console.error(`${CleanPrefix} Error checking mayor status:`, error);
             resolve(mayorCache.isDerpy);
         });
     });
@@ -92,7 +93,7 @@ function isDerpyMayor() {
  * @param {boolean} isDerpyActive - Whether Derpy is active
  * @returns {Object} - Tax information
  */
-function calculateTax(initialPrice, isDerpyActive = false) {
+export function calculateTax(initialPrice, isDerpyActive = false) {
     let taxRate;
     if (initialPrice < 10_000_000) {
         taxRate = 0.01;
@@ -123,7 +124,7 @@ function calculateTax(initialPrice, isDerpyActive = false) {
  * @param {Object} taxInfo - Tax calculation result
  * @returns {string} - Formatted message
  */
-function formatTaxMessage(taxInfo) {
+export function formatTaxMessage(taxInfo) {
     const derpyStatus = taxInfo.isDerpyActive ? " (Derpy Active)" : "";
     return `Price: ${formatNumber(taxInfo.originalPrice)} | ` +
            `Tax Rate: ${taxInfo.taxRate}% | ` +
@@ -136,12 +137,10 @@ function formatTaxMessage(taxInfo) {
  * @param {number} amount - Input amount
  * @returns {Promise} - Promise resolving to tax information
  */
-function getTaxInfo(amount) {
+export function getTaxInfo(amount) {
     return new Promise((resolve) => {
         isDerpyMayor().then(isDerpy => {
             resolve(calculateTax(amount, isDerpy));
         });
     });
 }
-
-export { parseNumberInput, getTaxInfo, formatTaxMessage, calculateTax, formatNumber };

@@ -1,5 +1,6 @@
 import request from "../../requestV2";
 import Promise from "../../PromiseV2";
+import { CleanPrefix } from "./Constants";
 
 const SKILL_NAMES = [
     "taming",
@@ -20,7 +21,7 @@ const SKILL_NAMES = [
  * @param {string} username - Minecraft username
  * @returns {Promise} Skills data or error
  */
-function getSkillsData(username) {
+export function getSkillsData(username) {
     return new Promise((resolve) => {
         request({
             url: `https://sky.shiiyu.moe/api/v2/profile/${username}`,
@@ -67,14 +68,14 @@ function getSkillsData(username) {
                     data: skillsData
                 });
             } catch (error) {
-                console.error("Error processing skills data:", error);
+                console.error(`${CleanPrefix} Error processing skills data:`, error);
                 resolve({
                     success: false,
                     error: "Failed to process skills data for " + username
                 });
             }
         }).catch(error => {
-            console.error("Error fetching skills data:", error);
+            console.error(`${CleanPrefix} Error fetching skills data:`, error);
             resolve({
                 success: false,
                 error: "Failed to fetch skills data for " + username
@@ -89,7 +90,7 @@ function getSkillsData(username) {
  * @param {string} username - Player username
  * @returns {string} Formatted message
  */
-function formatSkillAverage(data, username) {
+export function formatSkillAverage(data, username) {
     return `${username}'s Skill Average: ${data.average.toFixed(2)}`;
 }
 
@@ -99,7 +100,7 @@ function formatSkillAverage(data, username) {
  * @param {string} username - Player username
  * @returns {string} Formatted message
  */
-function formatSkills(data, username) {
+export function formatSkills(data, username) {
     const skillsList = Object.entries(data.skills)
         .map(([name, level]) => `${capitalize(name)}: ${level.toFixed(1)}`)
         .join(" | ");
@@ -115,5 +116,3 @@ function formatSkills(data, username) {
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
-export { getSkillsData, formatSkillAverage, formatSkills };

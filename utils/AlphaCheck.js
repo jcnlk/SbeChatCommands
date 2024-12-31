@@ -1,5 +1,5 @@
 import request from "requestV2";
-import { ModuleName, Prefix, GREEN, RED, YELLOW, GRAY, RESET } from "./Constants";
+import { CleanPrefix, Prefix, GREEN, RED, YELLOW, GRAY } from "./Constants";
 
 let lastCheckTime = 0;
 let lastSbeCheckTime = 0;
@@ -49,11 +49,11 @@ const checkAlphaStatus = () => {
                 ChatLib.chat(`${Prefix} ${YELLOW}Alpha Server is currently closed. ${GRAY}(${maxPlayers} slots)`);
             }
         }).catch(error => {
-            console.error("Error checking alpha server:", error);
+            console.error(`${CleanPrefix} Error checking alpha server:`, error);
             ChatLib.chat(`${Prefix} ${RED}Error while checking Alpha Server status.`);
         });
     } catch (error) {
-        console.error("Error in checkAlphaStatus:", error);
+        console.error(`${CleanPrefix} Error in checkAlphaStatus:`, error);
         ChatLib.chat(`${Prefix} ${RED}Error while checking Alpha Server status.`);
     }
 };
@@ -88,11 +88,11 @@ const checkAlphaStatusSbe = (callback) => {
             callback(isAlphaOpen(maxPlayers), maxPlayers);
             
         }).catch(error => {
-            console.error("Error checking alpha server (SBE):", error);
+            console.error(`${CleanPrefix} Error checking alpha server (SBE):`, error);
             callback(null, 0);
         });
     } catch (error) {
-        console.error("Error in checkAlphaStatusSbe:", error);
+        console.error(`${CleanPrefix} Error in checkAlphaStatusSbe:`, error);
         callback(null, 0);
     }
 };

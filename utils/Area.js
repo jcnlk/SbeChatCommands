@@ -28,7 +28,7 @@ const updateCurrentArea = () => {
                         if (retryCount < 20) {
                             setTimeout(updateCurrentArea, 1000);
                         } else {
-                            //ChatLib.chat("Failed to get zone from scoreboard after 20 attempts", "error"); //debug
+                            //ChatLib.chat("Failed to get zone from scoreboard after 20 attempts"); //debug
                         }
                     }
                 }, 1000);
@@ -44,11 +44,11 @@ const updateCurrentArea = () => {
                 retryCount++;
                 setTimeout(updateCurrentArea, 1000);
             } else {
-                //ChatLib.chat("Failed to get current area :(", "error"); //debug
+                //ChatLib.chat("Failed to get current area :("); //debug
             }
         }
     } catch (e) {
-        //ChatLib.chat(`Error in updateCurrentArea: ${e.message}`, "error"); //debug
+        //ChatLib.chat(`Error in updateCurrentArea: ${e.message}`); //debug
         console.error(e);
     }
 }

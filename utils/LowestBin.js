@@ -1,5 +1,6 @@
 import request from "../../requestV2";
 import Promise from "../../PromiseV2";
+import { CleanPrefix } from "./Constants";
 
 let skyblockItems = [];
 
@@ -10,7 +11,7 @@ try {
         skyblockItems = JSON.parse(itemsContent);
     }
 } catch (error) {
-    console.error("Error loading skyblockItems.json:", error);
+    console.error(`${CleanPrefix} Error loading skyblockItems.json:`, error);
 }
 
 function formatPrice(price) {
@@ -64,7 +65,7 @@ function formatSearchQuery(query) {
  * @param {string} searchQuery - Item to search for
  * @returns {Promise} Price data or error
  */
-function getLowestBin(searchQuery) {
+export function getLowestBin(searchQuery) {
     return new Promise(function(resolve) {
         // Try to find item ID first
         const itemId = getItemId(searchQuery);
@@ -130,14 +131,14 @@ function getLowestBin(searchQuery) {
                     data: topMatches
                 });
             } catch (error) {
-                console.error("Error processing lowest BIN data:", error);
+                console.error(`${CleanPrefix} Error processing lowest BIN data:`, error);
                 resolve({
                     success: false,
                     error: "Failed to process lowest BIN data"
                 });
             }
         }).catch(function(error) {
-            console.error("Error fetching lowest BIN data:", error);
+            console.error(`${CleanPrefix} Error fetching lowest BIN data:`, error);
             resolve({
                 success: false,
                 error: "Failed to fetch lowest BIN data"
@@ -151,7 +152,7 @@ function getLowestBin(searchQuery) {
  * @param {Object} data - Array of matching items and their prices
  * @returns {string} Formatted message
  */
-function formatLowestBin(data) {
+export function formatLowestBin(data) {
     if (data.length === 1) {
         const item = data[0];
         return "Lowest BIN: " + '"' + item.name + '"' + " - " + formatPrice(item.price);
@@ -163,5 +164,3 @@ function formatLowestBin(data) {
 
     return "Lowest BINs: " + formatted;
 }
-
-export { getLowestBin, formatLowestBin };

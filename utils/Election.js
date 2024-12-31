@@ -1,11 +1,12 @@
 import request from "../../requestV2";
 import Promise from "../../PromiseV2";
+import { CleanPrefix } from "./Constants";
 
 /**
  * Fetches election data from Hypixel API
  * @returns {Promise} Election data or error
  */
-function getElectionData() {
+export function getElectionData() {
     return new Promise((resolve) => {
         request({
             url: "https://api.hypixel.net/v2/resources/skyblock/election",
@@ -50,7 +51,7 @@ function getElectionData() {
  */
 export function formatMayorData(data) {
     if (!data.mayor) {
-        return "Could not fetch current mayor data!";
+        console.error(`${CleanPrefix} Could not fetch current mayor data!`);
     }
 
     const mayor = data.mayor;
@@ -80,7 +81,7 @@ export function formatMayorData(data) {
  */
 export function formatElectionData(data) {
     if (!data.current || !data.current.candidates) {
-        return "Could not fetch current election data!";
+        console.error(`${CleanPrefix} Could not fetch current election data!`);
     }
 
     let message = `Current Election - Year ${data.current.year} | `;
@@ -120,7 +121,7 @@ export function registerMayorAndElectionCommands(commandHandler) {
         
         getElectionData().then(result => {
             if (!result.success) {
-                ChatLib.command(`sbechat ${result.error}`, true);
+                console.error(`${CleanPrefix} ${result.error}`);
                 return;
             }
 
@@ -135,7 +136,7 @@ export function registerMayorAndElectionCommands(commandHandler) {
         
         getElectionData().then(result => {
             if (!result.success) {
-                ChatLib.command(`sbechat ${result.error}`, true);
+                console.error(`${CleanPrefix} ${result.error}`);
                 return;
             }
 
@@ -144,5 +145,3 @@ export function registerMayorAndElectionCommands(commandHandler) {
         });
     }, "electionCommand");
 }
-
-export { getElectionData };

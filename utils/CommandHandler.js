@@ -14,6 +14,7 @@ import { getSkillsData, formatSkillAverage, formatSkills } from "./Skills";
 import { getLowestBin, formatLowestBin } from "./LowestBin";
 import { 
     Prefix, 
+    CleanPrefix,
     RED, 
     RESET, 
     YELLOW, 
@@ -21,7 +22,8 @@ import {
     WHITE, 
     GRAY, 
     GOLD, 
-    GREEN 
+    GREEN, 
+    CleanPrefix
 } from "../utils/Constants";
 
 // Load command messages from JSON
@@ -155,7 +157,7 @@ class CommandHandler {
             if (randomQuote) {
                 ChatLib.command(`sbechat Quote: "${randomQuote}"`, true);
             } else {
-                ChatLib.command(`sbechat No quotes found! Add some with /scc quote add <quote>`, true);
+                ChatLib.chat(`${Prefix} No quotes found! Add some with /scc quote add <quote>`);
             }
         }, "quoteCommand");
 
@@ -196,7 +198,7 @@ class CommandHandler {
                 if (result.success) {
                     ChatLib.command(`sbechat ${formatNetworthMessage(result.data)}`, true);
                 } else {
-                    ChatLib.command(`sbechat ${result.error}`, true);
+                    console.error(`${CleanPrefix} ${result.error}`);
                 }
             });
         }, "networthCommand");
@@ -422,18 +424,6 @@ class CommandHandler {
                 ChatLib.command(`sbechat Available commands: !rng, !cf, !8ball, !throw, !dice, !simp, !sus, !join, !meow, !quote, !tps, !ping, !alpha, !nw, !mayor, !election, !slayer, !mp, !level, !secrets, !tax, !skills, !skillaverage, !cata, !pbs, !class, !comp, !lbin`, true);
                 return;
             }
-            /**
-            if (args[0].toLowerCase() === "help") {
-                if (args.length === 1) {
-                    ChatLib.command(`sbechat Use !commands help [command] for detailed help on a specific command.`, true);
-                } else {
-                    const specificCommand = args[1].toLowerCase();
-                    const helpText = commandMessages.commands.specific[specificCommand] || 
-                                   `Unknown command: ${specificCommand}. Use !commands list for available commands.`;
-                    ChatLib.command(`sbechat ${helpText}`, true);
-                }
-            }
-            */
         }, "commandsCommand");
     }
 
@@ -496,7 +486,7 @@ class CommandHandler {
 
     generateMessage(commandType, variables) {
         if (!commandMessages[commandType]) {
-            console.error(`Invalid command type: ${commandType}`);
+            console.error(`${CleanPrefix} Invalid command type: ${commandType}`);
             return null;
         }
 
@@ -533,7 +523,7 @@ class CommandHandler {
         }
 
         if (!Array.isArray(templates)) {
-            console.error(`Invalid template array for ${commandType}`);
+            console.error(`${CleanPrefix} Invalid template array for ${commandType}`);
             return null;
         }
 

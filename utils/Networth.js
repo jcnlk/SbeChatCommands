@@ -1,30 +1,6 @@
 import request from "../../requestV2";
 import Promise from "../../PromiseV2";
-import { 
-    BLACK, 
-    DARK_BLUE, 
-    DARK_GREEN, 
-    DARK_AQUA, 
-    DARK_RED, 
-    DARK_PURPLE, 
-    GOLD, 
-    GRAY, 
-    DARK_GRAY, 
-    BLUE, 
-    GREEN, 
-    AQUA, 
-    RED, 
-    LIGHT_PURPLE, 
-    YELLOW, 
-    WHITE,
-    OBFUSCATED, 
-    BOLD, 
-    STRIKETHROUGH, 
-    UNDERLINE, 
-    ITALIC, 
-    RESET,
-    Prefix
-} from "./Constants";
+import { CleanPrefix } from "./Constants";
 
 /**
  * Formats a number as a readable string with suffixes (K, M, B)
@@ -49,7 +25,7 @@ function formatNumber(num) {
  * @param {string} username - Minecraft username
  * @returns {Promise} - Networth data or error
  */
-function getPlayerNetworth(username) {
+export function getPlayerNetworth(username) {
     return new Promise((resolve) => {
         request({
             url: `https://sky.shiiyu.moe/api/v2/profile/${username}`,
@@ -65,7 +41,7 @@ function getPlayerNetworth(username) {
                 if (!data.profiles || Object.keys(data.profiles).length === 0) {
                     resolve({ 
                         success: false, 
-                        error: `${RED}No profiles found for ${GOLD}${username}` 
+                        error: `No profiles found for ${username}`
                     });
                     return;
                 }
@@ -82,7 +58,7 @@ function getPlayerNetworth(username) {
                 if (!currentProfile) {
                     resolve({ 
                         success: false, 
-                        error: `${RED}No current profile found for ${GOLD}${username}` 
+                        error: `No current profile found for ${username}` 
                     });
                     return;
                 }
@@ -92,7 +68,7 @@ function getPlayerNetworth(username) {
                 if (!networthData) {
                     resolve({ 
                         success: false, 
-                        error: `${RED}No networth data available for ${GOLD}${username}` 
+                        error: `No networth data available for ${username}` 
                     });
                     return;
                 }
@@ -113,15 +89,17 @@ function getPlayerNetworth(username) {
                     }
                 });
             } catch (error) {
+                console.error(`${CleanPrefix} Error processing networth data:`, error)
                 resolve({
                     success: false,
-                    error: `${RED}Failed to process networth data for ${GOLD}${username}`
+                    error: `Failed to process networth data for ${username}`
                 });
             }
         }).catch(error => {
+            console.error(`${CleanPrefix} Error fetching netwoth data:`, error);
             resolve({
                 success: false,
-                error: `${RED}Failed to fetch networth data for ${GOLD}${username}`
+                error: `Failed to fetch networth data for ${username}`
             });
         });
     });
@@ -132,13 +110,8 @@ function getPlayerNetworth(username) {
  * @param {Object} data - Networth data from getPlayerNetworth
  * @returns {string} - Formatted message
  */
-function formatNetworthMessage(data) {
+export function formatNetworthMessage(data) {
     const gameModeSuffix = data.gameMode !== "normal" ? ` [${data.gameMode}]` : "";
     return `${data.username}'s Networth (${data.profileName}${gameModeSuffix}): ` +
            `${data.networth} | Unsoulbound: ${data.unsoulboundNetworth}`;
 }
-
-module.exports = {
-    getPlayerNetworth: getPlayerNetworth,
-    formatNetworthMessage: formatNetworthMessage
-};

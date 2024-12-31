@@ -1,5 +1,6 @@
 import request from "../../requestV2";
 import Promise from "../../PromiseV2";
+import { CleanPrefix } from "./Constants";
 
 /**
  * Fetches slayer data from SkyCrypt API
@@ -35,12 +36,14 @@ export function getSlayerData(username) {
                     totalXp: selectedProfile.data.total_slayer_xp || 0
                 });
             } catch (error) {
+                console.error(`${CleanPrefix} Error processing slayer data:`, error);
                 resolve({
                     success: false,
                     error: `Failed to process slayer data for ${username}`
                 });
             }
         }).catch(error => {
+            console.error(`${CleanPrefix} Error fetching slayer data:`, error);
             resolve({
                 success: false,
                 error: `Failed to fetch slayer data for ${username}`
@@ -70,7 +73,7 @@ export function formatSlayerData(data, username) {
         .map(type => `${type.name} ${data[type.key].level.currentLevel}`);
 
     if (slayerLevels.length === 0) {
-        return `${username} has no slayer data`;
+        console.error(`${CleanPrefix} ${username} has no slayer data`);
     }
 
     return `${username}'s Slayer Levels: ${slayerLevels.join(", ")}`;

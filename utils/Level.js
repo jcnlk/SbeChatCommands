@@ -1,12 +1,13 @@
 import request from "../../requestV2";
 import Promise from "../../PromiseV2";
+import { CleanPrefix } from "./Constants";
 
 /**
  * Gets the Skyblock level of a player using the SkyCrypt API
  * @param {string} username - Minecraft username
  * @returns {Promise} Level data or error
  */
-function getSkyblockLevel(username) {
+export function getSkyblockLevel(username) {
     return new Promise((resolve) => {
         request({
             url: `https://sky.shiiyu.moe/api/v2/profile/${username}`,
@@ -45,14 +46,14 @@ function getSkyblockLevel(username) {
                     }
                 });
             } catch (error) {
-                console.error("Error processing level data:", error);
+                console.error(`${CleanPrefix} Error processing level data:`, error);
                 resolve({
                     success: false,
                     error: "Failed to process level data for " + username
                 });
             }
         }).catch(error => {
-            console.error("Error fetching level data:", error);
+            console.error(`${CleanPrefix} Error fetching level data:`, error);
             resolve({
                 success: false,
                 error: "Failed to fetch level data for " + username
@@ -67,8 +68,6 @@ function getSkyblockLevel(username) {
  * @param {string} username - Player username
  * @returns {string} Formatted message
  */
-function formatLevelData(data, username) {
+export function formatLevelData(data, username) {
     return `${username}'s Skyblock Level: ${data.level} (${data.progress}%)`;
 }
-
-export { getSkyblockLevel, formatLevelData };

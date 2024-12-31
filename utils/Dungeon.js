@@ -1,5 +1,6 @@
 import request from "../../requestV2";
 import Promise from "../../PromiseV2";
+import { CleanPrefix } from "./Constants";
 
 function filterByMode(items, isMasterMode) {
     return items.filter(item => isMasterMode ? item.startsWith("M") : item.startsWith("F"));
@@ -20,7 +21,7 @@ function prepareUsername(username) {
  * @param {string} username - Minecraft username
  * @returns {Promise} - Player"s dungeon data or error
  */
-function getDungeonData(username) {
+export function getDungeonData(username) {
     const encodedUsername = prepareUsername(username);
     
     return new Promise(function(resolve) {
@@ -56,14 +57,14 @@ function getDungeonData(username) {
                     data: selectedProfile.data.dungeons
                 });
             } catch (error) {
-                console.error("Error processing dungeon data:", error);
+                console.error(`${CleanPrefix} Error processing dungeon data:`, error);
                 resolve({
                     success: false,
                     error: "Failed to process dungeon data for " + username
                 });
             }
         }).catch(function(error) {
-            console.error("Error fetching dungeon data:", error);
+            console.error(`${CleanPrefix} Error fetching dungeon data:`, error);
             resolve({
                 success: false,
                 error: "Failed to fetch dungeon data for " + username
@@ -77,7 +78,7 @@ function getDungeonData(username) {
  * @param {string} username - Minecraft username
  * @returns {Promise} - Player's total secrets or error
  */
-function getSecretsData(username) {
+export function getSecretsData(username) {
     const encodedUsername = prepareUsername(username);
     
     return new Promise(function(resolve) {
@@ -115,14 +116,14 @@ function getSecretsData(username) {
                     }
                 });
             } catch (error) {
-                console.error("Error processing secrets data:", error);
+                console.error(`${CleanPrefix} Error processing secrets data:`, error);
                 resolve({
                     success: false,
                     error: "Failed to process secrets data for " + username
                 });
             }
         }).catch(function(error) {
-            console.error("Error fetching secrets data:", error);
+            console.error(`${CleanPrefix} Error fetching secrets data:`, error);
             resolve({
                 success: false,
                 error: "Failed to fetch secrets data for " + username
@@ -137,7 +138,7 @@ function getSecretsData(username) {
  * @param {string} username - Player username
  * @returns {string} Formatted message
  */
-function formatSecrets(data, username) {
+export function formatSecrets(data, username) {
     return username + "'s Total Secrets Found: " + data.total_secrets.toLocaleString();
 }
 
@@ -147,12 +148,12 @@ function formatSecrets(data, username) {
  * @param {string} username - Player username
  * @returns {string} Formatted message
  */
-function formatCataLevel(data, username) {
+export function formatCataLevel(data, username) {
     const catacombs = data.catacombs;
     const masterCatacombs = data.master_catacombs;
     
     if (!catacombs || !catacombs.level) {
-        return "No catacombs data found for " + username;
+        console.error(`${CleanPrefix} No catacombs data found for ` + username);
     }
     
     const level = catacombs.level;
@@ -175,10 +176,10 @@ function formatCataLevel(data, username) {
  * @param {string} username - Player username
  * @returns {string} Formatted message
  */
-function formatClassLevels(data, username) {
+export function formatClassLevels(data, username) {
     const classes = data.classes;
     if (!classes || !classes.classes) {
-        return "No class data found for " + username;
+        console.error(`${CleanPrefix} No class data found for ` + username);
     }
     
     const classOrder = ["healer", "mage", "berserk", "archer", "tank"];
@@ -195,7 +196,7 @@ function formatClassLevels(data, username) {
     });
     
     if (classLevels.length === 0) {
-        return "No class levels found for " + username;
+        console.error(`${CleanPrefix} No class levels found for ` + username);
     }
     
     return username + "'s Class Levels: " + classLevels.join(" | ");
@@ -208,12 +209,12 @@ function formatClassLevels(data, username) {
  * @param {boolean} isMasterMode - Whether to show master mode floors
  * @returns {string} Formatted message
  */
-function formatPBs(data, username, isMasterMode = false) {
+export function formatPBs(data, username, isMasterMode = false) {
     const catacombs = data.catacombs;
     const masterCatacombs = data.master_catacombs;
     
     if (!catacombs && !masterCatacombs) {
-        return "No floor data found for " + username;
+        console.error(`${CleanPrefix} No floor data found for ` + username);
     }
     
     const pbs = [];
@@ -239,7 +240,7 @@ function formatPBs(data, username, isMasterMode = false) {
     });
     
     if (pbs.length === 0) {
-        return "No PB data found for " + username + (isMasterMode ? " in Master Mode" : "");
+        console.error(`${CleanPrefix} No PB data found for ` + username + (isMasterMode ? " in Master Mode" : ""));
     }
     
     return username + "'s PBs: " + pbs.join(" | ");
@@ -252,12 +253,12 @@ function formatPBs(data, username, isMasterMode = false) {
  * @param {boolean} isMasterMode - Whether to show master mode floors
  * @returns {string} Formatted message
  */
-function formatCompletions(data, username, isMasterMode = false) {
+export function formatCompletions(data, username, isMasterMode = false) {
     const catacombs = data.catacombs;
     const masterCatacombs = data.master_catacombs;
     
     if (!catacombs && !masterCatacombs) {
-        return "No completion data found for " + username;
+        console.error(`${CleanPrefix} No completion data found for ` + username);
     }
     
     const completions = [];
@@ -274,7 +275,7 @@ function formatCompletions(data, username, isMasterMode = false) {
     });
     
     if (completions.length === 0) {
-        return "No completion data found for " + username + (isMasterMode ? " in Master Mode" : "");
+        console.error(`${CleanPrefix} No completion data found for ` + username + (isMasterMode ? " in Master Mode" : ""));
     }
     
     const total = dungeonData?.completions || 0;
@@ -307,7 +308,7 @@ function capitalize(str) {
  * @param {Array} args - Command arguments
  * @returns {Object} Parsed parameters
  */
-function parseParameters(args) {
+export function parseParameters(args) {
     const params = {
         playerName: null,
         isMasterMode: false
@@ -327,14 +328,3 @@ function parseParameters(args) {
 
     return params;
 }
-
-export { 
-    getDungeonData,
-    getSecretsData,
-    formatSecrets,
-    formatPBs,
-    formatCompletions,
-    parseParameters,
-    formatCataLevel,
-    formatClassLevels
-};
