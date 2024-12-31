@@ -158,19 +158,6 @@
       "Outlook not so good (like your chances of soloing Kuudra)",
       "Very likely (unlike finding a lobby without 'quitting' players)"
     ],
-    "commands": {
-      "list": "Available commands: !rng, !cf, !8ball, !throw, !dice, !join, !commands",
-      "help": "Use !commands help [command] for detailed help on a specific command.",
-      "specific": {
-        "rng": "!rng [player] [item]: Generates a random RNG percentage for a player and optional item.",
-        "cf": "!cf [player]: Performs a coin flip for the specified player.",
-        "8ball": "!8ball [player] [question]: Asks the Magic 8-Ball a question for the specified player.",
-        "throw": "!throw [player]: Shows how badly a player has thrown the run.",
-        "dice": "!dice [player]: Rolls a six-sided die for the specified player.",
-        "commands": "!commands: Lists all available commands. !commands help: Shows this help message. !commands help [command]: Shows detailed help for a specific command.",
-        "join": "!join [player]: Joins the specified player's party or invites them to yours if the player name matches your username."
-      }
-    },
   "simp": {
       "low": [
         "${playerName} is ${percentage}% simp. They wouldn't even donate to Marina's OnlyFins.",
@@ -194,14 +181,12 @@
         "With ${percentage}% simp power, ${playerName} is writing a petition to make Marina the permanent mayor!"
       ]
     },
-    "meow": {
-        "responses": [
-            "MEOW! There have been ${total} meows in SBE Chat!",
-            "Purr... ${total} meows and counting!",
-            "Meow! Did you know there have been ${total} meows in chat?",
-            "*purrs* ${total} meows in SBE Chat so far!"
-        ]
-    },
+    "meow": [
+      "MEOW! There have been ${total} meows in SBE Chat!",
+      "Purr... ${total} meows and counting!",
+      "Meow! Did you know there have been ${total} meows in chat?",
+      "*purrs* ${total} meows in SBE Chat so far!"
+    ],
     "sus": {
       "low": [
         "${playerName} is ${percentage}% sus. Even the Impostor thinks they're trustworthy.",

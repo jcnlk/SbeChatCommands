@@ -416,12 +416,13 @@ class CommandHandler {
         }, "secretsCommand");
 
         // Commands/Help Command
-        this.registerCommand(["commands", "help"], (sender, args) => {
+        this.registerCommand(["commands", "help", "command"], (sender, args) => {
             if (!config.commandsCommand) return;
             if (!args || args.length === 0 || args[0].toLowerCase() === "list") {
-                ChatLib.command(`sbechat Available commands: !rng, !cf, !8ball, !throw, !dice, !simp, !sus, !join, !commands, !meow, !quote, !tps, !ping, !mayor, !election`, true);
+                ChatLib.command(`sbechat Available commands: !rng, !cf, !8ball, !throw, !dice, !simp, !sus, !join, !meow, !quote, !tps, !ping, !alpha, !nw, !mayor, !election, !slayer, !mp, !level, !secrets, !tax, !skills, !skillaverage, !cata, !pbs, !class, !comp, !lbin`, true);
                 return;
             }
+            /**
             if (args[0].toLowerCase() === "help") {
                 if (args.length === 1) {
                     ChatLib.command(`sbechat Use !commands help [command] for detailed help on a specific command.`, true);
@@ -432,6 +433,7 @@ class CommandHandler {
                     ChatLib.command(`sbechat ${helpText}`, true);
                 }
             }
+            */
         }, "commandsCommand");
     }
 
