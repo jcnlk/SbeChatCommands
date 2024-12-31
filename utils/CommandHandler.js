@@ -6,7 +6,7 @@ import { checkAlphaStatusSbe } from '../utils/AlphaCheck';
 import { getPlayerNetworth, formatNetworthMessage } from '../utils/Networth';
 import { getElectionData, formatMayorData, formatElectionData } from '../utils/Election';
 import { getSlayerData, formatSlayerData } from './Slayer';
-import { getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from './Dungeon';
+import { getSecretsData, formatSecrets, getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from './Dungeon';
 import { getMagicalPower, formatMagicalPower } from './MagicalPower';
 import { getSkyblockLevel, formatLevelData } from './Level';
 import { 
@@ -330,6 +330,20 @@ class CommandHandler {
                 ChatLib.command('sbechat ' + message, true);
             });
         }, 'cataCommand');
+
+        // Secrets Command
+        this.registerCommand(['secrets', 'secret'], (sender, args) => {
+            if (!config.secretsCommand) return;
+            const playerToCheck = args[0] || sender;
+            getSecretsData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command('sbechat ' + result.error, true);
+                    return;
+                }
+                const message = formatSecrets(result.data, playerToCheck);
+                ChatLib.command('sbechat ' + message, true);
+            });
+        }, 'secretsCommand');
 
         // Commands/Help Command
         this.registerCommand(['commands', 'help'], (sender, args) => {

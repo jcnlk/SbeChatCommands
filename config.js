@@ -217,6 +217,14 @@ class Config {
     levelCommand = true;
 
     @SwitchProperty({
+        name: `Secrets Command ${DARK_AQUA}!secrets${RESET}`,
+        description: "Shows player's total dungeon secrets found",
+        category: "General",
+        subcategory: "Commands"
+    })
+    secretsCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -483,6 +491,7 @@ class Config {
         this.addDependency(`Completions Command ${DARK_AQUA}!comp${RESET}`, "SBE Chat Commands");
         this.addDependency(`Magical Power Command ${DARK_AQUA}!mp${RESET}`, "SBE Chat Commands");
         this.addDependency(`Level Command ${DARK_AQUA}!level${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Secrets Command ${DARK_AQUA}!secrets${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");

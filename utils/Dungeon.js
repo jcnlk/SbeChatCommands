@@ -5,10 +5,27 @@ function filterByMode(items, isMasterMode) {
     return items.filter(item => isMasterMode ? item.startsWith('M') : item.startsWith('F'));
 }
 
+/**
+ * Prepares username for API requests by handling special characters
+ * @param {string} username - Raw username input
+ * @returns {string} - Encoded username safe for API requests
+ */
+function prepareUsername(username) {
+    // First encode the username properly for URLs
+    return encodeURIComponent(username.trim());
+}
+
+/**
+ * Gets dungeon data for a player using SkyCrypt API
+ * @param {string} username - Minecraft username
+ * @returns {Promise} - Player's dungeon data or error
+ */
 function getDungeonData(username) {
+    const encodedUsername = prepareUsername(username);
+    
     return new Promise(function(resolve) {
         request({
-            url: 'https://sky.shiiyu.moe/api/v2/profile/' + username,
+            url: `https://sky.shiiyu.moe/api/v2/profile/${encodedUsername}`,
             method: 'GET',
             headers: {
                 'User-Agent': 'Mozilla/5.0'
@@ -55,6 +72,81 @@ function getDungeonData(username) {
     });
 }
 
+/**
+ * Gets the total secrets found for a player using SkyCrypt API
+ * @param {string} username - Minecraft username
+ * @returns {Promise} - Player's total secrets or error
+ */
+function getSecretsData(username) {
+    const encodedUsername = prepareUsername(username);
+    
+    return new Promise(function(resolve) {
+        request({
+            url: `https://sky.shiiyu.moe/api/v2/dungeons/${encodedUsername}`,
+            method: 'GET',
+            headers: { 
+                'User-Agent': 'Mozilla/5.0',
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            try {
+                const data = JSON.parse(response);
+                
+                // Get profile with highest cata level as fallback for selected profile
+                const getCataLevel = profile => profile.dungeons?.catacombs?.level?.uncappedLevel;
+                const profile = Object.values(data.profiles)
+                    .filter(x => getCataLevel(x))
+                    .sort((a, b) => getCataLevel(b) - getCataLevel(a))[0];
+
+                if (!profile || !profile.dungeons) {
+                    resolve({ 
+                        success: false, 
+                        error: 'No dungeon data found for ' + username
+                    });
+                    return;
+                }
+
+                const secrets = profile.dungeons.secrets_found || 0;
+                
+                resolve({
+                    success: true,
+                    data: {
+                        total_secrets: secrets
+                    }
+                });
+            } catch (error) {
+                console.error('Error processing secrets data:', error);
+                resolve({
+                    success: false,
+                    error: 'Failed to process secrets data for ' + username
+                });
+            }
+        }).catch(function(error) {
+            console.error('Error fetching secrets data:', error);
+            resolve({
+                success: false,
+                error: 'Failed to fetch secrets data for ' + username
+            });
+        });
+    });
+}
+
+/**
+ * Formats secrets data for chat output
+ * @param {Object} data - Secrets data from API
+ * @param {string} username - Player username
+ * @returns {string} Formatted message
+ */
+function formatSecrets(data, username) {
+    return username + "'s Total Secrets Found: " + data.total_secrets.toLocaleString();
+}
+
+/**
+ * Formats catacombs level data for chat output
+ * @param {Object} data - Dungeon data from API
+ * @param {string} username - Player username
+ * @returns {string} Formatted message
+ */
 function formatCataLevel(data, username) {
     const catacombs = data.catacombs;
     const masterCatacombs = data.master_catacombs;
@@ -77,6 +169,12 @@ function formatCataLevel(data, username) {
     return message;
 }
 
+/**
+ * Formats class levels data for chat output
+ * @param {Object} data - Dungeon data from API
+ * @param {string} username - Player username
+ * @returns {string} Formatted message
+ */
 function formatClassLevels(data, username) {
     const classes = data.classes;
     if (!classes || !classes.classes) {
@@ -103,10 +201,13 @@ function formatClassLevels(data, username) {
     return username + "'s Class Levels: " + classLevels.join(' | ');
 }
 
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
+/**
+ * Formats personal best times for chat output
+ * @param {Object} data - Dungeon data from API
+ * @param {string} username - Player username
+ * @param {boolean} isMasterMode - Whether to show master mode floors
+ * @returns {string} Formatted message
+ */
 function formatPBs(data, username, isMasterMode = false) {
     const catacombs = data.catacombs;
     const masterCatacombs = data.master_catacombs;
@@ -141,9 +242,16 @@ function formatPBs(data, username, isMasterMode = false) {
         return 'No PB data found for ' + username + (isMasterMode ? ' in Master Mode' : '');
     }
     
-    return username + "'s PBs" + ': ' + pbs.join(' | '); //(isMasterMode ? ' (Master Mode)' : '') +
+    return username + "'s PBs: " + pbs.join(' | ');
 }
 
+/**
+ * Formats completion counts for chat output
+ * @param {Object} data - Dungeon data from API
+ * @param {string} username - Player username
+ * @param {boolean} isMasterMode - Whether to show master mode floors
+ * @returns {string} Formatted message
+ */
 function formatCompletions(data, username, isMasterMode = false) {
     const catacombs = data.catacombs;
     const masterCatacombs = data.master_catacombs;
@@ -170,16 +278,35 @@ function formatCompletions(data, username, isMasterMode = false) {
     }
     
     const total = dungeonData?.completions || 0;
-    return username + "'s Completions" + ': ' + //+ (isMasterMode ? ' (Master Mode)' : '')
+    return username + "'s Completions: " + 
            completions.join(' | ') + ' | Total: ' + total.toLocaleString();
 }
 
+/**
+ * Formats time in milliseconds to minutes:seconds.tenths
+ * @param {number} ms - Time in milliseconds
+ * @returns {string} Formatted time string
+ */
 function formatTime(ms) {
     var minutes = Math.floor(ms / 60000);
     var seconds = ((ms % 60000) / 1000).toFixed(1);
     return minutes + ':' + seconds.padStart(4, '0');
 }
 
+/**
+ * Capitalizes first letter of a string
+ * @param {string} str - Input string
+ * @returns {string} Capitalized string
+ */
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/**
+ * Parses command parameters for dungeon commands
+ * @param {Array} args - Command arguments
+ * @returns {Object} Parsed parameters
+ */
 function parseParameters(args) {
     const params = {
         playerName: null,
@@ -202,10 +329,12 @@ function parseParameters(args) {
 }
 
 export { 
-    getDungeonData, 
-    formatPBs, 
-    formatCompletions, 
+    getDungeonData,
+    getSecretsData,
+    formatSecrets,
+    formatPBs,
+    formatCompletions,
     parseParameters,
     formatCataLevel,
-    formatClassLevels 
+    formatClassLevels
 };
