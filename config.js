@@ -225,6 +225,14 @@ class Config {
     secretsCommand = true;
 
     @SwitchProperty({
+        name: `Tax Command ${DARK_AQUA}!tax${RESET}`,
+        description: "Calculate auction/BIN taxes. Use '!tax <amount> [derpy]' to calculate taxes, optionally with Derpy rates.",
+        category: "General",
+        subcategory: "Commands"
+    })
+    taxCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -492,6 +500,7 @@ class Config {
         this.addDependency(`Magical Power Command ${DARK_AQUA}!mp${RESET}`, "SBE Chat Commands");
         this.addDependency(`Level Command ${DARK_AQUA}!level${RESET}`, "SBE Chat Commands");
         this.addDependency(`Secrets Command ${DARK_AQUA}!secrets${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Tax Command ${DARK_AQUA}!tax${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");

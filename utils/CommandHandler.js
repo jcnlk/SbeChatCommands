@@ -9,6 +9,7 @@ import { getSlayerData, formatSlayerData } from './Slayer';
 import { getSecretsData, formatSecrets, getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from './Dungeon';
 import { getMagicalPower, formatMagicalPower } from './MagicalPower';
 import { getSkyblockLevel, formatLevelData } from './Level';
+import { calculateTax, formatTaxMessage, parseNumberInput, getTaxInfo } from './Taxes';
 import { 
     Prefix, 
     RED, 
@@ -210,6 +211,27 @@ class CommandHandler {
                 ChatLib.command(`sbechat ${message}`, true);
             });
         }, 'mayorCommand');
+
+        // Tax Command
+        this.registerCommand(['tax', 'taxes'], (sender, args) => {
+            if (!config.taxCommand) return;
+            
+            if (!args.length) {
+                //ChatLib.command('sbechat Usage: !tax <amount>', true);
+                return;
+            }
+
+            const amount = parseNumberInput(args[0]);
+            
+            if (!amount || isNaN(amount) || amount <= 0) {
+                //ChatLib.command('sbechat Invalid amount. Example: !tax 100k or !tax 1.5m', true);
+                return;
+            }
+
+            getTaxInfo(amount).then(taxInfo => {
+                ChatLib.command('sbechat ' + formatTaxMessage(taxInfo), true);
+            });
+        }, 'taxCommand');
 
         // Election Command
         this.registerCommand('election', (sender, args) => {
