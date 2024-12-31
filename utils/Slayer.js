@@ -10,9 +10,9 @@ export function getSlayerData(username) {
     return new Promise((resolve) => {
         request({
             url: `https://sky.shiiyu.moe/api/v2/slayers/${username}`,
-            method: 'GET',
+            method: "GET",
             headers: {
-                'User-Agent': 'Mozilla/5.0'
+                "User-Agent": "Mozilla/5.0"
             }
         }).then(response => {
             try {
@@ -57,12 +57,12 @@ export function getSlayerData(username) {
  */
 export function formatSlayerData(data, username) {
     const slayerTypes = [
-        { key: 'zombie', name: 'Revenant' },
-        { key: 'spider', name: 'Tarantula' },
-        { key: 'wolf', name: 'Sven' },
-        { key: 'enderman', name: 'Voidgloom' },
-        { key: 'blaze', name: 'Inferno' },
-        { key: 'vampire', name: 'Riftstalker' }
+        { key: "zombie", name: "Revenant" },
+        { key: "spider", name: "Tarantula" },
+        { key: "wolf", name: "Sven" },
+        { key: "enderman", name: "Voidgloom" },
+        { key: "blaze", name: "Inferno" },
+        { key: "vampire", name: "Riftstalker" }
     ];
     
     const slayerLevels = slayerTypes

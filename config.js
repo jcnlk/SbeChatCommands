@@ -281,6 +281,14 @@ class Config {
     compCommand = true;
 
     @SwitchProperty({
+        name: `Lowest BIN Command ${DARK_AQUA}!lbin${RESET}`,
+        description: "Shows lowest BIN prices for items on the auction house",
+        category: "General",
+        subcategory: "Commands"
+    })
+    lowestBinCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -519,6 +527,7 @@ class Config {
         this.addDependency(`Tax Command ${DARK_AQUA}!tax${RESET}`, "SBE Chat Commands");
         this.addDependency(`Skills Command ${DARK_AQUA}!skills${RESET}`, "SBE Chat Commands");
         this.addDependency(`Skill Average Command ${DARK_AQUA}!skillaverage${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Lowest BIN Command ${DARK_AQUA}!lbin${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");

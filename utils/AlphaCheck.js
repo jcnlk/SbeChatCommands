@@ -44,7 +44,7 @@ const checkAlphaStatus = () => {
 
             if (isAlphaOpen(maxPlayers)) {
                 ChatLib.chat(`${Prefix} ${GREEN}Alpha Server might be open! ${GRAY}(${maxPlayers} slots)`);
-                World.playSound('random.orb', 1, 1);
+                World.playSound("random.orb", 1, 1);
             } else {
                 ChatLib.chat(`${Prefix} ${YELLOW}Alpha Server is currently closed. ${GRAY}(${maxPlayers} slots)`);
             }

@@ -2,17 +2,17 @@ import request from "../../requestV2";
 import Promise from "../../PromiseV2";
 
 const SKILL_NAMES = [
-    'taming',
-    'farming',
-    'mining',
-    'combat',
-    'foraging',
-    'fishing',
-    'enchanting',
-    'alchemy',
-    'carpentry',
-    'runecrafting',
-    'social'
+    "taming",
+    "farming",
+    "mining",
+    "combat",
+    "foraging",
+    "fishing",
+    "enchanting",
+    "alchemy",
+    "carpentry",
+    "runecrafting",
+    "social"
 ];
 
 /**
@@ -24,9 +24,9 @@ function getSkillsData(username) {
     return new Promise((resolve) => {
         request({
             url: `https://sky.shiiyu.moe/api/v2/profile/${username}`,
-            method: 'GET',
+            method: "GET",
             headers: {
-                'User-Agent': 'Mozilla/5.0'
+                "User-Agent": "Mozilla/5.0"
             }
         }).then(response => {
             try {
@@ -44,7 +44,7 @@ function getSkillsData(username) {
                 if (!selectedProfile || !selectedProfile.data || !selectedProfile.data.skills || !selectedProfile.data.skills.skills) {
                     resolve({ 
                         success: false, 
-                        error: 'No skills data found for ' + username
+                        error: "No skills data found for " + username
                     });
                     return;
                 }
@@ -67,17 +67,17 @@ function getSkillsData(username) {
                     data: skillsData
                 });
             } catch (error) {
-                console.error('Error processing skills data:', error);
+                console.error("Error processing skills data:", error);
                 resolve({
                     success: false,
-                    error: 'Failed to process skills data for ' + username
+                    error: "Failed to process skills data for " + username
                 });
             }
         }).catch(error => {
-            console.error('Error fetching skills data:', error);
+            console.error("Error fetching skills data:", error);
             resolve({
                 success: false,
-                error: 'Failed to fetch skills data for ' + username
+                error: "Failed to fetch skills data for " + username
             });
         });
     });
@@ -102,7 +102,7 @@ function formatSkillAverage(data, username) {
 function formatSkills(data, username) {
     const skillsList = Object.entries(data.skills)
         .map(([name, level]) => `${capitalize(name)}: ${level.toFixed(1)}`)
-        .join(' | ');
+        .join(" | ");
 
     return `${username}'s Skills: ${skillsList}`;
 }

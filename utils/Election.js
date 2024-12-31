@@ -8,10 +8,10 @@ import Promise from "../../PromiseV2";
 function getElectionData() {
     return new Promise((resolve) => {
         request({
-            url: 'https://api.hypixel.net/v2/resources/skyblock/election',
-            method: 'GET',
+            url: "https://api.hypixel.net/v2/resources/skyblock/election",
+            method: "GET",
             headers: {
-                'User-Agent': 'Mozilla/5.0'
+                "User-Agent": "Mozilla/5.0"
             }
         }).then(response => {
             try {
@@ -91,7 +91,7 @@ export function formatElectionData(data) {
     const candidateInfos = sortedCandidates.map(candidate => {
         const votePercent = ((candidate.votes / totalVotes) * 100).toFixed(1);
         const ministerPerk = candidate.perks.find(perk => perk.minister);
-        const perkInfo = ministerPerk ? ` (${ministerPerk.name})` : '';
+        const perkInfo = ministerPerk ? ` (${ministerPerk.name})` : "";
         return `${candidate.name}: ${votePercent}%${perkInfo}`;
     });
 
@@ -115,7 +115,7 @@ function getTotalVotes(candidates) {
  */
 export function registerMayorAndElectionCommands(commandHandler) {
     // Mayor command
-    commandHandler.registerCommand('mayor', (sender, args) => {
+    commandHandler.registerCommand("mayor", (sender, args) => {
         if (!commandHandler.config.mayorCommand) return;
         
         getElectionData().then(result => {
@@ -127,10 +127,10 @@ export function registerMayorAndElectionCommands(commandHandler) {
             const message = formatMayorData(result.data);
             ChatLib.command(`sbechat ${message}`, true);
         });
-    }, 'mayorCommand');
+    }, "mayorCommand");
 
     // Election command
-    commandHandler.registerCommand('election', (sender, args) => {
+    commandHandler.registerCommand("election", (sender, args) => {
         if (!commandHandler.config.electionCommand) return;
         
         getElectionData().then(result => {
@@ -142,7 +142,7 @@ export function registerMayorAndElectionCommands(commandHandler) {
             const message = formatElectionData(result.data);
             ChatLib.command(`sbechat ${message}`, true);
         });
-    }, 'electionCommand');
+    }, "electionCommand");
 }
 
 export { getElectionData };

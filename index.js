@@ -9,10 +9,11 @@ import "./utils/CommandHandler";
 import "./utils/Election";
 import "./utils/Slayer";
 import "./utils/Dungeon";
-import './utils/MagicalPower';
-import './utils/Level';
-import './utils/Taxes';
+import "./utils/MagicalPower";
+import "./utils/Level";
+import "./utils/Taxes";
 import "./utils/Skills";
+import "./utils/LowestBin";
 import { 
     BLACK, 
     DARK_BLUE, 

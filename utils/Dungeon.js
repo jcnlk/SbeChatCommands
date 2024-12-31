@@ -2,7 +2,7 @@ import request from "../../requestV2";
 import Promise from "../../PromiseV2";
 
 function filterByMode(items, isMasterMode) {
-    return items.filter(item => isMasterMode ? item.startsWith('M') : item.startsWith('F'));
+    return items.filter(item => isMasterMode ? item.startsWith("M") : item.startsWith("F"));
 }
 
 /**
@@ -18,7 +18,7 @@ function prepareUsername(username) {
 /**
  * Gets dungeon data for a player using SkyCrypt API
  * @param {string} username - Minecraft username
- * @returns {Promise} - Player's dungeon data or error
+ * @returns {Promise} - Player"s dungeon data or error
  */
 function getDungeonData(username) {
     const encodedUsername = prepareUsername(username);
@@ -26,9 +26,9 @@ function getDungeonData(username) {
     return new Promise(function(resolve) {
         request({
             url: `https://sky.shiiyu.moe/api/v2/profile/${encodedUsername}`,
-            method: 'GET',
+            method: "GET",
             headers: {
-                'User-Agent': 'Mozilla/5.0'
+                "User-Agent": "Mozilla/5.0"
             }
         }).then(function(response) {
             try {
@@ -46,7 +46,7 @@ function getDungeonData(username) {
                 if (!selectedProfile || !selectedProfile.data || !selectedProfile.data.dungeons) {
                     resolve({ 
                         success: false, 
-                        error: 'No dungeon data found for ' + username
+                        error: "No dungeon data found for " + username
                     });
                     return;
                 }
@@ -56,17 +56,17 @@ function getDungeonData(username) {
                     data: selectedProfile.data.dungeons
                 });
             } catch (error) {
-                console.error('Error processing dungeon data:', error);
+                console.error("Error processing dungeon data:", error);
                 resolve({
                     success: false,
-                    error: 'Failed to process dungeon data for ' + username
+                    error: "Failed to process dungeon data for " + username
                 });
             }
         }).catch(function(error) {
-            console.error('Error fetching dungeon data:', error);
+            console.error("Error fetching dungeon data:", error);
             resolve({
                 success: false,
-                error: 'Failed to fetch dungeon data for ' + username
+                error: "Failed to fetch dungeon data for " + username
             });
         });
     });
@@ -83,10 +83,10 @@ function getSecretsData(username) {
     return new Promise(function(resolve) {
         request({
             url: `https://sky.shiiyu.moe/api/v2/dungeons/${encodedUsername}`,
-            method: 'GET',
+            method: "GET",
             headers: { 
-                'User-Agent': 'Mozilla/5.0',
-                'Content-Type': 'application/json'
+                "User-Agent": "Mozilla/5.0",
+                "Content-Type": "application/json"
             }
         }).then(function(response) {
             try {
@@ -101,7 +101,7 @@ function getSecretsData(username) {
                 if (!profile || !profile.dungeons) {
                     resolve({ 
                         success: false, 
-                        error: 'No dungeon data found for ' + username
+                        error: "No dungeon data found for " + username
                     });
                     return;
                 }
@@ -115,17 +115,17 @@ function getSecretsData(username) {
                     }
                 });
             } catch (error) {
-                console.error('Error processing secrets data:', error);
+                console.error("Error processing secrets data:", error);
                 resolve({
                     success: false,
-                    error: 'Failed to process secrets data for ' + username
+                    error: "Failed to process secrets data for " + username
                 });
             }
         }).catch(function(error) {
-            console.error('Error fetching secrets data:', error);
+            console.error("Error fetching secrets data:", error);
             resolve({
                 success: false,
-                error: 'Failed to fetch secrets data for ' + username
+                error: "Failed to fetch secrets data for " + username
             });
         });
     });
@@ -152,18 +152,18 @@ function formatCataLevel(data, username) {
     const masterCatacombs = data.master_catacombs;
     
     if (!catacombs || !catacombs.level) {
-        return 'No catacombs data found for ' + username;
+        return "No catacombs data found for " + username;
     }
     
     const level = catacombs.level;
     const progress = Math.floor(level.progress * 100);
     let message = username + "'s Catacombs: Level " + level.level + 
-                 ' (' + progress + '%) | Experience: ' + Math.floor(level.xp).toLocaleString();
+                 " (" + progress + "%) | Experience: " + Math.floor(level.xp).toLocaleString();
     
     if (masterCatacombs && masterCatacombs.level && masterCatacombs.level.level > 0) {
         const masterLevel = masterCatacombs.level;
         const masterProgress = Math.floor(masterLevel.progress * 100);
-        message += ' | Master: Level ' + masterLevel.level + ' (' + masterProgress + '%)';
+        message += " | Master: Level " + masterLevel.level + " (" + masterProgress + "%)";
     }
     
     return message;
@@ -178,27 +178,27 @@ function formatCataLevel(data, username) {
 function formatClassLevels(data, username) {
     const classes = data.classes;
     if (!classes || !classes.classes) {
-        return 'No class data found for ' + username;
+        return "No class data found for " + username;
     }
     
-    const classOrder = ['healer', 'mage', 'berserk', 'archer', 'tank'];
+    const classOrder = ["healer", "mage", "berserk", "archer", "tank"];
     const classLevels = [];
     
     classOrder.forEach(function(className) {
         const classData = classes.classes[className];
         if (classData && classData.level) {
             const progress = Math.floor(classData.level.progress * 100);
-            const current = classData.current ? '*' : '';
-            classLevels.push(capitalize(className) + current + ': ' + 
-                           classData.level.level + ' (' + progress + '%)');
+            const current = classData.current ? "*" : "";
+            classLevels.push(capitalize(className) + current + ": " + 
+                           classData.level.level + " (" + progress + "%)");
         }
     });
     
     if (classLevels.length === 0) {
-        return 'No class levels found for ' + username;
+        return "No class levels found for " + username;
     }
     
-    return username + "'s Class Levels: " + classLevels.join(' | ');
+    return username + "'s Class Levels: " + classLevels.join(" | ");
 }
 
 /**
@@ -213,36 +213,36 @@ function formatPBs(data, username, isMasterMode = false) {
     const masterCatacombs = data.master_catacombs;
     
     if (!catacombs && !masterCatacombs) {
-        return 'No floor data found for ' + username;
+        return "No floor data found for " + username;
     }
     
     const pbs = [];
-    const floorOrder = isMasterMode ? ['1', '2', '3', '4', '5', '6', '7'] : ['0', '1', '2', '3', '4', '5', '6', '7'];
+    const floorOrder = isMasterMode ? ["1", "2", "3", "4", "5", "6", "7"] : ["0", "1", "2", "3", "4", "5", "6", "7"];
     const dungeonData = isMasterMode ? masterCatacombs : catacombs;
     
     floorOrder.forEach(floorNum => {
         if (dungeonData?.floors?.[floorNum]?.stats?.fastest_time) {
             const floor = dungeonData.floors[floorNum];
-            const floorName = !isMasterMode && floorNum === '0' ? 'E' : floorNum;
+            const floorName = !isMasterMode && floorNum === "0" ? "E" : floorNum;
             let timeStr = formatTime(floor.stats.fastest_time);
             
             if (floor.stats.fastest_time_s_plus && 
                 floor.stats.fastest_time_s_plus < floor.stats.fastest_time) {
-                timeStr += ' (S+: ' + formatTime(floor.stats.fastest_time_s_plus) + ')';
+                timeStr += " (S+: " + formatTime(floor.stats.fastest_time_s_plus) + ")";
             } else if (floor.stats.fastest_time_s && 
                       floor.stats.fastest_time_s < floor.stats.fastest_time) {
-                timeStr += ' (S: ' + formatTime(floor.stats.fastest_time_s) + ')';
+                timeStr += " (S: " + formatTime(floor.stats.fastest_time_s) + ")";
             }
             
-            pbs.push((isMasterMode ? 'M' : 'F') + floorName + ': ' + timeStr);
+            pbs.push((isMasterMode ? "M" : "F") + floorName + ": " + timeStr);
         }
     });
     
     if (pbs.length === 0) {
-        return 'No PB data found for ' + username + (isMasterMode ? ' in Master Mode' : '');
+        return "No PB data found for " + username + (isMasterMode ? " in Master Mode" : "");
     }
     
-    return username + "'s PBs: " + pbs.join(' | ');
+    return username + "'s PBs: " + pbs.join(" | ");
 }
 
 /**
@@ -257,29 +257,29 @@ function formatCompletions(data, username, isMasterMode = false) {
     const masterCatacombs = data.master_catacombs;
     
     if (!catacombs && !masterCatacombs) {
-        return 'No completion data found for ' + username;
+        return "No completion data found for " + username;
     }
     
     const completions = [];
-    const floorOrder = isMasterMode ? ['1', '2', '3', '4', '5', '6', '7'] : ['0', '1', '2', '3', '4', '5', '6', '7'];
+    const floorOrder = isMasterMode ? ["1", "2", "3", "4", "5", "6", "7"] : ["0", "1", "2", "3", "4", "5", "6", "7"];
     const dungeonData = isMasterMode ? masterCatacombs : catacombs;
     
     floorOrder.forEach(floorNum => {
         if (dungeonData?.floors?.[floorNum]?.stats?.tier_completions) {
             const floor = dungeonData.floors[floorNum];
-            const floorName = !isMasterMode && floorNum === '0' ? 'E' : floorNum;
-            completions.push((isMasterMode ? 'M' : 'F') + floorName + ': ' + 
+            const floorName = !isMasterMode && floorNum === "0" ? "E" : floorNum;
+            completions.push((isMasterMode ? "M" : "F") + floorName + ": " + 
                            floor.stats.tier_completions.toLocaleString());
         }
     });
     
     if (completions.length === 0) {
-        return 'No completion data found for ' + username + (isMasterMode ? ' in Master Mode' : '');
+        return "No completion data found for " + username + (isMasterMode ? " in Master Mode" : "");
     }
     
     const total = dungeonData?.completions || 0;
     return username + "'s Completions: " + 
-           completions.join(' | ') + ' | Total: ' + total.toLocaleString();
+           completions.join(" | ") + " | Total: " + total.toLocaleString();
 }
 
 /**
@@ -290,7 +290,7 @@ function formatCompletions(data, username, isMasterMode = false) {
 function formatTime(ms) {
     var minutes = Math.floor(ms / 60000);
     var seconds = ((ms % 60000) / 1000).toFixed(1);
-    return minutes + ':' + seconds.padStart(4, '0');
+    return minutes + ":" + seconds.padStart(4, "0");
 }
 
 /**
@@ -314,7 +314,7 @@ function parseParameters(args) {
     };
     
     // Check for master mode flag
-    const mmIndex = args.findIndex(arg => arg.toLowerCase() === 'mm');
+    const mmIndex = args.findIndex(arg => arg.toLowerCase() === "mm");
     if (mmIndex !== -1) {
         params.isMasterMode = true;
         args.splice(mmIndex, 1);

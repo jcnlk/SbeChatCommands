@@ -33,13 +33,13 @@ import {
  */
 function formatNumber(num) {
     if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(1) + 'B';
+        return (num / 1000000000).toFixed(1) + "B";
     }
     if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
+        return (num / 1000000).toFixed(1) + "M";
     }
     if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K';
+        return (num / 1000).toFixed(1) + "K";
     }
     return num.toFixed(0);
 }
@@ -53,9 +53,9 @@ function getPlayerNetworth(username) {
     return new Promise((resolve) => {
         request({
             url: `https://sky.shiiyu.moe/api/v2/profile/${username}`,
-            method: 'GET',
+            method: "GET",
             headers: {
-                'User-Agent': 'Mozilla/5.0'
+                "User-Agent": "Mozilla/5.0"
             }
         }).then(response => {
             try {
@@ -133,7 +133,7 @@ function getPlayerNetworth(username) {
  * @returns {string} - Formatted message
  */
 function formatNetworthMessage(data) {
-    const gameModeSuffix = data.gameMode !== "normal" ? ` [${data.gameMode}]` : '';
+    const gameModeSuffix = data.gameMode !== "normal" ? ` [${data.gameMode}]` : "";
     return `${data.username}'s Networth (${data.profileName}${gameModeSuffix}): ` +
            `${data.networth} | Unsoulbound: ${data.unsoulboundNetworth}`;
 }

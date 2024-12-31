@@ -22,64 +22,64 @@ class defaultData {
         // Achievement definitions
         this.achievements = {
             FIRST_INSTALL: {
-                id: 'FIRST_INSTALL',
-                name: 'True SBE Chat User',
-                description: 'Install SBE Chat Commands for the first time',
-                trigger: 'firstInstall'
+                id: "FIRST_INSTALL",
+                name: "True SBE Chat User",
+                description: "Install SBE Chat Commands for the first time",
+                trigger: "firstInstall"
             },
             FIRST_MESSAGE: {
-                id: 'FIRST_MESSAGE',
-                name: 'Breaking the Ice',
-                description: 'Send your first message in SBE Chat',
-                trigger: 'firstMessage'
+                id: "FIRST_MESSAGE",
+                name: "Breaking the Ice",
+                description: "Send your first message in SBE Chat",
+                trigger: "firstMessage"
             },
             MEOW_10: {
-                id: 'MEOW_10',
-                name: 'Beginner Catversation',
+                id: "MEOW_10",
+                name: "Beginner Catversation",
                 description: 'Send "meow" 10 times in SBE Chat',
-                trigger: 'meowCount',
+                trigger: "meowCount",
                 requirement: 10
             },
             MEOW_50: {
-                id: 'MEOW_50',
-                name: 'True Cat Person',
+                id: "MEOW_50",
+                name: "True Cat Person",
                 description: 'Send "meow" 50 times in SBE Chat',
-                trigger: 'meowCount',
+                trigger: "meowCount",
                 requirement: 50
             },
             MEOW_100: {
-                id: 'MEOW_100',
-                name: 'Legendary Meower',
+                id: "MEOW_100",
+                name: "Legendary Meower",
                 description: 'Send "meow" 100 times in SBE Chat',
-                trigger: 'meowCount',
+                trigger: "meowCount",
                 requirement: 100
             },
             MEOW_250: {
-                id: 'MEOW_250',
-                name: 'Meow Enthusiast',
+                id: "MEOW_250",
+                name: "Meow Enthusiast",
                 description: 'Send "meow" 250 times in SBE Chat',
-                trigger: 'meowCount',
+                trigger: "meowCount",
                 requirement: 250
             },
             MEOW_500: {
-                id: 'MEOW_500',
-                name: 'Professional Cat',
+                id: "MEOW_500",
+                name: "Professional Cat",
                 description: 'Send "meow" 500 times in SBE Chat',
-                trigger: 'meowCount',
+                trigger: "meowCount",
                 requirement: 500
             },
             MEOW_1000: {
-                id: 'MEOW_1000',
-                name: 'Ultimate Feline',
+                id: "MEOW_1000",
+                name: "Ultimate Feline",
                 description: 'Send "meow" 1000 times in SBE Chat',
-                trigger: 'meowCount',
+                trigger: "meowCount",
                 requirement: 1000
             },
             COMMAND_MASTER: {
-                id: 'COMMAND_MASTER',
-                name: 'Command Master',
-                description: 'Use all available SBE Chat commands at least once',
-                trigger: 'commandMaster'
+                id: "COMMAND_MASTER",
+                name: "Command Master",
+                description: "Use all available SBE Chat commands at least once",
+                trigger: "commandMaster"
             }
         };
 
@@ -107,7 +107,7 @@ class defaultData {
                 this.showFirstInstallMessage();
                 this.data.firstInstall = true;
                 this.data.save();
-                this.checkAchievement('firstInstall');
+                this.checkAchievement("firstInstall");
             }
         });
     }
@@ -251,7 +251,7 @@ class defaultData {
         const achievement = this.achievements[achievementId];
         if (!achievement) return;
 
-        World.playSound('random.levelup', 1, 1);
+        World.playSound("random.levelup", 1, 1);
         ChatLib.chat(`${RESET}${YELLOW}${OBFUSCATED}a${GREEN}>>   ${GREEN}Achievement Unlocked: ${GOLD}${achievement.name}${GREEN}   <<${YELLOW}${OBFUSCATED}a${RESET}`);
         ChatLib.chat(`${Prefix} ${GREEN}${achievement.description}`);
     }
@@ -266,10 +266,10 @@ class defaultData {
                 let shouldUnlock = false;
 
                 switch (trigger) {
-                    case 'meowCount':
+                    case "meowCount":
                         shouldUnlock = value >= achievement.requirement;
                         break;
-                    case 'commandMaster':
+                    case "commandMaster":
                         shouldUnlock = this.checkCommandMasterProgress();
                         break;
                     default:
@@ -299,18 +299,18 @@ class defaultData {
     checkCommandMasterProgress() {
         // Only include commands that are actually implemented in the module
         const requiredCommands = [
-            'rng',      // RNG chance command
-            'cf',       // Coinflip command
-            '8ball',    // Magic 8-ball command
-            'throw',    // Throw command
-            'dice',     // Dice roll command
-            'simp',     // Simp level command
-            'sus',      // Sus level command
-            'join',     // Party join command
-            'meow',     // Meow command
-            'quote',    // Quote command
-            'tps',      // TPS check command
-            'ping'      // Ping check command
+            "rng",      // RNG chance command
+            "cf",       // Coinflip command
+            "8ball",    // Magic 8-ball command
+            "throw",    // Throw command
+            "dice",     // Dice roll command
+            "simp",     // Simp level command
+            "sus",      // Sus level command
+            "join",     // Party join command
+            "meow",     // Meow command
+            "quote",    // Quote command
+            "tps",      // TPS check command
+            "ping"      // Ping check command
         ];
         
         const usedCommands = this.data.playerData.usedCommands || [];
@@ -321,12 +321,12 @@ class defaultData {
         const achievement = this.achievements[achievementId];
 
         switch (achievement.trigger) {
-            case 'meowCount':
+            case "meowCount":
                 return {
                     current: this.data.playerData.personalMeowCount || 0,
                     required: achievement.requirement
                 };
-            case 'commandMaster':
+            case "commandMaster":
                 const usedCommands = this.data.playerData.usedCommands || [];
                 const totalCommands = 12; // Total number of implemented commands (excluding help commands)
                 return {
@@ -342,7 +342,7 @@ class defaultData {
     incrementPersonalMeowCount() {
         this.data.playerData.personalMeowCount = (this.data.playerData.personalMeowCount || 0) + 1;
         this.data.save();
-        this.checkAchievement('meowCount', this.data.playerData.personalMeowCount);
+        this.checkAchievement("meowCount", this.data.playerData.personalMeowCount);
     }
 
     addUsedCommand(command) {
@@ -352,7 +352,7 @@ class defaultData {
         if (!this.data.playerData.usedCommands.includes(command)) {
             this.data.playerData.usedCommands.push(command);
             this.data.save();
-            this.checkAchievement('commandMaster');
+            this.checkAchievement("commandMaster");
         }
     }
 
@@ -360,7 +360,7 @@ class defaultData {
         if (!this.data.playerData.firstMessageSent) {
             this.data.playerData.firstMessageSent = true;
             this.data.save();
-            this.checkAchievement('firstMessage');
+            this.checkAchievement("firstMessage");
         }
     }
 
@@ -375,7 +375,7 @@ class defaultData {
             const unlocked = this.data.playerData.unlockedAchievements?.includes(achievement.id);
             
             const status = unlocked ? `${GREEN}✔` : `${RED}✘`;
-            let progressText = '';
+            let progressText = "";
             
             if (progress) {
                 progressText = ` ${GRAY}(${progress.current}/${progress.required})`;

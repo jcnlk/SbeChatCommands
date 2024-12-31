@@ -10,9 +10,9 @@ function getSkyblockLevel(username) {
     return new Promise((resolve) => {
         request({
             url: `https://sky.shiiyu.moe/api/v2/profile/${username}`,
-            method: 'GET',
+            method: "GET",
             headers: {
-                'User-Agent': 'Mozilla/5.0'
+                "User-Agent": "Mozilla/5.0"
             }
         }).then(response => {
             try {
@@ -30,7 +30,7 @@ function getSkyblockLevel(username) {
                 if (!selectedProfile || !selectedProfile.data || !selectedProfile.data.skyblock_level) {
                     resolve({ 
                         success: false, 
-                        error: 'No Skyblock level data found for ' + username
+                        error: "No Skyblock level data found for " + username
                     });
                     return;
                 }
@@ -45,17 +45,17 @@ function getSkyblockLevel(username) {
                     }
                 });
             } catch (error) {
-                console.error('Error processing level data:', error);
+                console.error("Error processing level data:", error);
                 resolve({
                     success: false,
-                    error: 'Failed to process level data for ' + username
+                    error: "Failed to process level data for " + username
                 });
             }
         }).catch(error => {
-            console.error('Error fetching level data:', error);
+            console.error("Error fetching level data:", error);
             resolve({
                 success: false,
-                error: 'Failed to fetch level data for ' + username
+                error: "Failed to fetch level data for " + username
             });
         });
     });

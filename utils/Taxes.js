@@ -1,5 +1,5 @@
-import { getElectionData } from './Election';
-import Promise from '../../PromiseV2';
+import { getElectionData } from "./Election";
+import Promise from "../../PromiseV2";
 
 // Cache system for mayor status
 let mayorCache = {
@@ -17,12 +17,12 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
 function parseNumberInput(input) {
     if (!input) return null;
     
-    input = input.toLowerCase().replace(/\s+/g, '');
+    input = input.toLowerCase().replace(/\s+/g, "");
     
     const suffixes = {
-        'k': 1000,
-        'm': 1000000,
-        'b': 1000000000
+        "k": 1000,
+        "m": 1000000,
+        "b": 1000000000
     };
     
     try {
@@ -45,13 +45,13 @@ function parseNumberInput(input) {
  */
 function formatNumber(num) {
     if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(1) + 'B';
+        return (num / 1000000000).toFixed(1) + "B";
     }
     if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
+        return (num / 1000000).toFixed(1) + "M";
     }
     if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'k';
+        return (num / 1000).toFixed(1) + "k";
     }
     return num.toFixed(0);
 }
@@ -75,12 +75,12 @@ function isDerpyMayor() {
                 return;
             }
 
-            mayorCache.isDerpy = result.data.mayor?.name === 'Derpy';
+            mayorCache.isDerpy = result.data.mayor?.name === "Derpy";
             mayorCache.lastUpdate = currentTime;
             
             resolve(mayorCache.isDerpy);
         }).catch(error => {
-            console.error('Error checking mayor status:', error);
+            console.error("Error checking mayor status:", error);
             resolve(mayorCache.isDerpy);
         });
     });
@@ -124,7 +124,7 @@ function calculateTax(initialPrice, isDerpyActive = false) {
  * @returns {string} - Formatted message
  */
 function formatTaxMessage(taxInfo) {
-    const derpyStatus = taxInfo.isDerpyActive ? ' (Derpy Active)' : '';
+    const derpyStatus = taxInfo.isDerpyActive ? " (Derpy Active)" : "";
     return `Price: ${formatNumber(taxInfo.originalPrice)} | ` +
            `Tax Rate: ${taxInfo.taxRate}% | ` +
            `Tax: ${formatNumber(taxInfo.taxAmount)} | ` +

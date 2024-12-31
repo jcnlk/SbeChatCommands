@@ -77,14 +77,14 @@ function getCorpseType(corpseName) {
     //ChatLib.chat(`Normalized name: ${normalizedName}`);
     
     // More specific matching with looser conditions
-    if (normalizedName.includes('umber')) return 'UMBE';
-    if (normalizedName.includes('tungsten')) return 'TUNG';
-    if (normalizedName.includes('lapis')) return 'LAPI';
-    if (normalizedName.includes('vanguard')) return 'FAIR';
+    if (normalizedName.includes("umber")) return "UMBE";
+    if (normalizedName.includes("tungsten")) return "TUNG";
+    if (normalizedName.includes("lapis")) return "LAPI";
+    if (normalizedName.includes("vanguard")) return "FAIR";
     
     // Debug unmatched corpse
     //ChatLib.chat(`No specific type match for: ${normalizedName}`);
-    return 'OTHER';
+    return "OTHER";
 }
 
 // Function to check for corpses in the tab list
@@ -115,7 +115,7 @@ function getAvailableCorpses() {
             //ChatLib.chat(`§e[DEBUG] Processing line: ${cleanLine}`);
 
             // Check for "Frozen Corpses" header with more lenient matching
-            if (cleanLine.toLowerCase().includes('frozen corpse')) {
+            if (cleanLine.toLowerCase().includes("frozen corpse")) {
                 //ChatLib.chat("§a[DEBUG] Found Frozen Corpses header!");
                 foundCorpseHeader = true;
                 let counter = 1;
@@ -133,7 +133,7 @@ function getAvailableCorpses() {
                     //ChatLib.chat(`§b[DEBUG] Checking potential corpse line: ${cleanCorpseLine}`);
                     
                     // Stop if we hit an empty line or certain characters
-                    if (cleanCorpseLine === '' || cleanCorpseLine.includes('⏣') || cleanCorpseLine.includes('♲')) {
+                    if (cleanCorpseLine === "" || cleanCorpseLine.includes("⏣") || cleanCorpseLine.includes("♲")) {
                         //ChatLib.chat("§e[DEBUG] Found end of corpse list");
                         break;
                     }
@@ -178,16 +178,16 @@ function formatCorpseName(corpse) {
     
     let formatted = "";
     switch(corpse.type) {
-        case 'UMBE':
+        case "UMBE":
             formatted = `${GOLD}${corpse.name}`;
             break;
-        case 'TUNG':
+        case "TUNG":
             formatted = `${GRAY}${corpse.name}`;
             break;
-        case 'LAPI':
+        case "LAPI":
             formatted = `${BLUE}${corpse.name}`;
             break;
-        case 'FAIR':
+        case "FAIR":
             formatted = `${DARK_AQUA}${corpse.name}`;
             break;
         default:
@@ -203,10 +203,10 @@ function formatCorpseName(corpse) {
 // Function to format corpse name for party chat
 function formatCorpseNameForParty(corpse) {
     const typePrefixes = {
-        'UMBE': 'Umber',
-        'TUNG': 'Tungsten',
-        'LAPI': 'Lapis',
-        'FAIR': 'Vanguard'
+        "UMBE": "Umber",
+        "TUNG": "Tungsten",
+        "LAPI": "Lapis",
+        "FAIR": "Vanguard"
     };
     
     if (corpse.type in typePrefixes && !corpse.name.startsWith(typePrefixes[corpse.type])) {
@@ -330,7 +330,7 @@ function detectRoomType() {
     // Get the room type (first 4 characters)
     const roomType = roomCode.slice(0, 4);
     // Get the number (last character)
-    const isCrystal = roomCode.endsWith('2');
+    const isCrystal = roomCode.endsWith("2");
    
     if (ROOM_TYPES[roomType]) {
         const roomName = ROOM_TYPES[roomType];

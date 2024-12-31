@@ -30,7 +30,7 @@ export const Prefix = `${DARK_GRAY}[${GOLD}SCC${DARK_GRAY}]${RESET}`
 
 // Checks if current server is hypixel
 export const InSkyblock = () => {
-    if (Server.getIP().includes('hypixel') && ChatLib.removeFormatting(Scoreboard.getTitle()).includes('SKYBLOCK'))
+    if (Server.getIP().includes("hypixel") && ChatLib.removeFormatting(Scoreboard.getTitle()).includes("SKYBLOCK"))
         return true;
     return false;
 }
@@ -39,7 +39,7 @@ export const InSkyblock = () => {
 export const InGarden = () => {
     let inGarden = false;
     Scoreboard.getLines().forEach((line) => {
-        if (ChatLib.removeFormatting(line).includes('The Garden')) InGarden = true;
+        if (ChatLib.removeFormatting(line).includes("The Garden")) InGarden = true;
     });
     return inGarden;
 }

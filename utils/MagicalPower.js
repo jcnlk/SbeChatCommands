@@ -4,10 +4,10 @@ import Promise from "../../PromiseV2";
 function getMagicalPower(username) {
     return new Promise(function(resolve) {
         request({
-            url: 'https://sky.shiiyu.moe/api/v2/profile/' + username,
-            method: 'GET',
+            url: "https://sky.shiiyu.moe/api/v2/profile/" + username,
+            method: "GET",
             headers: {
-                'User-Agent': 'Mozilla/5.0'
+                "User-Agent": "Mozilla/5.0"
             }
         }).then(function(response) {
             try {
@@ -25,7 +25,7 @@ function getMagicalPower(username) {
                 if (!selectedProfile || !selectedProfile.data || !selectedProfile.data.accessories) {
                     resolve({ 
                         success: false, 
-                        error: 'No magical power data found for ' + username
+                        error: "No magical power data found for " + username
                     });
                     return;
                 }
@@ -39,17 +39,17 @@ function getMagicalPower(username) {
                     }
                 });
             } catch (error) {
-                console.error('Error processing magical power data:', error);
+                console.error("Error processing magical power data:", error);
                 resolve({
                     success: false,
-                    error: 'Failed to process magical power data for ' + username
+                    error: "Failed to process magical power data for " + username
                 });
             }
         }).catch(function(error) {
-            console.error('Error fetching magical power data:', error);
+            console.error("Error fetching magical power data:", error);
             resolve({
                 success: false,
-                error: 'Failed to fetch magical power data for ' + username
+                error: "Failed to fetch magical power data for " + username
             });
         });
     });
