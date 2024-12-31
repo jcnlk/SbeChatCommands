@@ -12,6 +12,7 @@ import "./utils/Dungeon";
 import './utils/MagicalPower';
 import './utils/Level';
 import './utils/Taxes';
+import "./utils/Skills";
 import { 
     BLACK, 
     DARK_BLUE, 

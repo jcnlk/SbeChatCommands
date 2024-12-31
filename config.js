@@ -233,6 +233,54 @@ class Config {
     taxCommand = true;
 
     @SwitchProperty({
+        name: `Skills Command ${DARK_AQUA}!skills${RESET}`,
+        description: "Shows player's skill levels",
+        category: "General",
+        subcategory: "Commands"
+    })
+    skillsCommand = true;
+
+    @SwitchProperty({
+        name: `Skill Average Command ${DARK_AQUA}!skillaverage${RESET}`,
+        description: "Shows player's skill average",
+        category: "General",
+        subcategory: "Commands"
+    })
+    skillAverageCommand = true;
+
+    @SwitchProperty({
+        name: `Catacombs Level Command ${DARK_AQUA}!cata${RESET}`,
+        description: "Shows player's Catacombs level and progress",
+        category: "General",
+        subcategory: "Commands"
+    })
+    cataCommand = true;
+    
+    @SwitchProperty({
+        name: `Dungeon PBs Command ${DARK_AQUA}!pbs${RESET}`,
+        description: "Shows player's personal best times for each floor",
+        category: "General",
+        subcategory: "Commands"
+    })
+    pbsCommand = true;
+    
+    @SwitchProperty({
+        name: `Class Levels Command ${DARK_AQUA}!class${RESET}`,
+        description: "Shows player's dungeon class levels",
+        category: "General",
+        subcategory: "Commands"
+    })
+    classCommand = true;
+    
+    @SwitchProperty({
+        name: `Completions Command ${DARK_AQUA}!comp${RESET}`,
+        description: "Shows player's floor completion counts",
+        category: "General",
+        subcategory: "Commands"
+    })
+    compCommand = true;
+
+    @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
@@ -272,38 +320,6 @@ class Config {
         subcategory: "Mineshaft Announce"
     })
     enableAnnounceMineshaftToSbeChat = true
-
-    @SwitchProperty({
-        name: `Catacombs Level Command ${DARK_AQUA}!cata${RESET}`,
-        description: "Shows player's Catacombs level and progress",
-        category: "General",
-        subcategory: "Commands"
-    })
-    cataCommand = true;
-    
-    @SwitchProperty({
-        name: `Dungeon PBs Command ${DARK_AQUA}!pbs${RESET}`,
-        description: "Shows player's personal best times for each floor",
-        category: "General",
-        subcategory: "Commands"
-    })
-    pbsCommand = true;
-    
-    @SwitchProperty({
-        name: `Class Levels Command ${DARK_AQUA}!class${RESET}`,
-        description: "Shows player's dungeon class levels",
-        category: "General",
-        subcategory: "Commands"
-    })
-    classCommand = true;
-    
-    @SwitchProperty({
-        name: `Completions Command ${DARK_AQUA}!comp${RESET}`,
-        description: "Shows player's floor completion counts",
-        category: "General",
-        subcategory: "Commands"
-    })
-    compCommand = true;
 
     @CheckboxProperty({
         name: "Announce Topaz Mineshaft",
@@ -501,6 +517,8 @@ class Config {
         this.addDependency(`Level Command ${DARK_AQUA}!level${RESET}`, "SBE Chat Commands");
         this.addDependency(`Secrets Command ${DARK_AQUA}!secrets${RESET}`, "SBE Chat Commands");
         this.addDependency(`Tax Command ${DARK_AQUA}!tax${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Skills Command ${DARK_AQUA}!skills${RESET}`, "SBE Chat Commands");
+        this.addDependency(`Skill Average Command ${DARK_AQUA}!skillaverage${RESET}`, "SBE Chat Commands");
 
         this.addDependency("Announce Topaz Mineshaft", "Enable Announce Mineshafts to SBE Chat");
         this.addDependency("Announce Sapphire Mineshaft", "Enable Announce Mineshafts to SBE Chat");

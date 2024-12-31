@@ -10,6 +10,7 @@ import { getSecretsData, formatSecrets, getDungeonData, formatCataLevel, formatP
 import { getMagicalPower, formatMagicalPower } from './MagicalPower';
 import { getSkyblockLevel, formatLevelData } from './Level';
 import { calculateTax, formatTaxMessage, parseNumberInput, getTaxInfo } from './Taxes';
+import { getSkillsData, formatSkillAverage, formatSkills } from './Skills';
 import { 
     Prefix, 
     RED, 
@@ -217,14 +218,12 @@ class CommandHandler {
             if (!config.taxCommand) return;
             
             if (!args.length) {
-                //ChatLib.command('sbechat Usage: !tax <amount>', true);
                 return;
             }
 
             const amount = parseNumberInput(args[0]);
             
             if (!amount || isNaN(amount) || amount <= 0) {
-                //ChatLib.command('sbechat Invalid amount. Example: !tax 100k or !tax 1.5m', true);
                 return;
             }
 
@@ -259,6 +258,34 @@ class CommandHandler {
                 ChatLib.command(`sbechat ${message}`, true);
             });
         }, 'slayerCommand');
+
+        // Skills Command
+        this.registerCommand(['skills', 'skill', 'skilllvl', 'skilllevel'], (sender, args) => {
+            if (!config.skillsCommand) return;
+            const playerToCheck = args[0] || sender;
+            getSkillsData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatSkills(result.data, playerToCheck);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'skillsCommand');
+
+        // Skill Average Command
+        this.registerCommand(['skillaverage', 'sa'], (sender, args) => {
+            if (!config.skillAverageCommand) return;
+            const playerToCheck = args[0] || sender;
+            getSkillsData(playerToCheck).then(result => {
+                if (!result.success) {
+                    ChatLib.command(`sbechat ${result.error}`, true);
+                    return;
+                }
+                const message = formatSkillAverage(result.data, playerToCheck);
+                ChatLib.command(`sbechat ${message}`, true);
+            });
+        }, 'skillAverageCommand');
 
         // Level Command
         this.registerCommand(['level', 'lvl', 'sblvl', 'sblevel', 'skyblocklvl', 'skyblocklevel'], (sender, args) => {
