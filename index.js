@@ -1,7 +1,19 @@
 import config from "./config";
 import defaultData from "./utils/Data";
 import { getCurrentArea } from "./utils/Area";
+import { getAverageTps, getCurrentTps, getPing } from "./utils/ServerUtils";
+import { checkAlphaStatusSbe } from "./utils/AlphaCheck";
+import { getPlayerNetworth, formatNetworthMessage } from "./utils/Networth";
 import "./features/Mining";
+import "./utils/CommandHandler";
+import "./utils/Election";
+import "./utils/Slayer";
+import "./utils/Dungeon";
+import "./utils/MagicalPower";
+import "./utils/Level";
+import "./utils/Taxes";
+import "./utils/Skills";
+import "./utils/LowestBin";
 import { 
     BLACK, 
     DARK_BLUE, 
@@ -28,71 +40,8 @@ import {
     ModuleVersion, 
     ModuleName,  
     Creator,
-    Prefix  } from "./utils/Constants";
-
-let commandOutputs;
-try {
-    const jsonPath = "./data/SbeChatCommands.json";
-    const jsonContent = FileLib.read("SbeChatCommands", jsonPath);
-    if (!jsonContent) {
-        throw new Error(`SbeChatCommands.json is empty or not found at path: ${jsonPath}`);
-    }
-    commandOutputs = JSON.parse(jsonContent);
-    if (!commandOutputs || typeof commandOutputs !== 'object') {
-        throw new Error("Invalid JSON format in SbeChatCommands.json");
-    }
-} catch (error) {
-    console.error("Error loading SbeChatCommands.json:", error);
-    commandOutputs = {};
-}
-
-function generateMessage(commandType, variables) {
-    if (!commandOutputs[commandType]) {
-        console.error(`Invalid or missing command type: ${commandType}`);
-        return null;
-    }
-
-    let templates;
-    switch (commandType) {
-        case 'rng':
-            templates = variables.rng <= 30 ? commandOutputs.rng.low :
-                        variables.rng <= 70 ? commandOutputs.rng.medium :
-                        commandOutputs.rng.high;
-            break;
-        case 'throw':
-            templates = variables.throwIntensity <= 30 ? commandOutputs.throw.low :
-                        variables.throwIntensity <= 70 ? commandOutputs.throw.medium :
-                        commandOutputs.throw.high;
-            break;
-        case 'cf':
-            templates = commandOutputs.cf[variables.result];
-            break;
-        case 'dice':
-            templates = variables.result <= 2 ? commandOutputs.dice.low :
-                        variables.result <= 4 ? commandOutputs.dice.medium :
-                        commandOutputs.dice.high;
-            break;
-        case 'simp':
-        case 'sus':
-            templates = variables.percentage <= 33 ? commandOutputs[commandType].low :
-                        variables.percentage <= 66 ? commandOutputs[commandType].medium :
-                        commandOutputs[commandType].high;
-            break;
-        case 'meow':
-            templates = commandOutputs.meow.responses;
-            break;
-        default:
-            templates = commandOutputs[commandType];
-    }
-
-    if (!Array.isArray(templates)) {
-        console.error(`Invalid template array for command type: ${commandType}`);
-        return null;
-    }
-
-    const template = templates[Math.floor(Math.random() * templates.length)];
-    return template.replace(/\${(\w+)}/g, (_, key) => variables[key] !== undefined ? variables[key] : '');
-}
+    Prefix 
+} from "./utils/Constants";
 
 function handleBlockCommand(action, username) {
     if (!action) {
@@ -141,27 +90,58 @@ function handleBlockCommand(action, username) {
     }
 }
 
-function handleCommandsCommand(args) {
-    if (!commandOutputs.commands) {
-        return "Error: Commands information not available";
-    }
+function handleQuoteCommand(action, ...args) {
+    switch (action) {
+        case "add":
+            if (args.length === 0) {
+                ChatLib.chat(`${Prefix} ${RED}Please provide a quote to add! ${GRAY}(/scc quote add <quote>)`);
+                return;
+            }
+            const quote = args.join(" ");
+            const quoteNumber = defaultData.addQuote(quote);
+            ChatLib.chat(`${Prefix} ${GREEN}Successfully added quote #${quoteNumber}!`);
+            break;
 
-    if (!args || args.length === 0 || args[0].toLowerCase() === "list") {
-        const availableCommands = [
-            "!rng", "!cf", "!8ball", "!throw", "!dice", 
-            "!simp", "!sus", "!join", "!commands", "!meow"
-        ];
-        return `Available commands: ${availableCommands.join(", ")}`;
-    } else if (args[0].toLowerCase() === "help") {
-        if (args.length === 1) {
-            return commandOutputs.commands.help || "Help information not available";
-        } else {
-            let specificCommand = args[1].toLowerCase();
-            return (commandOutputs.commands.specific && commandOutputs.commands.specific[specificCommand]) || 
-                    `Unknown command: ${specificCommand}. Use !commands list for a list of available commands.`;
-        }
+        case "remove":
+            if (args.length === 0) {
+                ChatLib.chat(`${Prefix} ${RED}Please provide a quote number to remove! ${GRAY}(/scc quote remove <number>)`);
+                return;
+            }
+            const index = parseInt(args[0]);
+            if (defaultData.removeQuote(index)) {
+                ChatLib.chat(`${Prefix} ${GREEN}Successfully removed quote #${index}!`);
+            } else {
+                ChatLib.chat(`${Prefix} ${RED}Invalid quote number!`);
+            }
+            break;
+
+        case "list":
+            const quotes = defaultData.getQuotes();
+            if (quotes.length === 0) {
+                ChatLib.chat(`${Prefix} ${RED}No quotes found!`);
+                return;
+            }
+            ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+            ChatLib.chat(`${Prefix} ${YELLOW}Saved Quotes:`);
+            ChatLib.chat("");
+            quotes.forEach((quote, index) => {
+                ChatLib.chat(`${AQUA}#${index + 1} ${WHITE}${quote}`);
+            });
+            ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+            break;
+
+        default:
+            ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+            ChatLib.chat(`${Prefix} ${YELLOW}Quote Commands:`);
+            ChatLib.chat("");
+            ChatLib.chat(`${AQUA}/scc quote add <quote> ${GRAY}- Add a new quote`);
+            ChatLib.chat(`${AQUA}/scc quote remove <number> ${GRAY}- Remove a quote by its number`);
+            ChatLib.chat(`${AQUA}/scc quote list ${GRAY}- List all saved quotes`);
+            ChatLib.chat("");
+            ChatLib.chat(`${YELLOW}NOTE: ${GRAY}Use ${AQUA}!quote${GRAY} in SBE Chat to get a random quote!`);
+            ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
+            break;
     }
-    //return "Invalid usage. Try !commands list or !commands help [command]"; // Prevent chat spam idk
 }
 
 function handleBlacklistCommand(action, username) {
@@ -222,6 +202,7 @@ function showHelpMenu() {
     ChatLib.chat(`${AQUA}/scc help block ${GRAY}- Shows block help`);
     ChatLib.chat(`${AQUA}/scc bl ${GRAY}- Manage blacklisted users`);
     ChatLib.chat(`${AQUA}/scc block ${GRAY}- Manage blocked users`);
+    ChatLib.chat(`${AQUA}/scc quote ${GRAY}- Manage quotes`);
     ChatLib.chat(`${AQUA}/scc version ${GRAY}- Shows version info`);
     ChatLib.chat("");
     ChatLib.chat(`${YELLOW}TIP: ${GRAY}Use ${WHITE}/scc${GRAY} to open the config menu!`);
@@ -248,6 +229,25 @@ function handleHelpCommand(topic) {
             ChatLib.chat(`${AQUA}!sus [player] ${GRAY}- Check sus level`);
             ChatLib.chat(`${AQUA}!join <player> ${GRAY}- Join player's party (Player need to have this module to work)`);
             ChatLib.chat(`${AQUA}!meow ${GRAY}- Meow!`);
+            ChatLib.chat(`${AQUA}!quote ${GRAY}- Get a random quote`);
+            ChatLib.chat(`${AQUA}!tps ${GRAY}- Show server TPS`);
+            ChatLib.chat(`${AQUA}!ping ${GRAY}- Show your ping to the server`);
+            ChatLib.chat(`${AQUA}!alpha ${GRAY}- Check Alpha Server status`);
+            ChatLib.chat(`${AQUA}!nw [player] ${GRAY}- Check player's networth`);
+            ChatLib.chat(`${AQUA}!mayor ${GRAY}- Show current mayor`);
+            ChatLib.chat(`${AQUA}!election ${GRAY}- Show election status`);
+            ChatLib.chat(`${AQUA}!slayer [player] ${GRAY}- Show player's slayer levels`);
+            ChatLib.chat(`${AQUA}!mp [player] ${GRAY}- Show player's magical power`);
+            ChatLib.chat(`${AQUA}!level [player] ${GRAY}- Show player's Skyblock level`);
+            ChatLib.chat(`${AQUA}!secrets [player] ${GRAY}- Show player's total secrets`);
+            ChatLib.chat(`${AQUA}!tax <amount> ${GRAY}- Calculate auction/BIN taxes`);
+            ChatLib.chat(`${AQUA}!skills [player] ${GRAY}- Show player's skill levels`);
+            ChatLib.chat(`${AQUA}!skillaverage [player] ${GRAY}- Show player's skill average`);
+            ChatLib.chat(`${AQUA}!cata [player] ${GRAY}- Show player's Catacombs level`);
+            ChatLib.chat(`${AQUA}!pbs [player] ${GRAY}- Show player's dungeon PBs`);
+            ChatLib.chat(`${AQUA}!class [player] ${GRAY}- Show player's class levels`);
+            ChatLib.chat(`${AQUA}!comp [player] ${GRAY}- Show player's completion counts`);
+            ChatLib.chat(`${AQUA}!lbin <item> ${GRAY}- Check lowest BIN price`);
             ChatLib.chat(`${AQUA}!commands ${GRAY}- Show available commands`);
             ChatLib.chat("");
             ChatLib.chat(`${YELLOW}TIP: ${GRAY}Commands can be enabled/disabled in config!`);
@@ -309,6 +309,10 @@ const commandHandler = register("command", (...args) => {
             handleBlockCommand(action, username);
             break;
             
+        case "quote":
+            handleQuoteCommand(action, ...args.slice(2));
+            break;
+            
         case "config":
         case "gui":
         case "setting":
@@ -332,178 +336,3 @@ const commandHandler = register("command", (...args) => {
             break;
     }
 }).setName("sbechatcommands").setAliases(["scc"]);
-
-register("chat", (name, message, event) => {
-    let senderName = name.replace(/\[.*?\]\s*/, '');
-    
-    if (defaultData.isBlocked(senderName)) {
-        cancel(event);
-        return;
-    }
-
-    if (senderName === Player.getName()) {
-        defaultData.setFirstMessageSent();
-    }
-
-    if (message.toLowerCase() === "meow") {
-        defaultData.incrementMeowCount();
-        
-        if (senderName === Player.getName()) {
-            defaultData.incrementPersonalMeowCount();
-        }
-        
-        if (senderName !== Player.getName() && 
-            !defaultData.isBlacklisted(senderName) &&
-            defaultData.canAutoRespondMeow() && 
-            config.autoMeowResponse) {
-            defaultData.updateLastMeowResponse();
-            ChatLib.command(`sbechat meow`, true);
-        }
-        return;
-    }
-
-    if (!message.startsWith("!")) return;
-    if (defaultData.isBlacklisted(senderName)) return;
-
-    if (defaultData.isOnCooldown(senderName)) {
-        if (senderName === Player.getName()) {
-            const remainingTime = defaultData.getRemainingCooldown(senderName);
-            ChatLib.chat(`${Prefix} ${RED}Please wait ${remainingTime} seconds before using another command!${RESET}`);
-        }
-        return;
-    }
-
-    let commandParts = message.split(" ");
-    let command = commandParts[0].toLowerCase().slice(1);
-
-    if (!config.enableAllCommands) return;
-
-    if (senderName === Player.getName()) {
-        defaultData.addUsedCommand(command);
-    }
-
-    defaultData.setCooldown(senderName);
-
-    switch(command) {
-        case "rng":
-            if (!config.rngCommand) return;
-            break;
-        case "cf":
-            if (!config.cfCommand) return;
-            break;
-        case "8ball":
-            if (!config.eightBallCommand) return;
-            break;
-        case "throw":
-            if (!config.throwCommand) return;
-            break;
-        case "dice":
-            if (!config.diceCommand) return;
-            break;
-        case "simp":
-            if (!config.simpCommand) return;
-            break;
-        case "sus":
-            if (!config.susCommand) return;
-            break;
-        case "join":
-            if (!config.joinCommand) return;
-            break;
-        case "meow":
-            if (!config.meowCommand) return;
-            break;
-        case "commands":
-        case "command":
-            if (!config.commandsCommand) return;
-            break;
-        default:
-            return;
-    }
-
-    let targetName = commandParts[1] && !commandParts[1].startsWith('!') ? commandParts[1] : senderName;
-    
-    let generatedMessage;
-
-    switch(command) {
-        case "rng":
-            if (!config.rngCommand) return;
-            let rng = Math.floor(Math.random() * 101);
-            let item = commandParts.slice(1).join(" ").toLowerCase() || null;
-            generatedMessage = generateMessage("rng", {
-                playerName: senderName,
-                rng, 
-                dropString: item ? ` for ${item}` : ''
-            });
-            break;
-
-        case "cf":
-            let result = Math.random() < 0.5 ? "heads" : "tails";
-            generatedMessage = generateMessage("cf", {
-                playerName: targetName, 
-                result: result
-            });
-            break;
-
-        case "8ball":
-            if (!config.eightBallCommand) return;
-            generatedMessage = commandOutputs["8ballResponses"][
-                Math.floor(Math.random() * commandOutputs["8ballResponses"].length)
-            ];
-            break;
-
-        case "throw":
-            let throwIntensity = Math.floor(Math.random() * 101);
-            generatedMessage = generateMessage("throw", {
-                playerName: targetName, 
-                throwIntensity
-            });
-            break;
-
-        case "dice":
-            let diceResult = Math.floor(Math.random() * 6) + 1;
-            generatedMessage = generateMessage("dice", {
-                playerName: targetName, 
-                result: diceResult
-            });
-            break;
-
-        case "commands":
-        case "command":
-            generatedMessage = handleCommandsCommand(commandParts.slice(1));
-            break;
-
-        case "simp":
-        case "sus":
-            let percentage = Math.floor(Math.random() * 101);
-            generatedMessage = generateMessage(command, {
-                playerName: targetName, 
-                percentage: percentage
-            });
-            break;
-
-        case "join":
-            let playerToJoinOrInvite = commandParts[1];
-            if (!playerToJoinOrInvite) {
-                return;
-            }
-    
-            let clientUsername = Player.getName();
-    
-            if (playerToJoinOrInvite.toLowerCase() === clientUsername.toLowerCase()) {
-                ChatLib.command(`party ${senderName}`);
-            }
-            return;
-
-        case "meow":
-            let total = defaultData.getMeowTotal();
-            generatedMessage = generateMessage("meow", { total });
-            if (generatedMessage === null) {
-                generatedMessage = `MEOW! There have been ${total} meows in SBE Chat!`;
-            }
-            break;
-    }
-
-    if (generatedMessage) {
-        ChatLib.command(`sbechat ${generatedMessage}`, true);
-    }
-}).setCriteria("SBE Chat > ${name}: ${message}");

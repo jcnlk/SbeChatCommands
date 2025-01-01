@@ -24,13 +24,14 @@ export const RESET = "§r";
 
 //Basic Stuff
 export const ModuleName = "SBEChatCommands"
-export const ModuleVersion = "1.0.2" // IMPORTANT: This will define the module version (metadata.json excluded)
+export const ModuleVersion = "1.1.0" // IMPORTANT: This will define the module version (metadata.json excluded)
 export const Creator = "jcnlk"  // idk probably just me
 export const Prefix = `${DARK_GRAY}[${GOLD}SCC${DARK_GRAY}]${RESET}`
+export const CleanPrefix = `[SCC]`
 
 // Checks if current server is hypixel
 export const InSkyblock = () => {
-    if (Server.getIP().includes('hypixel') && ChatLib.removeFormatting(Scoreboard.getTitle()).includes('SKYBLOCK'))
+    if (Server.getIP().includes("hypixel") && ChatLib.removeFormatting(Scoreboard.getTitle()).includes("SKYBLOCK"))
         return true;
     return false;
 }
@@ -39,7 +40,7 @@ export const InSkyblock = () => {
 export const InGarden = () => {
     let inGarden = false;
     Scoreboard.getLines().forEach((line) => {
-        if (ChatLib.removeFormatting(line).includes('The Garden')) InGarden = true;
+        if (ChatLib.removeFormatting(line).includes("The Garden")) InGarden = true;
     });
     return inGarden;
 }
