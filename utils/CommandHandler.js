@@ -276,13 +276,6 @@ class CommandHandler {
         // Lowest BIN Command
         this.registerCommand(["lbin", "lowestbin"], (sender, args) => {
             if (!config.lowestBinCommand) return;
-            
-            /**
-            if (!args.length) {
-                ChatLib.command(`sbechat Usage: !lbin <item name>`, true);
-                return;
-            }
-            */
 
             const searchQuery = args.join(" ");
             getLowestBin(searchQuery).then(result => {
