@@ -41,260 +41,278 @@ let ClickedDebugButton = false;
 
 @Vigilant(`${ModuleName}`, `${ModuleName}`, {
     getCategoryComparator: () => (a, b) => {
-        const order = ["General", "Mining", "Commands", "WIP", "Dev Stuff"];
+        const order = ["General", "Mining", "Commands", "Miscellaneous", "WIP", "Dev Stuff"];
         return order.indexOf(a.name) - order.indexOf(b.name);
     }
 })
 
 class Config {
-    // ==================== General Commands Settings ====================
-    @SwitchProperty({
-        name: "SBE Chat Commands",
-        description: "Enable all commands for SBE Chat",
-        category: "General",
-        subcategory: "Commands"
-    })
-    enableAllCommands = true;
-
-    @SwitchProperty({
-        name: `RNG Command ${DARK_AQUA}!rng${RESET}`,
-        description: "Simulates RNG drops with percentages. Use '!rng [item]' to check your luck for specific items.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    rngCommand = true;
-
-    @SwitchProperty({
-        name: `Coinflip Command ${DARK_AQUA}!cf${RESET}`,
-        description: "Flip a virtual coin. Returns heads or tails with colorful messages.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    cfCommand = true;
-
-    @SwitchProperty({
-        name: `8Ball Command ${DARK_AQUA}!8ball${RESET}`,
-        description: "Ask the magic 8-ball a question and receive a mystical answer. Perfect for decision making!",
-        category: "General",
-        subcategory: "Commands"
-    })
-    eightBallCommand = true;
-
-    @SwitchProperty({
-        name: `Throw Command ${DARK_AQUA}!throw${RESET}`,
-        description: "Tells you how hard someone has thrown.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    throwCommand = true;
-
-    @SwitchProperty({
-        name: `Dice Command ${DARK_AQUA}!dice${RESET}`,
-        description: "Roll a six-sided die. Results come with custom messages based on your roll.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    diceCommand = true;
-
-    @SwitchProperty({
-        name: `Simp Command ${DARK_AQUA}!simp${RESET}`,
-        description: "Check someone's simp level with a percentage. Use '!simp [player]'.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    simpCommand = true;
-
-    @SwitchProperty({
-        name: `Sus Command ${DARK_AQUA}!sus${RESET}`,
-        description: "Measure how suspicious someone is with a percentage. Use '!sus [player]' to investigate.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    susCommand = true;
-
-    @SwitchProperty({
-        name: `Join Command ${DARK_AQUA}!join${RESET}`,
-        description: "Allows others to join your party using '!join [your_name]'. Automatically sends party invites.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    joinCommand = true;
-
-    @SwitchProperty({
-        name: `Help Command ${DARK_AQUA}!<commands, command>${RESET}`,
-        description: "Displays available commands and their usage.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    commandsCommand = true;
-
-    @SwitchProperty({
-        name: `Meow Command ${DARK_AQUA}!meow${RESET}`,
-        description: "Join the meow gang! Tracks total meows in SBE Chat and allows for chain reactions.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    meowCommand = true;
-
-    @SwitchProperty({
-        name: `Quote Command ${DARK_AQUA}!quote${RESET}`,
-        description: "Share random quotes from your collection. Use '!quote' to get a random quote.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    quoteCommand = true;
-
-    @SwitchProperty({
-        name: `TPS Command ${DARK_AQUA}!tps${RESET}`,
-        description: "Shows the current server TPS (Ticks Per Second)",
-        category: "General",
-        subcategory: "Commands"
-    })
-    tpsCommand = true;
-    
-    @SwitchProperty({
-        name: `Ping Command ${DARK_AQUA}!ping${RESET}`,
-        description: "Shows your current ping to the server",
-        category: "General",
-        subcategory: "Commands"
-    })
-    pingCommand = true;
-
-    @SwitchProperty({
-        name: `Alpha Command ${DARK_AQUA}!alpha${RESET}`,
-        description: "Check the status of the Alpha Server and available slots.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    alphaCommand = true;
-
-    @SwitchProperty({
-        name: `Networth Command ${DARK_AQUA}!nw${RESET}`,
-        description: "Check player's networth using SkyCrypt API. Use '!nw [player]' to check specific players.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    networthCommand = true;
-
-    @SwitchProperty({
-        name: `Mayor Command ${DARK_AQUA}!mayor${RESET}`,
-        description: "Shows current Skyblock Mayor and their active perks",
-        category: "General",
-        subcategory: "Commands"
-    })
-    mayorCommand = true;
-    
-    @SwitchProperty({
-        name: `Election Command ${DARK_AQUA}!election${RESET}`,
-        description: "Shows current Skyblock election information and candidates",
-        category: "General",
-        subcategory: "Commands"
-    })
-    electionCommand = true;
-
-    @SwitchProperty({
-        name: `Slayer Command ${DARK_AQUA}!slayer${RESET}`,
-        description: "Shows player's Slayer levels using SkyCrypt API",
-        category: "General",
-        subcategory: "Commands"
-    })
-    slayerCommand = true;
-
-    @SwitchProperty({
-        name: `Magical Power Command ${DARK_AQUA}!mp${RESET}`,
-        description: "Shows player's total magical power from accessories",
-        category: "General",
-        subcategory: "Commands"
-    })
-    magicalPowerCommand = true;
-
-    @SwitchProperty({
-        name: `Level Command ${DARK_AQUA}!level${RESET}`,
-        description: "Shows player's Skyblock level",
-        category: "General",
-        subcategory: "Commands"
-    })
-    levelCommand = true;
-
-    @SwitchProperty({
-        name: `Secrets Command ${DARK_AQUA}!secrets${RESET}`,
-        description: "Shows player's total dungeon secrets found",
-        category: "General",
-        subcategory: "Commands"
-    })
-    secretsCommand = true;
-
-    @SwitchProperty({
-        name: `Tax Command ${DARK_AQUA}!tax${RESET}`,
-        description: "Calculate auction/BIN taxes. Use '!tax <amount> [derpy]' to calculate taxes, optionally with Derpy rates.",
-        category: "General",
-        subcategory: "Commands"
-    })
-    taxCommand = true;
-
-    @SwitchProperty({
-        name: `Skills Command ${DARK_AQUA}!skills${RESET}`,
-        description: "Shows player's skill levels",
-        category: "General",
-        subcategory: "Commands"
-    })
-    skillsCommand = true;
-
-    @SwitchProperty({
-        name: `Skill Average Command ${DARK_AQUA}!skillaverage${RESET}`,
-        description: "Shows player's skill average",
-        category: "General",
-        subcategory: "Commands"
-    })
-    skillAverageCommand = true;
-
-    @SwitchProperty({
-        name: `Catacombs Level Command ${DARK_AQUA}!cata${RESET}`,
-        description: "Shows player's Catacombs level and progress",
-        category: "General",
-        subcategory: "Commands"
-    })
-    cataCommand = true;
-    
-    @SwitchProperty({
-        name: `Dungeon PBs Command ${DARK_AQUA}!pbs${RESET}`,
-        description: "Shows player's personal best times for each floor",
-        category: "General",
-        subcategory: "Commands"
-    })
-    pbsCommand = true;
-    
-    @SwitchProperty({
-        name: `Class Levels Command ${DARK_AQUA}!class${RESET}`,
-        description: "Shows player's dungeon class levels",
-        category: "General",
-        subcategory: "Commands"
-    })
-    classCommand = true;
-    
-    @SwitchProperty({
-        name: `Completions Command ${DARK_AQUA}!comp${RESET}`,
-        description: "Shows player's floor completion counts",
-        category: "General",
-        subcategory: "Commands"
-    })
-    compCommand = true;
-
-    @SwitchProperty({
-        name: `Lowest BIN Command ${DARK_AQUA}!lbin${RESET}`,
-        description: "Shows lowest BIN prices for items on the auction house",
-        category: "General",
-        subcategory: "Commands"
-    })
-    lowestBinCommand = true;
-
+    // ==================== General Settings ====================
     @SwitchProperty({
         name: "Auto Meow Response",
         description: "Automatically responds with a meow when someone meows in chat (Has a cooldown to prevent spam).",
         category: "General",
-        subcategory: "Auto Respnse"
+        subcategory: "Chat"
     })
     autoMeowResponse = true;
+
+    @SwitchProperty({
+        name: "Hide Command Outputs",
+        description: "Hides all command outputs (messages starting with [SCC])",
+        category: "General",
+        subcategory: "Chat"
+    })
+    hideCommandOutputs = false;
+
+    @SwitchProperty({
+        name: "Hide Command Messages",
+        description: "Hides all command messages (starting with !)",
+        category: "General",
+        subcategory: "Chat"
+    })
+    hideCommandMessages = false;
+
+    // ====================  Commands Settings ====================
+
+    @SwitchProperty({
+        name: "SBE Chat Commands",
+        description: "Main Toggle for SBE Chat Commands",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    enableAllCommands = true;
+
+    @CheckboxProperty({
+        name: `RNG Command ${DARK_AQUA}!rng${RESET}`,
+        description: "Simulates RNG drops with percentages. Use '!rng [item]' to check your luck for specific items.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    rngCommand = true;
+
+    @CheckboxProperty({
+        name: `Coinflip Command ${DARK_AQUA}!cf${RESET}`,
+        description: "Flip a virtual coin. Returns heads or tails with colorful messages.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    cfCommand = true;
+
+    @CheckboxProperty({
+        name: `8Ball Command ${DARK_AQUA}!8ball${RESET}`,
+        description: "Ask the magic 8-ball a question and receive a mystical answer. Perfect for decision making!",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    eightBallCommand = true;
+
+    @CheckboxProperty({
+        name: `Throw Command ${DARK_AQUA}!throw${RESET}`,
+        description: "Tells you how hard someone has thrown.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    throwCommand = true;
+
+    @CheckboxProperty({
+        name: `Dice Command ${DARK_AQUA}!dice${RESET}`,
+        description: "Roll a six-sided die. Results come with custom messages based on your roll.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    diceCommand = true;
+
+    @CheckboxProperty({
+        name: `Simp Command ${DARK_AQUA}!simp${RESET}`,
+        description: "Check someone's simp level with a percentage. Use '!simp [player]'.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    simpCommand = true;
+
+    @CheckboxProperty({
+        name: `Sus Command ${DARK_AQUA}!sus${RESET}`,
+        description: "Measure how suspicious someone is with a percentage. Use '!sus [player]' to investigate.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    susCommand = true;
+
+    @CheckboxProperty({
+        name: `Join Command ${DARK_AQUA}!join${RESET}`,
+        description: "Allows others to join your party using '!join [your_name]'. Automatically sends party invites.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    joinCommand = true;
+
+    @CheckboxProperty({
+        name: `Help Command ${DARK_AQUA}!<commands, command>${RESET}`,
+        description: "Displays available commands and their usage.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    commandsCommand = true;
+
+    @CheckboxProperty({
+        name: `Meow Command ${DARK_AQUA}!meow${RESET}`,
+        description: "Join the meow gang! Tracks total meows in SBE Chat and allows for chain reactions.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    meowCommand = true;
+
+    @CheckboxProperty({
+        name: `Quote Command ${DARK_AQUA}!quote${RESET}`,
+        description: "Share random quotes from your collection. Use '!quote' to get a random quote.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    quoteCommand = true;
+
+    @CheckboxProperty({
+        name: `TPS Command ${DARK_AQUA}!tps${RESET}`,
+        description: "Shows the current server TPS (Ticks Per Second)",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    tpsCommand = true;
+    
+    @CheckboxProperty({
+        name: `Ping Command ${DARK_AQUA}!ping${RESET}`,
+        description: "Shows your current ping to the server",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    pingCommand = true;
+
+    @CheckboxProperty({
+        name: `Alpha Command ${DARK_AQUA}!alpha${RESET}`,
+        description: "Check the status of the Alpha Server and available slots.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    alphaCommand = true;
+
+    @CheckboxProperty({
+        name: `Networth Command ${DARK_AQUA}!nw${RESET}`,
+        description: "Check player's networth using SkyCrypt API. Use '!nw [player]' to check specific players.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    networthCommand = true;
+
+    @CheckboxProperty({
+        name: `Mayor Command ${DARK_AQUA}!mayor${RESET}`,
+        description: "Shows current Skyblock Mayor and their active perks",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    mayorCommand = true;
+    
+    @CheckboxProperty({
+        name: `Election Command ${DARK_AQUA}!election${RESET}`,
+        description: "Shows current Skyblock election information and candidates",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    electionCommand = true;
+
+    @CheckboxProperty({
+        name: `Slayer Command ${DARK_AQUA}!slayer${RESET}`,
+        description: "Shows player's Slayer levels using SkyCrypt API",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    slayerCommand = true;
+
+    @CheckboxProperty({
+        name: `Magical Power Command ${DARK_AQUA}!mp${RESET}`,
+        description: "Shows player's total magical power from accessories",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    magicalPowerCommand = true;
+
+    @CheckboxProperty({
+        name: `Level Command ${DARK_AQUA}!level${RESET}`,
+        description: "Shows player's Skyblock level",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    levelCommand = true;
+
+    @CheckboxProperty({
+        name: `Secrets Command ${DARK_AQUA}!secrets${RESET}`,
+        description: "Shows player's total dungeon secrets found",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    secretsCommand = true;
+
+    @CheckboxProperty({
+        name: `Tax Command ${DARK_AQUA}!tax${RESET}`,
+        description: "Calculate auction/BIN taxes. Use '!tax <amount> [derpy]' to calculate taxes, optionally with Derpy rates.",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    taxCommand = true;
+
+    @CheckboxProperty({
+        name: `Skills Command ${DARK_AQUA}!skills${RESET}`,
+        description: "Shows player's skill levels",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    skillsCommand = true;
+
+    @CheckboxProperty({
+        name: `Skill Average Command ${DARK_AQUA}!skillaverage${RESET}`,
+        description: "Shows player's skill average",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    skillAverageCommand = true;
+
+    @CheckboxProperty({
+        name: `Catacombs Level Command ${DARK_AQUA}!cata${RESET}`,
+        description: "Shows player's Catacombs level and progress",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    cataCommand = true;
+    
+    @CheckboxProperty({
+        name: `Dungeon PBs Command ${DARK_AQUA}!pbs${RESET}`,
+        description: "Shows player's personal best times for each floor",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    pbsCommand = true;
+    
+    @CheckboxProperty({
+        name: `Class Levels Command ${DARK_AQUA}!class${RESET}`,
+        description: "Shows player's dungeon class levels",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    classCommand = true;
+    
+    @CheckboxProperty({
+        name: `Completions Command ${DARK_AQUA}!comp${RESET}`,
+        description: "Shows player's floor completion counts",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    compCommand = true;
+
+    @CheckboxProperty({
+        name: `Lowest BIN Command ${DARK_AQUA}!lbin${RESET}`,
+        description: "Shows lowest BIN prices for items on the auction house",
+        category: "Commands",
+        subcategory: "Commands"
+    })
+    lowestBinCommand = true;
 
     // ==================== Mining Features ====================
     @SwitchProperty({
@@ -457,12 +475,12 @@ class Config {
     })
     announceOpalMineshaft = false
 
-    // ==================== Development Tools ====================
+    // ==================== Miscellaneous ====================
     @ButtonProperty({
-        name: "Debug Mode",
-        description: "Just for debugging ig..",
-        category: "Dev Stuff",
-        subcategory: "Dev Stuff",
+        name: "Secret Button",
+        description: "Idk what it is doing..",
+        category: "Miscellaneous",
+        subcategory: "Miscellaneous",
         placeholder: "Click me!"
     })
     coolMessage() {
@@ -496,8 +514,7 @@ class Config {
         // Category descriptions
         this.setCategoryDescription("General", `${ConfigHeader}`);
         this.setCategoryDescription("Mining", `${ConfigHeader}`);
-        this.setCategoryDescription("Dev Stuff", `${ConfigHeader}`);
-    
+        this.setCategoryDescription("Commands", `${ConfigHeader}\n\n${RED}INFO:${RESET} Some command outputs might not be completely up to date (Thanks Skycrpt API)`);    
         // Dependencies
         this.addDependency(`RNG Command ${DARK_AQUA}!rng${RESET}`, "SBE Chat Commands");
         this.addDependency(`Coinflip Command ${DARK_AQUA}!cf${RESET}`, "SBE Chat Commands");
