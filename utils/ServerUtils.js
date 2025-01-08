@@ -36,7 +36,7 @@ onChatPacket((event) => {
     pingCallback(ping);
     waitingPingCommand = false;
     pingCallback = null;
-}).setCriteria(/^Unknown command\. Type \"\/help\" for help\. \(\".+\"\)$/);
+}).setCriteria(`Unknown command. Type "/help" for help. ('fbkjgblsbnljhh')`); //}).setCriteria(/^Unknown command\. Type \"\/help\" for help\. \(\".+\"\)$/);
 
 // Network utility functions
 export const getAverageTps = () => averageTps.toFixed(1);

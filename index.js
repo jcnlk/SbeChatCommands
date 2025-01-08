@@ -1,19 +1,20 @@
-import config from "./config";
 import defaultData from "./utils/Data";
-import { getCurrentArea } from "./utils/Area";
-import { getAverageTps, getCurrentTps, getPing } from "./utils/ServerUtils";
-import { checkAlphaStatusSbe } from "./utils/AlphaCheck";
-import { getPlayerNetworth, formatNetworthMessage } from "./utils/Networth";
-import "./features/Mining";
 import "./utils/CommandHandler";
-import "./utils/Election";
-import "./utils/Slayer";
-import "./utils/Dungeon";
+import config from "./config";
 import "./utils/MagicalPower";
+import "./utils/ServerUtils";
+import "./utils/AlphaCheck";
+import "./utils/ApiWrapper";
+import "./features/Mining";
+import "./utils/LowestBin";
+import "./utils/Networth";
+import "./utils/Election";
+import "./utils/Dungeon";
+import "./utils/Skills";
+import "./utils/Slayer";
 import "./utils/Level";
 import "./utils/Taxes";
-import "./utils/Skills";
-import "./utils/LowestBin";
+import "./utils/Area";
 import { 
     BLACK, 
     DARK_BLUE, 
@@ -289,7 +290,7 @@ register("command", () => {
     defaultData.displayAchievements();
 }).setName("sccachievements").setAliases(["scca"]);
 
-const commandHandler = register("command", (...args) => {
+register("command", (...args) => {
     if (!args || args.length === 0 || !args[0]) {
         config.openGUI();
         return;

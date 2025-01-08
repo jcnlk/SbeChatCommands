@@ -1,6 +1,5 @@
 import PogData from "../../PogData";
-import { 
-    ModuleName, 
+import {  
     Prefix, 
     ModuleVersion, 
     Creator,
@@ -13,7 +12,6 @@ import {
     WHITE,
     GRAY,
     RED,
-    DARK_GRAY,
     BOLD 
 } from "./Constants";
 
@@ -74,13 +72,13 @@ class defaultData {
                 description: 'Send "meow" 1000 times in SBE Chat',
                 trigger: "meowCount",
                 requirement: 1000
-            },
-            COMMAND_MASTER: {
-                id: "COMMAND_MASTER",
-                name: "Command Master",
-                description: "Use all available SBE Chat commands at least once",
-                trigger: "commandMaster"
-            }
+            }//,
+            //COMMAND_MASTER: {
+            //    id: "COMMAND_MASTER",
+            //    name: "Command Master",
+            //    description: "Use all available SBE Chat commands at least once",
+            //    trigger: "commandMaster"
+            //}
         };
 
         // Initialize PogData with default values
@@ -269,9 +267,9 @@ class defaultData {
                     case "meowCount":
                         shouldUnlock = value >= achievement.requirement;
                         break;
-                    case "commandMaster":
-                        shouldUnlock = this.checkCommandMasterProgress();
-                        break;
+                    //case "commandMaster":
+                    //    shouldUnlock = this.checkCommandMasterProgress();
+                    //    break;
                     default:
                         shouldUnlock = true;
                         break;
@@ -296,26 +294,26 @@ class defaultData {
         }
     }
 
-    checkCommandMasterProgress() {
-        // Only include commands that are actually implemented in the module
-        const requiredCommands = [
-            "rng",      // RNG chance command
-            "cf",       // Coinflip command
-            "8ball",    // Magic 8-ball command
-            "throw",    // Throw command
-            "dice",     // Dice roll command
-            "simp",     // Simp level command
-            "sus",      // Sus level command
-            "join",     // Party join command
-            "meow",     // Meow command
-            "quote",    // Quote command
-            "tps",      // TPS check command
-            "ping"      // Ping check command
-        ];
-        
-        const usedCommands = this.data.playerData.usedCommands || [];
-        return requiredCommands.every(cmd => usedCommands.includes(cmd));
-    }
+    //checkCommandMasterProgress() {
+    //    // Only include commands that are actually implemented in the module
+    //    const requiredCommands = [
+    //        "rng",      // RNG chance command
+    //        "cf",       // Coinflip command
+    //        "8ball",    // Magic 8-ball command
+    //        "throw",    // Throw command
+    //        "dice",     // Dice roll command
+    //        "simp",     // Simp level command
+    //        "sus",      // Sus level command
+    //        "join",     // Party join command
+    //        "meow",     // Meow command
+    //        "quote",    // Quote command
+    //        "tps",      // TPS check command
+    //        "ping"      // Ping check command
+    //    ];
+    //     
+    //    const usedCommands = this.data.playerData.usedCommands || [];
+    //    return requiredCommands.every(cmd => usedCommands.includes(cmd));
+    //}
 
     getAchievementProgress(achievementId) {
         const achievement = this.achievements[achievementId];
@@ -326,13 +324,13 @@ class defaultData {
                     current: this.data.playerData.personalMeowCount || 0,
                     required: achievement.requirement
                 };
-            case "commandMaster":
-                const usedCommands = this.data.playerData.usedCommands || [];
-                const totalCommands = 12; // Total number of implemented commands (excluding help commands)
-                return {
-                    current: usedCommands.length,
-                    required: totalCommands
-                };
+            //case "commandMaster":
+            //    const usedCommands = this.data.playerData.usedCommands || [];
+            //    const totalCommands = 12; // Total number of implemented commands (excluding help commands)
+            //    return {
+            //        current: usedCommands.length,
+            //        required: totalCommands
+            //    };
             default:
                 return null;
         }
@@ -345,16 +343,16 @@ class defaultData {
         this.checkAchievement("meowCount", this.data.playerData.personalMeowCount);
     }
 
-    addUsedCommand(command) {
-        if (!this.data.playerData.usedCommands) {
-            this.data.playerData.usedCommands = [];
-        }
-        if (!this.data.playerData.usedCommands.includes(command)) {
-            this.data.playerData.usedCommands.push(command);
-            this.data.save();
-            this.checkAchievement("commandMaster");
-        }
-    }
+    //addUsedCommand(command) {
+    //    if (!this.data.playerData.usedCommands) {
+    //        this.data.playerData.usedCommands = [];
+    //    }
+    //    if (!this.data.playerData.usedCommands.includes(command)) {
+    //        this.data.playerData.usedCommands.push(command);
+    //        this.data.save();
+    //        this.checkAchievement("commandMaster");
+    //    }
+    //}
 
     setFirstMessageSent() {
         if (!this.data.playerData.firstMessageSent) {

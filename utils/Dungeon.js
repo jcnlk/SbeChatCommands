@@ -1,6 +1,6 @@
-import request from "../../requestV2";
 import Promise from "../../PromiseV2";
 import { CleanPrefix } from "./Constants";
+import ApiWrapper from "./ApiWrapper";
 
 function filterByMode(items, isMasterMode) {
     return items.filter(item => isMasterMode ? item.startsWith("M") : item.startsWith("F"));
@@ -22,55 +22,26 @@ function prepareUsername(username) {
  * @returns {Promise} - Player"s dungeon data or error
  */
 export function getDungeonData(username) {
-    const encodedUsername = prepareUsername(username);
-    
-    return new Promise(function(resolve) {
-        request({
-            url: `https://sky.shiiyu.moe/api/v2/profile/${encodedUsername}`,
-            method: "GET",
-            headers: {
-                "User-Agent": "Mozilla/5.0"
+    return ApiWrapper.getSkyCryptProfile(username, true)
+        .then(result => {
+            if (!result.success) return result;
+            
+            // Find the selected profile
+            const selectedProfile = Object.values(result.data.profiles)
+                .find(profile => profile.current);
+            
+            if (!selectedProfile?.data?.dungeons) {
+                return { 
+                    success: false, 
+                    error: "No dungeon data found for " + username
+                };
             }
-        }).then(function(response) {
-            try {
-                const data = JSON.parse(response);
-                
-                // Find the selected profile
-                let selectedProfile = null;
-                for (const profileId in data.profiles) {
-                    if (data.profiles[profileId].current) {
-                        selectedProfile = data.profiles[profileId];
-                        break;
-                    }
-                }
-                
-                if (!selectedProfile || !selectedProfile.data || !selectedProfile.data.dungeons) {
-                    resolve({ 
-                        success: false, 
-                        error: "No dungeon data found for " + username
-                    });
-                    return;
-                }
 
-                resolve({
-                    success: true,
-                    data: selectedProfile.data.dungeons
-                });
-            } catch (error) {
-                console.error(`${CleanPrefix} Error processing dungeon data:`, error);
-                resolve({
-                    success: false,
-                    error: "Failed to process dungeon data for " + username
-                });
-            }
-        }).catch(function(error) {
-            console.error(`${CleanPrefix} Error fetching dungeon data:`, error);
-            resolve({
-                success: false,
-                error: "Failed to fetch dungeon data for " + username
-            });
+            return {
+                success: true,
+                data: selectedProfile.data.dungeons
+            };
         });
-    });
 }
 
 /**
@@ -79,57 +50,32 @@ export function getDungeonData(username) {
  * @returns {Promise} - Player's total secrets or error
  */
 export function getSecretsData(username) {
-    const encodedUsername = prepareUsername(username);
-    
-    return new Promise(function(resolve) {
-        request({
-            url: `https://sky.shiiyu.moe/api/v2/dungeons/${encodedUsername}`,
-            method: "GET",
-            headers: { 
-                "User-Agent": "Mozilla/5.0",
-                "Content-Type": "application/json"
-            }
-        }).then(function(response) {
-            try {
-                const data = JSON.parse(response);
-                
-                // Get profile with highest cata level as fallback for selected profile
-                const getCataLevel = profile => profile.dungeons?.catacombs?.level?.uncappedLevel;
-                const profile = Object.values(data.profiles)
-                    .filter(x => getCataLevel(x))
-                    .sort((a, b) => getCataLevel(b) - getCataLevel(a))[0];
+    return ApiWrapper.getSkyCryptDungeons(username, true)
+        .then(result => {
+            if (!result.success) return result;
+            
+            // Get profile with highest cata level as fallback for selected profile
+            const getCataLevel = profile => profile.dungeons?.catacombs?.level?.uncappedLevel;
+            const profile = Object.values(result.data.profiles)
+                .filter(x => getCataLevel(x))
+                .sort((a, b) => getCataLevel(b) - getCataLevel(a))[0];
 
-                if (!profile || !profile.dungeons) {
-                    resolve({ 
-                        success: false, 
-                        error: "No dungeon data found for " + username
-                    });
-                    return;
+            if (!profile?.dungeons) {
+                return { 
+                    success: false, 
+                    error: "No dungeon data found for " + username
+                };
+            }
+
+            const secrets = profile.dungeons.secrets_found || 0;
+            
+            return {
+                success: true,
+                data: {
+                    total_secrets: secrets
                 }
-
-                const secrets = profile.dungeons.secrets_found || 0;
-                
-                resolve({
-                    success: true,
-                    data: {
-                        total_secrets: secrets
-                    }
-                });
-            } catch (error) {
-                console.error(`${CleanPrefix} Error processing secrets data:`, error);
-                resolve({
-                    success: false,
-                    error: "Failed to process secrets data for " + username
-                });
-            }
-        }).catch(function(error) {
-            console.error(`${CleanPrefix} Error fetching secrets data:`, error);
-            resolve({
-                success: false,
-                error: "Failed to fetch secrets data for " + username
-            });
+            };
         });
-    });
 }
 
 /**

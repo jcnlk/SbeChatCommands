@@ -1,6 +1,5 @@
-import { getElectionData } from "./Election";
 import Promise from "../../PromiseV2";
-import { CleanPrefix } from "./Constants";
+import ApiWrapper from "./ApiWrapper";
 
 // Cache system for mayor status
 let mayorCache = {
@@ -70,20 +69,18 @@ function isDerpyMayor() {
             return;
         }
         
-        getElectionData().then(result => {
-            if (!result.success) {
-                resolve(mayorCache.isDerpy);
-                return;
-            }
+        ApiWrapper.getHypixelElection()
+            .then(result => {
+                if (!result.success) {
+                    resolve(mayorCache.isDerpy);
+                    return;
+                }
 
-            mayorCache.isDerpy = result.data.mayor?.name === "Derpy";
-            mayorCache.lastUpdate = currentTime;
-            
-            resolve(mayorCache.isDerpy);
-        }).catch(error => {
-            console.error(`${CleanPrefix} Error checking mayor status:`, error);
-            resolve(mayorCache.isDerpy);
-        });
+                mayorCache.isDerpy = result.data.mayor?.name === "Derpy";
+                mayorCache.lastUpdate = currentTime;
+                
+                resolve(mayorCache.isDerpy);
+            });
     });
 }
 
@@ -93,7 +90,7 @@ function isDerpyMayor() {
  * @param {boolean} isDerpyActive - Whether Derpy is active
  * @returns {Object} - Tax information
  */
-export function calculateTax(initialPrice, isDerpyActive = false) {
+function calculateTax(initialPrice, isDerpyActive = false) {
     let taxRate;
     if (initialPrice < 10_000_000) {
         taxRate = 0.01;

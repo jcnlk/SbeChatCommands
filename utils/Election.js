@@ -1,147 +1,95 @@
-import request from "../../requestV2";
 import Promise from "../../PromiseV2";
 import { CleanPrefix } from "./Constants";
+import ApiWrapper from "./ApiWrapper";
 
 /**
- * Fetches election data from Hypixel API
- * @returns {Promise} Election data or error
+ * Fetches election data from Hypixel's SkyBlock API
+ * @returns {Promise<{ success: boolean, data?: Object, error?: string }>}
  */
 export function getElectionData() {
-    return new Promise((resolve) => {
-        request({
-            url: "https://api.hypixel.net/v2/resources/skyblock/election",
-            method: "GET",
-            headers: {
-                "User-Agent": "Mozilla/5.0"
-            }
-        }).then(response => {
-            try {
-                const data = JSON.parse(response);
-                if (!data.success) {
-                    resolve({ 
-                        success: false, 
-                        error: "Failed to fetch election data" 
-                    });
-                    return;
-                }
-
-                resolve({
-                    success: true,
-                    data: data
-                });
-            } catch (error) {
-                resolve({
-                    success: false,
-                    error: "Failed to process election data"
-                });
-            }
-        }).catch(error => {
-            resolve({
-                success: false,
-                error: "Failed to fetch election data"
-            });
-        });
-    });
+    return ApiWrapper.getHypixelElection();
 }
 
 /**
- * Formats current mayor data for chat
- * @param {Object} data - Election data from API
- * @returns {string} Formatted message
+ * Formats the current Mayor data for display in chat
+ * @param {Object} data - The API response object (e.g., result.data)
+ * @returns {string} A formatted message about the current Mayor and perks
  */
 export function formatMayorData(data) {
-    if (!data.mayor) {
+    // Basic validation
+    if (!data || !data.mayor) {
         console.error(`${CleanPrefix} Could not fetch current mayor data!`);
+        return `${CleanPrefix} [Error] No mayor data found.`;
     }
 
     const mayor = data.mayor;
-    let message = `Current Mayor: ${mayor.name} | Perks: `;
-    
-    const perkNames = mayor.perks.map(perk => perk.name).join(", ");
-    message += perkNames;
+    let message = `Current Mayor: ${mayor.name}`;
 
-    // Add minister information if available
-    if (mayor.election && mayor.election.candidates) {
-        const winningCandidate = mayor.election.candidates.find(c => c.key === mayor.key);
-        if (winningCandidate) {
-            const ministerPerk = winningCandidate.perks.find(perk => perk.minister);
-            if (ministerPerk) {
-                message += ` | Minister Perk: ${ministerPerk.name}`;
-            }
-        }
+    // Gather mayor's normal perks
+    if (mayor.perks && mayor.perks.length > 0) {
+        const perkNames = mayor.perks.map((p) => p.name).join(", ");
+        message += ` (Perks: ${perkNames})`;
+    } else {
+        message += ` (No perks found)`;
+    }
+
+    // If there's a Minister and a Minister Perk, display it
+    if (mayor.minister && mayor.minister.perk) {
+        message += ` | Minister: ${mayor.minister.name} (Perk: ${mayor.minister.perk.name})`;
     }
 
     return message;
 }
 
 /**
- * Formats election candidate data for chat
- * @param {Object} data - Election data from API
- * @returns {string} Formatted message
+ * Formats the current election data for display in chat
+ * @param {Object} data - The API response object (e.g., result.data)
+ * @returns {string} A formatted message about the ongoing election, sorted by votes
  */
 export function formatElectionData(data) {
-    if (!data.current || !data.current.candidates) {
+    // Basic validation
+    if (!data || !data.mayor || !data.mayor.election) {
         console.error(`${CleanPrefix} Could not fetch current election data!`);
+        return `${CleanPrefix} [Error] No election data found.`;
     }
 
-    let message = `Current Election - Year ${data.current.year} | `;
-    
-    const sortedCandidates = [...data.current.candidates].sort((a, b) => b.votes - a.votes);
+    const election = data.mayor.election;
+    if (!election.year || !election.candidates) {
+        console.error(`${CleanPrefix} Incomplete election data!`);
+        return `${CleanPrefix} [Error] Incomplete election data.`;
+    }
+
+    // Start building our output
+    let message = `Current Election - Year ${election.year} | `;
+
+    // Sort candidates by votes (descending)
+    const sortedCandidates = [...election.candidates].sort((a, b) => b.votes - a.votes);
     const totalVotes = getTotalVotes(sortedCandidates);
-    
-    const candidateInfos = sortedCandidates.map(candidate => {
+
+    // For each candidate, show:
+    // "Name: percentage% (Perk1, Perk2, Perk3)"
+    const candidateStrings = sortedCandidates.map((candidate) => {
         const votePercent = ((candidate.votes / totalVotes) * 100).toFixed(1);
-        const ministerPerk = candidate.perks.find(perk => perk.minister);
-        const perkInfo = ministerPerk ? ` (${ministerPerk.name})` : "";
+
+        // List all perks
+        let perkInfo = "";
+        if (candidate.perks && candidate.perks.length > 0) {
+            const perkNames = candidate.perks.map((p) => p.name).join(", ");
+            perkInfo = ` (${perkNames})`;
+        }
+
         return `${candidate.name}: ${votePercent}%${perkInfo}`;
     });
 
-    message += candidateInfos.join(" | ");
-    
+    message += candidateStrings.join(" | ");
     return message;
 }
 
 /**
- * Calculates total votes
- * @param {Array} candidates - Array of candidates
- * @returns {number} Total votes
+ * Calculates the total number of votes across all candidates
+ * @param {Array} candidates - An array of candidate objects
+ * @returns {number} Sum of votes from all candidates
  */
 function getTotalVotes(candidates) {
-    return candidates.reduce((sum, candidate) => sum + candidate.votes, 0);
-}
-
-/**
- * Register both mayor and election commands
- * @param {Object} commandHandler - The command handler instance
- */
-export function registerMayorAndElectionCommands(commandHandler) {
-    // Mayor command
-    commandHandler.registerCommand("mayor", (sender, args) => {
-        if (!commandHandler.config.mayorCommand) return;
-        
-        getElectionData().then(result => {
-            if (!result.success) {
-                console.error(`${CleanPrefix} ${result.error}`);
-                return;
-            }
-
-            const message = formatMayorData(result.data);
-            ChatLib.command(`sbechat ${message}`, true);
-        });
-    }, "mayorCommand");
-
-    // Election command
-    commandHandler.registerCommand("election", (sender, args) => {
-        if (!commandHandler.config.electionCommand) return;
-        
-        getElectionData().then(result => {
-            if (!result.success) {
-                console.error(`${CleanPrefix} ${result.error}`);
-                return;
-            }
-
-            const message = formatElectionData(result.data);
-            ChatLib.command(`sbechat ${message}`, true);
-        });
-    }, "electionCommand");
+    return candidates.reduce((acc, candidate) => acc + (candidate.votes || 0), 0);
 }
