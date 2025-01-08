@@ -83,7 +83,6 @@ class ApiWrapper {
 
                 var cacheKey = url;
                 
-                // Nur cachen wenn es nicht SkyCrypt ist oder kein Force Update
                 if (self.cacheConfig.enabled && (!url.includes("sky.shiiyu.moe") || !options || !options.forceUpdate)) {
                     var cachedData = self.getCachedData(cacheKey);
                     if (cachedData) {

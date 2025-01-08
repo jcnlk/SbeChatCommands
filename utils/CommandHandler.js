@@ -1,6 +1,5 @@
 import config from "../config";
 import defaultData from "../utils/Data";
-import { getCurrentArea } from "../utils/Area";
 import { getAverageTps, getCurrentTps, getPing } from "../utils/ServerUtils";
 import { checkAlphaStatusSbe } from "../utils/AlphaCheck";
 import { getPlayerNetworth, formatNetworthMessage } from "../utils/Networth";
@@ -9,7 +8,7 @@ import { getSlayerData, formatSlayerData } from "./Slayer";
 import { getSecretsData, formatSecrets, getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from "./Dungeon";
 import { getMagicalPower, formatMagicalPower } from "./MagicalPower";
 import { getSkyblockLevel, formatLevelData } from "./Level";
-import { calculateTax, formatTaxMessage, parseNumberInput, getTaxInfo } from "./Taxes";
+import { formatTaxMessage, parseNumberInput, getTaxInfo } from "./Taxes";
 import { getSkillsData, formatSkillAverage, formatSkills } from "./Skills";
 import { getLowestBin, formatLowestBin } from "./LowestBin";
 import { 
@@ -17,12 +16,6 @@ import {
     CleanPrefix,
     RED, 
     RESET, 
-    YELLOW, 
-    AQUA, 
-    WHITE, 
-    GRAY, 
-    GOLD, 
-    GREEN, 
     CleanPrefix
 } from "../utils/Constants";
 

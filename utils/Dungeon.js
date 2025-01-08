@@ -1,4 +1,3 @@
-import request from "../../requestV2";
 import Promise from "../../PromiseV2";
 import { CleanPrefix } from "./Constants";
 import ApiWrapper from "./ApiWrapper";
