@@ -514,7 +514,9 @@ class Config {
         // Category descriptions
         this.setCategoryDescription("General", `${ConfigHeader}`);
         this.setCategoryDescription("Mining", `${ConfigHeader}`);
-        this.setCategoryDescription("Commands", `${ConfigHeader}\n\n${RED}${BOLD}NOTE:${RESET} Some command outputs might not be completely up to date (Thanks Skycrpt API)`);    
+        this.setCategoryDescription("Commands", `${ConfigHeader}\n\n${RED}${BOLD}NOTE:${RESET} Some command outputs might not be completely up to date (Thanks Skycrpt API)`);
+        this.setCategoryDescription("Miscellaneous", `${ConfigHeader}`);
+           
         // Dependencies
         this.addDependency(`RNG Command ${DARK_AQUA}!rng${RESET}`, "SBE Chat Commands");
         this.addDependency(`Coinflip Command ${DARK_AQUA}!<cf, coinflip>${RESET}`, "SBE Chat Commands");

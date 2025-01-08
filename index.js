@@ -14,6 +14,7 @@ import "./utils/Level";
 import "./utils/Taxes";
 import "./utils/Skills";
 import "./utils/LowestBin";
+import "./utils/ApiWrapper";
 import { 
     BLACK, 
     DARK_BLUE, 

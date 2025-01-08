@@ -1,63 +1,29 @@
-import request from "../../requestV2";
-import Promise from "../../PromiseV2";
+import ApiWrapper from './ApiWrapper';
 import { CleanPrefix } from "./Constants";
 
-/**
- * Fetches slayer data from SkyCrypt API
- * @param {string} username - Minecraft username
- * @returns {Promise} Slayer data or error
- */
 export function getSlayerData(username) {
-    return new Promise((resolve) => {
-        request({
-            url: `https://sky.shiiyu.moe/api/v2/slayers/${username}`,
-            method: "GET",
-            headers: {
-                "User-Agent": "Mozilla/5.0"
-            }
-        }).then(response => {
-            try {
-                const data = JSON.parse(response);
-                
-                // Find selected profile
-                const selectedProfile = Object.values(data).find(profile => profile.selected);
-                
-                if (!selectedProfile || !selectedProfile.data || !selectedProfile.data.slayers) {
-                    resolve({ 
-                        success: false, 
-                        error: `No slayer data found for ${username}` 
-                    });
-                    return;
-                }
+    return ApiWrapper.getSkyCryptSlayers(username, true).then(result => {
+        if (!result.success) return result;
 
-                resolve({
-                    success: true,
-                    data: selectedProfile.data.slayers,
-                    totalXp: selectedProfile.data.total_slayer_xp || 0
-                });
-            } catch (error) {
-                console.error(`${CleanPrefix} Error processing slayer data:`, error);
-                resolve({
-                    success: false,
-                    error: `Failed to process slayer data for ${username}`
-                });
-            }
-        }).catch(error => {
-            console.error(`${CleanPrefix} Error fetching slayer data:`, error);
-            resolve({
-                success: false,
-                error: `Failed to fetch slayer data for ${username}`
-            });
-        });
+        // Find selected profile
+        const selectedProfile = Object.values(result.data)
+            .find(profile => profile.selected);
+        
+        if (!selectedProfile?.data?.slayers) {
+            return { 
+                success: false, 
+                error: `No slayer data found for ${username}` 
+            };
+        }
+
+        return {
+            success: true,
+            data: selectedProfile.data.slayers,
+            totalXp: selectedProfile.data.total_slayer_xp || 0
+        };
     });
 }
 
-/**
- * Formats slayer data for chat
- * @param {Object} data - Slayer data from API
- * @param {string} username - Player username
- * @returns {string} Formatted message
- */
 export function formatSlayerData(data, username) {
     const slayerTypes = [
         { key: "zombie", name: "Revenant" },

@@ -1,6 +1,6 @@
-import request from "../../requestV2";
 import Promise from "../../PromiseV2";
 import { CleanPrefix } from "./Constants";
+import ApiWrapper from "./ApiWrapper";
 
 let skyblockItems = [];
 
@@ -66,84 +66,51 @@ function formatSearchQuery(query) {
  * @returns {Promise} Price data or error
  */
 export function getLowestBin(searchQuery) {
-    return new Promise(function(resolve) {
-        // Try to find item ID first
-        const itemId = getItemId(searchQuery);
-        const searchTerm = itemId || formatSearchQuery(searchQuery);
+    const itemId = getItemId(searchQuery);
+    const searchTerm = itemId || formatSearchQuery(searchQuery);
 
-        request({
-            url: "https://moulberry.codes/lowestbin.json",
-            method: "GET",
-            headers: {
-                "User-Agent": "Mozilla/5.0"
-            }
-        }).then(function(response) {
-            try {
-                const data = JSON.parse(response);
-                
-                // Check for exact match first if we have an item ID
-                if (itemId && data[itemId]) {
-                    resolve({
-                        success: true,
-                        data: [{
-                            name: itemId,
-                            price: data[itemId]
-                        }]
-                    });
-                    return;
-                }
+    return ApiWrapper.getMoulberryLowestBin().then(result => {
+        if (!result.success) return result;
 
-                // Prepare search terms for partial matching
-                const searchTerms = searchTerm.split("_").filter(function(term) {
-                    return term.length > 0;
-                });
-                
-                // If no exact match, search for partial matches
-                const matches = Object.entries(data)
-                    .filter(function([id]) {
-                        return searchTerms.every(function(term) {
-                            return id.includes(term);
-                        });
-                    })
-                    .map(function([id, price]) {
-                        return {
-                            name: id,
-                            price: price
-                        };
-                    });
+        const data = result.data;
+        
+        // Check for exact match if we have an item ID
+        if (itemId && data[itemId]) {
+            return {
+                success: true,
+                data: [{
+                    name: itemId,
+                    price: data[itemId]
+                }]
+            };
+        }
 
-                if (matches.length === 0) {
-                    resolve({
-                        success: false,
-                        error: 'No items found matching "' + searchQuery + '"'
-                    });
-                    return;
-                }
+        // Prepare search terms for partial matching
+        const searchTerms = searchTerm.split("_").filter(term => term.length > 0);
+        
+        // If no exact match, search for partial matches
+        const matches = Object.entries(data)
+            .filter(([id]) => searchTerms.every(term => id.includes(term)))
+            .map(([id, price]) => ({
+                name: id,
+                price: price
+            }));
 
-                // Sort by price and take top 3
-                matches.sort(function(a, b) {
-                    return a.price - b.price;
-                });
-                const topMatches = matches.slice(0, 3);
-
-                resolve({
-                    success: true,
-                    data: topMatches
-                });
-            } catch (error) {
-                console.error(`${CleanPrefix} Error processing lowest BIN data:`, error);
-                resolve({
-                    success: false,
-                    error: "Failed to process lowest BIN data"
-                });
-            }
-        }).catch(function(error) {
-            console.error(`${CleanPrefix} Error fetching lowest BIN data:`, error);
-            resolve({
+        if (matches.length === 0) {
+            return {
                 success: false,
-                error: "Failed to fetch lowest BIN data"
-            });
-        });
+                error: `No items found matching "${searchQuery}"`
+            };
+        }
+
+        // Sort by price and take top 3
+        matches.sort((a, b) => a.price - b.price);
+        const topMatches = matches.slice(0, 3);
+
+        return {
+            success: true,
+            data: topMatches
+        };
     });
 }
 

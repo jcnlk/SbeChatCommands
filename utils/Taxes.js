@@ -70,20 +70,18 @@ function isDerpyMayor() {
             return;
         }
         
-        getElectionData().then(result => {
-            if (!result.success) {
-                resolve(mayorCache.isDerpy);
-                return;
-            }
+        ApiWrapper.getHypixelElection()
+            .then(result => {
+                if (!result.success) {
+                    resolve(mayorCache.isDerpy);
+                    return;
+                }
 
-            mayorCache.isDerpy = result.data.mayor?.name === "Derpy";
-            mayorCache.lastUpdate = currentTime;
-            
-            resolve(mayorCache.isDerpy);
-        }).catch(error => {
-            console.error(`${CleanPrefix} Error checking mayor status:`, error);
-            resolve(mayorCache.isDerpy);
-        });
+                mayorCache.isDerpy = result.data.mayor?.name === "Derpy";
+                mayorCache.lastUpdate = currentTime;
+                
+                resolve(mayorCache.isDerpy);
+            });
     });
 }
 
