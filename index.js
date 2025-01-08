@@ -290,7 +290,7 @@ register("command", () => {
     defaultData.displayAchievements();
 }).setName("sccachievements").setAliases(["scca"]);
 
-const commandHandler = register("command", (...args) => {
+register("command", (...args) => {
     if (!args || args.length === 0 || !args[0]) {
         config.openGUI();
         return;
