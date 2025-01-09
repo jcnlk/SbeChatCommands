@@ -1,5 +1,5 @@
 import Promise from "../../PromiseV2";
-import { CleanPrefix } from "./Constants";
+import { CleanPrefix } from "./constants";
 import ApiWrapper from "./ApiWrapper";
 
 let skyblockItems = [];

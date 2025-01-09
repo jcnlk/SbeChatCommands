@@ -1,5 +1,5 @@
 import ApiWrapper from "./ApiWrapper";
-import { Prefix, GREEN, RED, YELLOW, GRAY } from "./Constants";
+import { Prefix, GREEN, RED, YELLOW, GRAY } from "./constants";
 
 let lastCheckTime = 0;
 let lastSbeCheckTime = 0;

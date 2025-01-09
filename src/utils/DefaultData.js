@@ -13,9 +13,9 @@ import {
     GRAY,
     RED,
     BOLD 
-} from "./Constants";
+} from "./constants";
 
-class defaultData {
+class DefaultData {
     constructor() {
         // Achievement definitions
         this.achievements = {
@@ -416,4 +416,4 @@ class defaultData {
     }
 }
 
-export default new defaultData();
+export default new DefaultData();

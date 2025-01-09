@@ -1,5 +1,5 @@
 import ApiWrapper from './ApiWrapper';
-import { CleanPrefix } from "./Constants";
+import { CleanPrefix } from "./constants";
 
 export function getSlayerData(username) {
     return ApiWrapper.getSkyCryptSlayers(username, true).then(result => {

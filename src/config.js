@@ -24,7 +24,7 @@ import {
     ModuleVersion, 
     ModuleName,  
     Creator,
-    Prefix  } from "./utils/Constants";
+    Prefix  } from "./utils/constants";
 import { 
     @Vigilant, 
     @SwitchProperty, 

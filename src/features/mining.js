@@ -18,8 +18,8 @@ import {
     ITALIC,
     RESET,
     Prefix,
-    CleanPrefix  } from "../utils/Constants"
-import { getCurrentArea } from "../utils/Area";
+    CleanPrefix  } from "../utils/constants"
+import { getCurrentArea } from "../utils/area";
 import config from "../config";
 
 const ROOM_TYPES = {

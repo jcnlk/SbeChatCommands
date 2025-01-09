@@ -1,23 +1,23 @@
 import config from "../config";
-import defaultData from "../utils/Data";
-import { getAverageTps, getCurrentTps, getPing } from "../utils/ServerUtils";
-import { checkAlphaStatusSbe } from "../utils/AlphaCheck";
-import { getPlayerNetworth, formatNetworthMessage } from "../utils/Networth";
-import { getElectionData, formatMayorData, formatElectionData } from "../utils/Election";
-import { getSlayerData, formatSlayerData } from "./Slayer";
-import { getSecretsData, formatSecrets, getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from "./Dungeon";
-import { getMagicalPower, formatMagicalPower } from "./MagicalPower";
-import { getSkyblockLevel, formatLevelData } from "./Level";
-import { formatTaxMessage, parseNumberInput, getTaxInfo } from "./Taxes";
-import { getSkillsData, formatSkillAverage, formatSkills } from "./Skills";
-import { getLowestBin, formatLowestBin } from "./LowestBin";
+import DefaultData from "./DefaultData";
+import { getAverageTps, getCurrentTps, getPing } from "./serverUtils";
+import { checkAlphaStatusSbe } from "./alphaCheck";
+import { getPlayerNetworth, formatNetworthMessage } from "./networth";
+import { getElectionData, formatMayorData, formatElectionData } from "./election";
+import { getSlayerData, formatSlayerData } from "./slayer";
+import { getSecretsData, formatSecrets, getDungeonData, formatCataLevel, formatPBs, formatClassLevels, formatCompletions, parseParameters } from "./dungeon";
+import { getMagicalPower, formatMagicalPower } from "./magicalPower";
+import { getSkyblockLevel, formatLevelData } from "./level";
+import { formatTaxMessage, parseNumberInput, getTaxInfo } from "./taxes";
+import { getSkillsData, formatSkillAverage, formatSkills } from "./skills";
+import { getLowestBin, formatLowestBin } from "./lowestBin";
 import { 
     Prefix, 
     CleanPrefix,
     RED, 
     RESET, 
     CleanPrefix
-} from "../utils/Constants";
+} from "./constants";
 
 // Load command messages from JSON
 let commandMessages;
@@ -55,13 +55,13 @@ class CommandHandler {
 
             let senderName = name.replace(/\[.*?\]\s*/, "");
             
-            if (defaultData.isBlocked(senderName)) {
+            if (DefaultData.isBlocked(senderName)) {
                 cancel(event);
                 return;
             }
 
             if (senderName === Player.getName()) {
-                defaultData.setFirstMessageSent();
+                DefaultData.setFirstMessageSent();
             }
 
             if (message.toLowerCase() === "meow") {
@@ -70,7 +70,7 @@ class CommandHandler {
             }
 
             if (!message.startsWith("!")) return;
-            if (defaultData.isBlacklisted(senderName)) return;
+            if (DefaultData.isBlacklisted(senderName)) return;
             if (!config.enableAllCommands) return;
 
             const args = message.slice(1).split(" ");
@@ -150,14 +150,14 @@ class CommandHandler {
         // Meow Command
         this.registerCommand("meow", (sender, args) => {
             if (!config.meowCommand) return;
-            const total = defaultData.getMeowTotal();
+            const total = DefaultData.getMeowTotal();
             this.sendMessage("meow", { total });
         }, "meowCommand");
 
         // Quote Command
         this.registerCommand("quote", (sender, args) => {
             if (!config.quoteCommand) return;
-            const randomQuote = defaultData.getRandomQuote();
+            const randomQuote = DefaultData.getRandomQuote();
             if (randomQuote) {
                 ChatLib.command(`sbechat ${CleanPrefix} Quote: "${randomQuote}"`, true);
             } else {
@@ -442,26 +442,26 @@ class CommandHandler {
     }
 
     handleMeowMessage(senderName) {
-        defaultData.incrementMeowCount();
+        DefaultData.incrementMeowCount();
         
         if (senderName === Player.getName()) {
-            defaultData.incrementPersonalMeowCount();
+            DefaultData.incrementPersonalMeowCount();
         }
         
         if (senderName !== Player.getName() && 
-            !defaultData.isBlacklisted(senderName) &&
-            defaultData.canAutoRespondMeow() && 
+            !DefaultData.isBlacklisted(senderName) &&
+            DefaultData.canAutoRespondMeow() && 
             config.autoMeowResponse) {
-            defaultData.updateLastMeowResponse();
+            DefaultData.updateLastMeowResponse();
             ChatLib.command(`sbechat meow`, true);
         }
     }
 
     canExecuteCommand(sender) {
-        if (defaultData.isBlacklisted(sender)) return false;
-        if (defaultData.isOnCooldown(sender)) {
+        if (DefaultData.isBlacklisted(sender)) return false;
+        if (DefaultData.isOnCooldown(sender)) {
             if (sender === Player.getName()) {
-                const remainingTime = defaultData.getRemainingCooldown(sender);
+                const remainingTime = DefaultData.getRemainingCooldown(sender);
                 ChatLib.chat(`${Prefix} ${RED}Please wait ${remainingTime} seconds before using another command!${RESET}`);
             }
             return false;
@@ -475,9 +475,9 @@ class CommandHandler {
 
         if (!this.canExecuteCommand(sender)) return;
 
-        defaultData.setCooldown(sender);
+        DefaultData.setCooldown(sender);
         if (sender === Player.getName()) {
-            defaultData.addUsedCommand(commandName);
+            //defaultData.addUsedCommand(commandName);
         }
 
         command.handler(sender, args);
