@@ -1,18 +1,17 @@
-import Promise from "../../PromiseV2";
-import ApiWrapper from "./ApiWrapper";
+import apiWrapper from "./apiWrapper";
 
 const SKILL_NAMES = [
-    "taming",
-    "farming",
-    "mining",
-    "combat",
-    "foraging",
-    "fishing",
-    "enchanting",
-    "alchemy",
-    "carpentry",
-    "runecrafting",
-    "social"
+  "taming",
+  "farming",
+  "mining",
+  "combat",
+  "foraging",
+  "fishing",
+  "enchanting",
+  "alchemy",
+  "carpentry",
+  "runecrafting",
+  "social",
 ];
 
 /**
@@ -21,39 +20,37 @@ const SKILL_NAMES = [
  * @returns {Promise} Skills data or error
  */
 export function getSkillsData(username) {
-    return ApiWrapper.getSkyCryptProfile(username, true)
-        .then(result => {
-            if (!result.success) return result;
-            
-            // Find the selected profile
-            const selectedProfile = Object.values(result.data.profiles)
-                .find(profile => profile.current);
-            
-            if (!selectedProfile?.data?.skills?.skills) {
-                return { 
-                    success: false, 
-                    error: "No skills data found for " + username
-                };
-            }
+  return apiWrapper.getSkyCryptProfile(username, true).then((result) => {
+    if (!result.success) return result;
 
-            const skillsData = {
-                average: selectedProfile.data.skills.averageSkillLevel || 0,
-                skills: {}
-            };
+    // Find the selected profile
+    const selectedProfile = Object.values(result.data.profiles).find((profile) => profile.current);
 
-            // Get individual skill levels
-            SKILL_NAMES.forEach(skillName => {
-                const skillData = selectedProfile.data.skills.skills[skillName];
-                if (skillData?.levelWithProgress !== undefined) {
-                    skillsData.skills[skillName] = skillData.levelWithProgress;
-                }
-            });
+    if (!selectedProfile?.data?.skills?.skills) {
+      return {
+        success: false,
+        error: "No skills data found for " + username,
+      };
+    }
 
-            return {
-                success: true,
-                data: skillsData
-            };
-        });
+    const skillsData = {
+      average: selectedProfile.data.skills.averageSkillLevel || 0,
+      skills: {},
+    };
+
+    // Get individual skill levels
+    SKILL_NAMES.forEach((skillName) => {
+      const skillData = selectedProfile.data.skills.skills[skillName];
+      if (skillData?.levelWithProgress !== undefined) {
+        skillsData.skills[skillName] = skillData.levelWithProgress;
+      }
+    });
+
+    return {
+      success: true,
+      data: skillsData,
+    };
+  });
 }
 
 /**
@@ -63,7 +60,7 @@ export function getSkillsData(username) {
  * @returns {string} Formatted message
  */
 export function formatSkillAverage(data, username) {
-    return `${username}'s Skill Average: ${data.average.toFixed(2)}`;
+  return `${username}'s Skill Average: ${data.average.toFixed(2)}`;
 }
 
 /**
@@ -73,11 +70,11 @@ export function formatSkillAverage(data, username) {
  * @returns {string} Formatted message
  */
 export function formatSkills(data, username) {
-    const skillsList = Object.entries(data.skills)
-        .map(([name, level]) => `${capitalize(name)}: ${level.toFixed(2)}`)
-        .join(" | ");
+  const skillsList = Object.entries(data.skills)
+    .map(([name, level]) => `${capitalize(name)}: ${level.toFixed(2)}`)
+    .join(" | ");
 
-    return `${username}'s Skills: ${skillsList}`;
+  return `${username}'s Skills: ${skillsList}`;
 }
 
 /**
@@ -86,5 +83,5 @@ export function formatSkills(data, username) {
  * @returns {string} Capitalized string
  */
 function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }

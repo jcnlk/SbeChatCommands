@@ -1,5 +1,5 @@
-import request from "../../requestV2";
-import Promise from "../../PromiseV2";
+import request from "requestV2";
+import Promise from "PromiseV2";
 import { CleanPrefix } from "./constants";
 
 class ApiWrapper {
@@ -232,4 +232,5 @@ class ApiWrapper {
 }
 
 // Export singleton instance
-export default new ApiWrapper();
+const apiWrapper = new ApiWrapper();
+export default apiWrapper;

@@ -1,5 +1,4 @@
-import Promise from "../../PromiseV2";
-import ApiWrapper from "./ApiWrapper";
+import apiWrapper from "./apiWrapper";
 
 /**
  * Gets the Skyblock level of a player using the SkyCrypt API
@@ -7,29 +6,28 @@ import ApiWrapper from "./ApiWrapper";
  * @returns {Promise} Level data or error
  */
 export function getSkyblockLevel(username) {
-    return ApiWrapper.getSkyCryptProfile(username, true).then(result => {
-        if (!result.success) return result;
+  return apiWrapper.getSkyCryptProfile(username, true).then((result) => {
+    if (!result.success) return result;
 
-        // Find the current profile
-        const selectedProfile = Object.values(result.data.profiles)
-            .find(profile => profile.current);
-        
-        if (!selectedProfile?.data?.skyblock_level) {
-            return {
-                success: false,
-                error: "No Skyblock level data found for " + username
-            };
-        }
+    // Find the current profile
+    const selectedProfile = Object.values(result.data.profiles).find((profile) => profile.current);
 
-        const levelData = selectedProfile.data.skyblock_level;
-        return {
-            success: true,
-            data: {
-                level: Math.floor(levelData.levelWithProgress),
-                progress: ((levelData.levelWithProgress % 1) * 100).toFixed(0)
-            }
-        };
-    });
+    if (!selectedProfile?.data?.skyblock_level) {
+      return {
+        success: false,
+        error: "No Skyblock level data found for " + username,
+      };
+    }
+
+    const levelData = selectedProfile.data.skyblock_level;
+    return {
+      success: true,
+      data: {
+        level: Math.floor(levelData.levelWithProgress),
+        progress: ((levelData.levelWithProgress % 1) * 100).toFixed(0),
+      },
+    };
+  });
 }
 
 /**
@@ -39,5 +37,5 @@ export function getSkyblockLevel(username) {
  * @returns {string} Formatted message
  */
 export function formatLevelData(data, username) {
-    return `${username}'s Skyblock Level: ${data.level} (${data.progress}%)`;
+  return `${username}'s Skyblock Level: ${data.level} (${data.progress}%)`;
 }

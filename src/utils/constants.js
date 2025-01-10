@@ -1,4 +1,4 @@
-// Constants for easier chat formating     
+// Constants for easier chat formating
 export const BLACK = "§0";
 export const DARK_BLUE = "§1";
 export const DARK_GREEN = "§2";
@@ -31,16 +31,15 @@ export const CleanPrefix = `[SCC]`;
 
 // Checks if current server is hypixel
 export const InSkyblock = () => {
-    if (Server.getIP().includes("hypixel") && ChatLib.removeFormatting(Scoreboard.getTitle()).includes("SKYBLOCK"))
-        return true;
-    return false;
-}
+  if (Server.getIP().includes("hypixel") && ChatLib.removeFormatting(Scoreboard.getTitle()).includes("SKYBLOCK")) return true;
+  return false;
+};
 
 // Checks if current area is the garden
 export const InGarden = () => {
-    let inGarden = false;
-    Scoreboard.getLines().forEach((line) => {
-        if (ChatLib.removeFormatting(line).includes("The Garden")) InGarden = true;
-    });
-    return inGarden;
-}
+  let inGarden = false;
+  Scoreboard.getLines().forEach((line) => {
+    if (ChatLib.removeFormatting(line).includes("The Garden")) inGarden = true;
+  });
+  return inGarden;
+};

@@ -1,3 +1,6 @@
+import defaultData from "../utils/defaultData";
+import { AQUA, GRAY, GREEN, Prefix, RED, WHITE, YELLOW } from "../utils/constants";
+
 export const quote = (action, ...args) => {
   switch (action) {
     case "add":

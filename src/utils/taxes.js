@@ -1,10 +1,10 @@
-import Promise from "../../PromiseV2";
-import ApiWrapper from "./ApiWrapper";
+import apiWrapper from "./apiWrapper";
+import Promise from "PromiseV2";
 
 // Cache system for mayor status
 let mayorCache = {
-    isDerpy: false,
-    lastUpdate: 0
+  isDerpy: false,
+  lastUpdate: 0,
 };
 
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
@@ -15,27 +15,27 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
  * @returns {number|null} - Converted number or null if invalid
  */
 export function parseNumberInput(input) {
-    if (!input) return null;
-    
-    input = input.toLowerCase().replace(/\s+/g, "");
-    
-    const suffixes = {
-        "k": 1000,
-        "m": 1000000,
-        "b": 1000000000
-    };
-    
-    try {
-        const lastChar = input.slice(-1);
-        if (suffixes[lastChar]) {
-            const number = parseFloat(input.slice(0, -1));
-            return number * suffixes[lastChar];
-        }
-        
-        return parseFloat(input);
-    } catch (e) {
-        return null;
+  if (!input) return null;
+
+  input = input.toLowerCase().replace(/\s+/g, "");
+
+  const suffixes = {
+    k: 1000,
+    m: 1000000,
+    b: 1000000000,
+  };
+
+  try {
+    const lastChar = input.slice(-1);
+    if (suffixes[lastChar]) {
+      const number = parseFloat(input.slice(0, -1));
+      return number * suffixes[lastChar];
     }
+
+    return parseFloat(input);
+  } catch (e) {
+    return null;
+  }
 }
 
 /**
@@ -44,16 +44,16 @@ export function parseNumberInput(input) {
  * @returns {string} - Formatted string (e.g., "1.5M", "100k")
  */
 export function formatNumber(num) {
-    if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(1) + "B";
-    }
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + "M";
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + "k";
-    }
-    return num.toFixed(0);
+  if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(1) + "B";
+  }
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + "M";
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "k";
+  }
+  return num.toFixed(0);
 }
 
 /**
@@ -61,27 +61,26 @@ export function formatNumber(num) {
  * @returns {Promise} - Promise resolving to boolean indicating if Derpy is active
  */
 function isDerpyMayor() {
-    return new Promise((resolve) => {
-        const currentTime = Date.now();
-        
-        if (currentTime - mayorCache.lastUpdate < CACHE_DURATION) {
-            resolve(mayorCache.isDerpy);
-            return;
-        }
-        
-        ApiWrapper.getHypixelElection()
-            .then(result => {
-                if (!result.success) {
-                    resolve(mayorCache.isDerpy);
-                    return;
-                }
+  return new Promise((resolve) => {
+    const currentTime = Date.now();
 
-                mayorCache.isDerpy = result.data.mayor?.name === "Derpy";
-                mayorCache.lastUpdate = currentTime;
-                
-                resolve(mayorCache.isDerpy);
-            });
+    if (currentTime - mayorCache.lastUpdate < CACHE_DURATION) {
+      resolve(mayorCache.isDerpy);
+      return;
+    }
+
+    apiWrapper.getHypixelElection().then((result) => {
+      if (!result.success) {
+        resolve(mayorCache.isDerpy);
+        return;
+      }
+
+      mayorCache.isDerpy = result.data.mayor?.name === "Derpy";
+      mayorCache.lastUpdate = currentTime;
+
+      resolve(mayorCache.isDerpy);
     });
+  });
 }
 
 /**
@@ -91,29 +90,29 @@ function isDerpyMayor() {
  * @returns {Object} - Tax information
  */
 function calculateTax(initialPrice, isDerpyActive = false) {
-    let taxRate;
-    if (initialPrice < 10_000_000) {
-        taxRate = 0.01;
-    } else if (initialPrice < 100_000_000) {
-        taxRate = 0.02;
-    } else {
-        taxRate = 0.025;
-    }
-    
-    if (isDerpyActive) {
-        taxRate *= 2;
-    }
-    
-    const taxAmount = initialPrice * taxRate;
-    const finalPrice = initialPrice * (1 - taxRate);
-    
-    return {
-        originalPrice: initialPrice,
-        taxRate: taxRate * 100,
-        taxAmount: taxAmount,
-        finalPrice: finalPrice,
-        isDerpyActive: isDerpyActive
-    };
+  let taxRate;
+  if (initialPrice < 10_000_000) {
+    taxRate = 0.01;
+  } else if (initialPrice < 100_000_000) {
+    taxRate = 0.02;
+  } else {
+    taxRate = 0.025;
+  }
+
+  if (isDerpyActive) {
+    taxRate *= 2;
+  }
+
+  const taxAmount = initialPrice * taxRate;
+  const finalPrice = initialPrice * (1 - taxRate);
+
+  return {
+    originalPrice: initialPrice,
+    taxRate: taxRate * 100,
+    taxAmount: taxAmount,
+    finalPrice: finalPrice,
+    isDerpyActive: isDerpyActive,
+  };
 }
 
 /**
@@ -122,11 +121,13 @@ function calculateTax(initialPrice, isDerpyActive = false) {
  * @returns {string} - Formatted message
  */
 export function formatTaxMessage(taxInfo) {
-    const derpyStatus = taxInfo.isDerpyActive ? " (Derpy Active)" : "";
-    return `Price: ${formatNumber(taxInfo.originalPrice)} | ` +
-           `Tax Rate: ${taxInfo.taxRate}% | ` +
-           `Tax: ${formatNumber(taxInfo.taxAmount)} | ` +
-           `After Tax: ${formatNumber(taxInfo.finalPrice)}${derpyStatus}`;
+  const derpyStatus = taxInfo.isDerpyActive ? " (Derpy Active)" : "";
+  return (
+    `Price: ${formatNumber(taxInfo.originalPrice)} | ` +
+    `Tax Rate: ${taxInfo.taxRate}% | ` +
+    `Tax: ${formatNumber(taxInfo.taxAmount)} | ` +
+    `After Tax: ${formatNumber(taxInfo.finalPrice)}${derpyStatus}`
+  );
 }
 
 /**
@@ -135,9 +136,9 @@ export function formatTaxMessage(taxInfo) {
  * @returns {Promise} - Promise resolving to tax information
  */
 export function getTaxInfo(amount) {
-    return new Promise((resolve) => {
-        isDerpyMayor().then(isDerpy => {
-            resolve(calculateTax(amount, isDerpy));
-        });
+  return new Promise((resolve) => {
+    isDerpyMayor().then((isDerpy) => {
+      resolve(calculateTax(amount, isDerpy));
     });
+  });
 }

@@ -1,6 +1,6 @@
-import { defaultData } from "src";
+import defaultData from "../utils/defaultData";
 import { help } from "./help";
-import { AQUA, GOLD, GRAY, GREEN, Prefix, RED, WHITE, YELLOW } from "src/utils/constantsa";
+import { AQUA, GOLD, GRAY, GREEN, Prefix, RED, WHITE, YELLOW } from "../utils/constants";
 
 export const block = (action, username) => {
   if (!action) {

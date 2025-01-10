@@ -1,10 +1,10 @@
-import DefaultData from "./utils/DefaultData";
+import defaultData from "./utils/defaultData";
 import "./utils/CommandHandler";
 import config from "./config";
 import "./utils/magicalPower";
 import "./utils/serverUtils";
 import "./utils/alphaCheck";
-import "./utils/ApiWrapper";
+import "./utils/apiWrapper";
 import "./features/mining";
 import "./utils/lowestBin";
 import "./utils/networth";
@@ -19,10 +19,8 @@ import { AQUA, YELLOW, ModuleVersion, Creator, Prefix } from "./utils/constants"
 import commands from "./commands";
 import { showHelpMenu } from "./commands/help";
 
-export const defaultData = new DefaultData();
-
 register("command", () => {
-  DefaultData.displayAchievements();
+  defaultData.displayAchievements();
 })
   .setName("sccachievements")
   .setAliases(["scca"]);

@@ -1,4 +1,4 @@
-import { AQUA, GRAY, Prefix, WHITE, YELLOW } from "src/utils/constantsa";
+import { AQUA, GRAY, Prefix, WHITE, YELLOW } from "../utils/constants";
 
 export const showHelpMenu = () => {
   ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
