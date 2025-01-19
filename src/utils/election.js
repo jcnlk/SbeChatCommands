@@ -18,7 +18,7 @@ export function formatMayorData(data) {
   // Basic validation
   if (!data || !data.mayor) {
     console.error(`${CleanPrefix} Could not fetch current mayor data!`);
-    return `${CleanPrefix} [Error] No mayor data found.`;
+    //return `${CleanPrefix} [Error] No mayor data found.`;
   }
 
   const mayor = data.mayor;
@@ -49,13 +49,13 @@ export function formatElectionData(data) {
   // Basic validation
   if (!data || !data.mayor || !data.mayor.election) {
     console.error(`${CleanPrefix} Could not fetch current election data!`);
-    return `${CleanPrefix} [Error] No election data found.`;
+    //return `${CleanPrefix} [Error] No election data found.`;
   }
 
   const election = data.mayor.election;
   if (!election.year || !election.candidates) {
     console.error(`${CleanPrefix} Incomplete election data!`);
-    return `${CleanPrefix} [Error] Incomplete election data.`;
+    //return `${CleanPrefix} [Error] Incomplete election data.`;
   }
 
   // Start building our output
