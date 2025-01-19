@@ -25,7 +25,7 @@ import { Prefix, CleanPrefix, RED, RESET } from "./constants";
 // Load command messages from JSON
 let commandMessages;
 try {
-  const jsonPath = "./src/data/SbeChatCommands.json";
+  const jsonPath = "./data/SbeChatCommands.json";
   const jsonContent = FileLib.read("SbeChatCommands", jsonPath);
   if (!jsonContent) {
     throw new Error(`SbeChatCommands.json not found at path: ${jsonPath}`);
@@ -113,7 +113,6 @@ class CommandHandler {
         if (!config.eightBallCommand) return;
         const responses = commandMessages["8ballResponses"];
         const response = responses[Math.floor(Math.random() * responses.length)];
-        ChatLib.chat(`sbechat ${CleanPrefix} ${response}`);
         ChatLib.command(`sbechat ${CleanPrefix} ${response}`, true);
       },
       "eightBallCommand"
@@ -242,7 +241,7 @@ class CommandHandler {
             status === null
               ? "Could not fetch Alpha Server status. Try again later."
               : status
-              ? `Alpha Server might be open! (${slots} slots)`
+              ? `Alpha Server is open! (${slots} slots)`
               : `Alpha Server is currently closed. (${slots} slots)`;
           ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
         });
