@@ -15,7 +15,7 @@ import "./utils/slayer";
 import "./utils/level";
 import "./utils/taxes";
 import "./utils/area";
-import { AQUA, YELLOW, ModuleVersion, Creator, Prefix } from "./utils/constants";
+import { AQUA, YELLOW, moduleVersion, moduleCreator, chatPrefix } from "./utils/constants";
 import commands from "./commands";
 import { showHelpMenu } from "./commands/help";
 
@@ -63,8 +63,8 @@ register("command", (...args) => {
 
     case "version":
     case "ver":
-      ChatLib.chat(`${Prefix} ${YELLOW}Version: ${AQUA}${ModuleVersion}`);
-      ChatLib.chat(`${Prefix} ${YELLOW}Created by: ${AQUA}${Creator}`);
+      ChatLib.chat(`${chatPrefix} ${YELLOW}Version: ${AQUA}${moduleVersion}`);
+      ChatLib.chat(`${chatPrefix} ${YELLOW}Created by: ${AQUA}${moduleCreator}`);
       break;
 
     default:

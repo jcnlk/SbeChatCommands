@@ -182,10 +182,10 @@
       ]
     },
     "meow": [
-      "MEOW! There have been ${total} meows in SBE Chat!",
-      "Purr... ${total} meows and counting!",
-      "Meow! Did you know there have been ${total} meows in chat?",
-      "*purrs* ${total} meows in SBE Chat so far!"
+      "MEOW! I have been meowed ${personal} times in SBE Chat!",
+      "Purr... ${personal} meows by me!",
+      "Meow! Did you know there have been ${personal} meows in chat by me?",
+      "*purrs* ${personal} meows so far by me!"
     ],
     "sus": {
       "low": [

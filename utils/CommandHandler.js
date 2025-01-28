@@ -20,19 +20,19 @@ import { getSkyblockLevel, formatLevelData } from "./level";
 import { formatTaxMessage, parseNumberInput, getTaxInfo } from "./taxes";
 import { getSkillsData, formatSkillAverage, formatSkills } from "./skills";
 import { getLowestBin, formatLowestBin } from "./lowestBin";
-import { Prefix, CleanPrefix, RED, RESET } from "./constants";
+import { chatPrefix, cleanChatPrefix, RED, RESET } from "./constants";
 
 // Load command messages from JSON
 let commandMessages;
 try {
-  const jsonPath = "./data/SbeChatCommands.json";
+  const jsonPath = "./data/sbeChatCommands.json";
   const jsonContent = FileLib.read("SbeChatCommands", jsonPath);
   if (!jsonContent) {
-    throw new Error(`SbeChatCommands.json not found at path: ${jsonPath}`);
+    throw new Error(`sbeChatCommands.json not found at path: ${jsonPath}`);
   }
   commandMessages = JSON.parse(jsonContent);
 } catch (error) {
-  console.error(`Error loading SbeChatCommands.json:`, error);
+  console.error(`Error loading sbeChatCommands.json:`, error);
   commandMessages = {};
 }
 
@@ -113,7 +113,7 @@ class CommandHandler {
         if (!config.eightBallCommand) return;
         const responses = commandMessages["8ballResponses"];
         const response = responses[Math.floor(Math.random() * responses.length)];
-        ChatLib.command(`sbechat ${CleanPrefix} ${response}`, true);
+        ChatLib.command(`sbechat ${cleanChatPrefix} ${response}`, true);
       },
       "eightBallCommand"
     );
@@ -186,8 +186,8 @@ class CommandHandler {
       "meow",
       (sender, args) => {
         if (!config.meowCommand) return;
-        const total = defaultData.getMeowTotal();
-        this.sendMessage("meow", { total });
+        const personal = defaultData.getPersonalMeowCount();
+        this.sendMessage("meow", { personal });
       },
       "meowCommand"
     );
@@ -199,9 +199,9 @@ class CommandHandler {
         if (!config.quoteCommand) return;
         const randomQuote = defaultData.getRandomQuote();
         if (randomQuote) {
-          ChatLib.command(`sbechat ${CleanPrefix} Quote: "${randomQuote}"`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} Quote: "${randomQuote}"`, true);
         } else {
-          ChatLib.chat(`${Prefix} No quotes found! Add some with /scc quote add <quote>`);
+          ChatLib.chat(`${chatPrefix} No quotes found! Add some with /scc quote add <quote>`);
         }
       },
       "quoteCommand"
@@ -214,7 +214,7 @@ class CommandHandler {
         if (!config.tpsCommand) return;
         const avgTps = getAverageTps();
         const currentTps = getCurrentTps();
-        ChatLib.command(`sbechat ${CleanPrefix} Current TPS: ${currentTps} | Average: ${avgTps}`, true);
+        ChatLib.command(`sbechat ${cleanChatPrefix} Current TPS: ${currentTps} | Average: ${avgTps}`, true);
       },
       "tpsCommand"
     );
@@ -225,7 +225,7 @@ class CommandHandler {
       (sender, args) => {
         if (!config.pingCommand) return;
         getPing((ping) => {
-          ChatLib.command(`sbechat ${CleanPrefix} Current Ping: ${ping}ms`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} Current Ping: ${ping}ms`, true);
         });
       },
       "pingCommand"
@@ -243,7 +243,7 @@ class CommandHandler {
               : status
               ? `Alpha Server is open! (${slots} slots)`
               : `Alpha Server is currently closed. (${slots} slots)`;
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "alphaCommand"
@@ -257,9 +257,9 @@ class CommandHandler {
         const playerToCheck = args[0] || sender;
         getPlayerNetworth(playerToCheck).then((result) => {
           if (result.success) {
-            ChatLib.command(`sbechat ${CleanPrefix} ${formatNetworthMessage(result.data)}`, true);
+            ChatLib.command(`sbechat ${cleanChatPrefix} ${formatNetworthMessage(result.data)}`, true);
           } else {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
           }
         });
       },
@@ -273,11 +273,11 @@ class CommandHandler {
         if (!config.mayorCommand) return;
         getElectionData().then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatMayorData(result.data);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "mayorCommand"
@@ -300,7 +300,7 @@ class CommandHandler {
         }
 
         getTaxInfo(amount).then((taxInfo) => {
-          ChatLib.command("sbechat " + `${CleanPrefix} ` + formatTaxMessage(taxInfo), true);
+          ChatLib.command("sbechat " + `${cleanChatPrefix} ` + formatTaxMessage(taxInfo), true);
         });
       },
       "taxCommand"
@@ -313,11 +313,11 @@ class CommandHandler {
         if (!config.electionCommand) return;
         getElectionData().then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatElectionData(result.data);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "electionCommand"
@@ -331,11 +331,11 @@ class CommandHandler {
         const playerToCheck = args[0] || sender;
         getSlayerData(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatSlayerData(result.data, playerToCheck);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "slayerCommand"
@@ -350,11 +350,11 @@ class CommandHandler {
         const searchQuery = args.join(" ");
         getLowestBin(searchQuery).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatLowestBin(result.data, searchQuery);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "lowestBinCommand"
@@ -368,11 +368,11 @@ class CommandHandler {
         const playerToCheck = args[0] || sender;
         getSkillsData(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatSkills(result.data, playerToCheck);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "skillsCommand"
@@ -386,11 +386,11 @@ class CommandHandler {
         const playerToCheck = args[0] || sender;
         getSkillsData(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatSkillAverage(result.data, playerToCheck);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "skillAverageCommand"
@@ -405,11 +405,11 @@ class CommandHandler {
 
         getSkyblockLevel(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatLevelData(result.data, playerToCheck);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "levelCommand"
@@ -425,11 +425,11 @@ class CommandHandler {
 
         getMagicalPower(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatMagicalPower(result.data, playerToCheck);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "magicalPowerCommand"
@@ -446,11 +446,11 @@ class CommandHandler {
 
         getDungeonData(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatPBs(result.data, playerToCheck, params.isMasterMode);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "pbsCommand"
@@ -467,11 +467,11 @@ class CommandHandler {
 
         getDungeonData(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ${result.error}`);
+            console.error(`${cleanChatPrefix} ${result.error}`);
             return;
           }
           const message = formatCompletions(result.data, playerToCheck, params.isMasterMode);
-          ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+          ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
         });
       },
       "compCommand"
@@ -485,11 +485,11 @@ class CommandHandler {
         const playerToCheck = args[0] || sender;
         getDungeonData(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ` + result.error);
+            console.error(`${cleanChatPrefix} ` + result.error);
             return;
           }
           const message = formatClassLevels(result.data, playerToCheck);
-          ChatLib.command("sbechat " + `${CleanPrefix} ` + message, true);
+          ChatLib.command("sbechat " + `${cleanChatPrefix} ` + message, true);
         });
       },
       "classCommand"
@@ -503,11 +503,11 @@ class CommandHandler {
         const playerToCheck = args[0] || sender;
         getDungeonData(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`${CleanPrefix} ` + result.error);
+            console.error(`${cleanChatPrefix} ` + result.error);
             return;
           }
           const message = formatCataLevel(result.data, playerToCheck);
-          ChatLib.command("sbechat " + `${CleanPrefix} ` + message, true);
+          ChatLib.command("sbechat " + `${cleanChatPrefix} ` + message, true);
         });
       },
       "cataCommand"
@@ -521,11 +521,11 @@ class CommandHandler {
         const playerToCheck = args[0] || sender;
         getSecretsData(playerToCheck).then((result) => {
           if (!result.success) {
-            console.error(`$${CleanPrefix} ` + result.error);
+            console.error(`$${cleanChatPrefix} ` + result.error);
             return;
           }
           const message = formatSecrets(result.data, playerToCheck);
-          ChatLib.command("sbechat " + `${CleanPrefix} ` + message, true);
+          ChatLib.command("sbechat " + `${cleanChatPrefix} ` + message, true);
         });
       },
       "secretsCommand"
@@ -538,7 +538,7 @@ class CommandHandler {
         if (!config.commandsCommand) return;
         if (!args || args.length === 0 || args[0].toLowerCase() === "list") {
           ChatLib.command(
-            `sbechat ${CleanPrefix} Available commands: !rng, !cf, !8ball, !throw, !dice, !simp, !sus, !join, !meow, !quote, !tps, !ping, !alpha, !nw, !mayor, !election, !slayer, !mp, !level, !secrets, !tax, !skills, !skillaverage, !cata, !pbs, !class, !comp, !lbin`,
+            `sbechat ${cleanChatPrefix} Available commands: !rng, !cf, !8ball, !throw, !dice, !simp, !sus, !join, !meow, !quote, !tps, !ping, !alpha, !nw, !mayor, !election, !slayer, !mp, !level, !secrets, !tax, !skills, !skillaverage, !cata, !pbs, !class, !comp, !lbin`,
             true
           );
           return;
@@ -586,7 +586,7 @@ class CommandHandler {
     if (defaultData.isOnCooldown(sender)) {
       if (sender === Player.getName()) {
         const remainingTime = defaultData.getRemainingCooldown(sender);
-        ChatLib.chat(`${Prefix} ${RED}Please wait ${remainingTime} seconds before using another command!${RESET}`);
+        ChatLib.chat(`${chatPrefix} ${RED}Please wait ${remainingTime} seconds before using another command!${RESET}`);
       }
       return false;
     }
@@ -598,18 +598,48 @@ class CommandHandler {
     if (!command) return;
 
     if (!this.canExecuteCommand(sender)) return;
-
     defaultData.setCooldown(sender);
-    if (sender === Player.getName()) {
-      //defaultData.addUsedCommand(commandName);
+
+    const immediateCommands = ["tps", "ping", "meow"];
+    if (immediateCommands.includes(commandName)) {
+        command.handler(sender, args);
+        return;
     }
 
-    command.handler(sender, args);
+    getPing((ping) => {
+        const baseWait = 3 * ping;
+        const randomExtra = Math.floor(Math.random() * 1500);
+        let totalWait = baseWait + randomExtra;
+
+        if (totalWait < 500) {
+            totalWait = 500;
+        } else if (totalWait > 4000) {
+            totalWait = 4000;
+        }
+
+        ChatLib.chat(`Waiting time: ${totalWait}`); //debug
+
+        let canceled = false;
+
+        const tempChatTrigger = register("chat", (msg, event) => {
+            if (msg.includes("[SCC]")) {
+                canceled = true;
+            }
+        }).setCriteria("${msg}");
+
+        setTimeout(() => {
+            tempChatTrigger.unregister();
+
+            if (!canceled) {
+                command.handler(sender, args);
+            }
+        }, totalWait);
+    });
   }
 
   generateMessage(commandType, variables) {
     if (!commandMessages[commandType]) {
-      console.error(`${CleanPrefix} Invalid command type: ${commandType}`);
+      console.error(`${cleanChatPrefix} Invalid command type: ${commandType}`);
       return null;
     }
 
@@ -654,7 +684,7 @@ class CommandHandler {
     }
 
     if (!Array.isArray(templates)) {
-      console.error(`${CleanPrefix} Invalid template array for ${commandType}`);
+      console.error(`${cleanChatPrefix} Invalid template array for ${commandType}`);
       return null;
     }
 
@@ -665,10 +695,10 @@ class CommandHandler {
   sendMessage(commandType, variables) {
     const message = this.generateMessage(commandType, variables);
     if (message) {
-      ChatLib.command(`sbechat ${CleanPrefix} ${message}`, true);
+      ChatLib.command(`sbechat ${cleanChatPrefix} ${message}`, true);
     }
   }
 }
 
 const commandHandler = new CommandHandler();
-export default CommandHandler;
+export default commandHandler;

@@ -1,5 +1,5 @@
 import apiWrapper from "./apiWrapper";
-import { CleanPrefix } from "./constants";
+import { cleanChatPrefix } from "./constants";
 
 let skyblockItems = [];
 
@@ -10,7 +10,7 @@ try {
     skyblockItems = JSON.parse(itemsContent);
   }
 } catch (error) {
-  console.error(`${CleanPrefix} Error loading skyblockItems.json:`, error);
+  console.error(`${cleanChatPrefix} Error loading skyblockItems.json:`, error);
 }
 
 function formatPrice(price) {

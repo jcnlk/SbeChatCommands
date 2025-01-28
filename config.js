@@ -1,30 +1,16 @@
 import {
-  BLACK,
-  DARK_BLUE,
-  DARK_GREEN,
   DARK_AQUA,
-  DARK_RED,
-  DARK_PURPLE,
   GOLD,
-  GRAY,
-  DARK_GRAY,
-  BLUE,
   GREEN,
-  AQUA,
   RED,
-  LIGHT_PURPLE,
   YELLOW,
-  WHITE,
-  OBFUSCATED,
   BOLD,
-  STRIKETHROUGH,
-  UNDERLINE,
   ITALIC,
   RESET,
-  ModuleVersion,
-  ModuleName,
-  Creator,
-  Prefix,
+  moduleVersion,
+  moduleName,
+  moduleCreator,
+  chatPrefix,
 } from "./utils/constants";
 import {
   @Vigilant,
@@ -38,10 +24,10 @@ import {
   @CheckboxProperty,
 } from "Vigilance";
 
-const ConfigHeader = `${Prefix} ${YELLOW}${ModuleVersion} \nMade by ${Creator}${RESET}`;
+const ConfigHeader = `${chatPrefix} ${YELLOW}${moduleVersion} \nMade by ${moduleCreator}${RESET}`;
 let ClickedDebugButton = false;
 
-@Vigilant(`${ModuleName}`, `${ModuleName}`, {
+@Vigilant(`${moduleName}`, `${moduleName}`, {
   getCategoryComparator: () => (a, b) => {
     const order = ["General", "Mining", "Commands", "Miscellaneous", "WIP", "Dev Stuff"];
     return order.indexOf(a.name) - order.indexOf(b.name);

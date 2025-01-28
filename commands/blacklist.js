@@ -1,6 +1,6 @@
 import defaultData from "../utils/defaultData";
 import { help } from "./help";
-import { AQUA, GOLD, GRAY, GREEN, Prefix, RED, WHITE, YELLOW } from "../utils/constants";
+import { AQUA, GOLD, GRAY, GREEN, chatPrefix, RED, WHITE, YELLOW } from "../utils/constants";
 
 export const blacklist = (action, username) => {
   if (!action) {
@@ -21,25 +21,25 @@ export const blacklist = (action, username) => {
   switch (action) {
     case "add":
       if (!username) {
-        ChatLib.chat(`${Prefix} ${RED}Please specify a username! ${GRAY}(/scc bl add <username>)`);
+        ChatLib.chat(`${chatPrefix} ${RED}Please specify a username! ${GRAY}(/scc bl add <username>)`);
         return;
       }
       if (defaultData.addToBlacklist(username)) {
-        ChatLib.chat(`${Prefix} ${GREEN}Successfully added ${GOLD}${username} ${GREEN}to the blacklist!`);
+        ChatLib.chat(`${chatPrefix} ${GREEN}Successfully added ${GOLD}${username} ${GREEN}to the blacklist!`);
       } else {
-        ChatLib.chat(`${Prefix} ${RED}${username} ${GRAY}is already blacklisted!`);
+        ChatLib.chat(`${chatPrefix} ${RED}${username} ${GRAY}is already blacklisted!`);
       }
       break;
 
     case "remove":
       if (!username) {
-        ChatLib.chat(`${Prefix} ${RED}Please specify a username! ${GRAY}(/scc bl remove <username>)`);
+        ChatLib.chat(`${chatPrefix} ${RED}Please specify a username! ${GRAY}(/scc bl remove <username>)`);
         return;
       }
       if (defaultData.removeFromBlacklist(username)) {
-        ChatLib.chat(`${Prefix} ${GREEN}Successfully removed ${GOLD}${username} ${GREEN}from the blacklist!`);
+        ChatLib.chat(`${chatPrefix} ${GREEN}Successfully removed ${GOLD}${username} ${GREEN}from the blacklist!`);
       } else {
-        ChatLib.chat(`${Prefix} ${RED}${username} ${GRAY}is not blacklisted!`);
+        ChatLib.chat(`${chatPrefix} ${RED}${username} ${GRAY}is not blacklisted!`);
       }
       break;
 

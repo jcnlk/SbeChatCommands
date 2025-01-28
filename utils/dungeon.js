@@ -1,7 +1,7 @@
 import apiWrapper from "./apiWrapper";
-import { CleanPrefix } from "./constants";
+import { cleanChatPrefix } from "./constants";
 
-function filterByMode(items, isMasterMode) {
+export function filterByMode(items, isMasterMode) {
   return items.filter((item) => (isMasterMode ? item.startsWith("M") : item.startsWith("F")));
 }
 
@@ -10,7 +10,7 @@ function filterByMode(items, isMasterMode) {
  * @param {string} username - Raw username input
  * @returns {string} - Encoded username safe for API requests
  */
-function prepareUsername(username) {
+export function prepareUsername(username) {
   // First encode the username properly for URLs
   return encodeURIComponent(username.trim());
 }
@@ -95,7 +95,7 @@ export function formatCataLevel(data, username) {
   const masterCatacombs = data.master_catacombs;
 
   if (!catacombs || !catacombs.level) {
-    console.error(`${CleanPrefix} No catacombs data found for ` + username);
+    console.error(`${cleanChatPrefix} No catacombs data found for ` + username);
   }
 
   const level = catacombs.level;
@@ -121,7 +121,7 @@ export function formatCataLevel(data, username) {
 export function formatClassLevels(data, username) {
   const classes = data.classes;
   if (!classes || !classes.classes) {
-    console.error(`${CleanPrefix} No class data found for ` + username);
+    console.error(`${cleanChatPrefix} No class data found for ` + username);
   }
 
   const classOrder = ["healer", "mage", "berserk", "archer", "tank"];
@@ -137,7 +137,7 @@ export function formatClassLevels(data, username) {
   });
 
   if (classLevels.length === 0) {
-    console.error(`${CleanPrefix} No class levels found for ` + username);
+    console.error(`${cleanChatPrefix} No class levels found for ` + username);
   }
 
   return username + "'s Class Levels: " + classLevels.join(" | ");
@@ -155,7 +155,7 @@ export function formatPBs(data, username, isMasterMode = false) {
   const masterCatacombs = data.master_catacombs;
 
   if (!catacombs && !masterCatacombs) {
-    console.error(`${CleanPrefix} No floor data found for ` + username);
+    console.error(`${cleanChatPrefix} No floor data found for ` + username);
   }
 
   const pbs = [];
@@ -179,7 +179,7 @@ export function formatPBs(data, username, isMasterMode = false) {
   });
 
   if (pbs.length === 0) {
-    console.error(`${CleanPrefix} No PB data found for ` + username + (isMasterMode ? " in Master Mode" : ""));
+    console.error(`${cleanChatPrefix} No PB data found for ` + username + (isMasterMode ? " in Master Mode" : ""));
   }
 
   return username + "'s PBs: " + pbs.join(" | ");
@@ -197,7 +197,7 @@ export function formatCompletions(data, username, isMasterMode = false) {
   const masterCatacombs = data.master_catacombs;
 
   if (!catacombs && !masterCatacombs) {
-    console.error(`${CleanPrefix} No completion data found for ` + username);
+    console.error(`${cleanChatPrefix} No completion data found for ` + username);
   }
 
   const completions = [];
@@ -213,7 +213,7 @@ export function formatCompletions(data, username, isMasterMode = false) {
   });
 
   if (completions.length === 0) {
-    console.error(`${CleanPrefix} No completion data found for ` + username + (isMasterMode ? " in Master Mode" : ""));
+    console.error(`${cleanChatPrefix} No completion data found for ` + username + (isMasterMode ? " in Master Mode" : ""));
   }
 
   const total = dungeonData?.completions || 0;

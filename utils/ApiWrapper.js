@@ -1,6 +1,6 @@
 import request from "requestV2";
 import Promise from "PromiseV2";
-import { CleanPrefix } from "./constants";
+import { cleanChatPrefix } from "./constants";
 
 class ApiWrapper {
   constructor() {
@@ -12,14 +12,13 @@ class ApiWrapper {
     };
 
     this.cacheConfig = {
-      enabled: false, // Enable caching here
-      duration: 5 * 60 * 1000, // 5 minutes default
+      enabled: true,
+      duration: 10 * 60 * 1000,
       data: new Map(),
     };
 
-    // Request queue configuration
     this.requestQueue = [];
-    this.maxConcurrent = 2; // Maximum concurrent requests to SkyCrypt
+    this.maxConcurrent = 2;
     this.activeRequests = 0;
   }
 
@@ -111,7 +110,7 @@ class ApiWrapper {
                 data: data,
               });
             } catch (error) {
-              console.error(CleanPrefix + " Error processing API response:", error);
+              console.error(cleanChatPrefix + " Error processing API response:", error);
               resolve({
                 success: false,
                 error: "Failed to process API response",
@@ -119,7 +118,7 @@ class ApiWrapper {
             }
           })
           .catch(function (error) {
-            console.error(CleanPrefix + " Error making API request:", error);
+            console.error(cleanChatPrefix + " Error making API request:", error);
             resolve({
               success: false,
               error: "Failed to make API request",
@@ -128,7 +127,6 @@ class ApiWrapper {
       });
     };
 
-    // Queue requests only for SkyCrypt API
     if (url.includes("sky.shiiyu.moe")) {
       return this.queueRequest(requestFunc);
     }
@@ -156,17 +154,14 @@ class ApiWrapper {
   }
 
   forceSkyCryptUpdate(username) {
-    // Simulate website visit to trigger update
     var statsUrl = "https://sky.shiiyu.moe/stats/" + username;
 
-    // Don't queue these requests as they're just triggers
     return new Promise(function (resolve) {
       request({
         url: statsUrl,
         method: "GET",
         headers: {
           "User-Agent": "Mozilla/5.0",
-          // Add headers to better simulate a browser visit
           Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
           "Accept-Language": "en-US,en;q=0.5",
           Connection: "keep-alive",
@@ -176,7 +171,7 @@ class ApiWrapper {
           resolve(true);
         })
         .catch(function (error) {
-          console.error(CleanPrefix + " Error triggering SkyCrypt update:", error);
+          console.error(cleanChatPrefix + " Error triggering SkyCrypt update:", error);
           resolve(false);
         });
     });
@@ -189,7 +184,6 @@ class ApiWrapper {
       return this.makeRequest(url);
     }
 
-    // Make both requests nearly simultaneously
     this.forceSkyCryptUpdate(username);
     return this.makeRequest(url);
   }
@@ -231,6 +225,5 @@ class ApiWrapper {
   }
 }
 
-// Export singleton instance
 const apiWrapper = new ApiWrapper();
 export default apiWrapper;
