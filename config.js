@@ -24,7 +24,7 @@ import {
   @CheckboxProperty,
 } from "Vigilance";
 
-const ConfigHeader = `${chatPrefix} ${YELLOW}${moduleVersion} \nMade by ${moduleCreator}${RESET}`;
+const ConfigHeader = `${chatPrefix} ${YELLOW}v${moduleVersion} \nMade by ${moduleCreator}${RESET}`;
 let ClickedDebugButton = false;
 
 @Vigilant(`${moduleName}`, `${moduleName}`, {

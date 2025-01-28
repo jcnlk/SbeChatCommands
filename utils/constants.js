@@ -26,7 +26,7 @@ export const RESET = "§r";
 export const metadataContent = FileLib.read("SbeChatCommands", "metadata.json");
 export const moduleName = JSON.parse(metadataContent).name;
 export const moduleVersion = JSON.parse(metadataContent).version;
-export const moduleCreator = JSON.parse(metadataContent).author;
+export const moduleCreator = JSON.parse(metadataContent).creator;
 export const chatPrefix = `${DARK_GRAY}[${GOLD}SCC${DARK_GRAY}]${RESET}`;
 export const cleanChatPrefix = `[SCC]`;
 
