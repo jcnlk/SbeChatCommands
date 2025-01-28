@@ -1,5 +1,5 @@
 import apiWrapper from "./apiWrapper";
-import { CleanPrefix } from "./constants";
+import { cleanChatPrefix } from "./constants";
 
 /**
  * Fetches election data from Hypixel's SkyBlock API
@@ -16,8 +16,8 @@ export function getElectionData() {
  */
 export function formatMayorData(data) {
   if (!data || !data.mayor) {
-    console.error(`${CleanPrefix} Could not fetch current mayor data!`);
-    //return `${CleanPrefix} [Error] No mayor data found.`;
+    console.error(`${cleanChatPrefix} Could not fetch current mayor data!`);
+    //return `${cleanChatPrefix} [Error] No mayor data found.`;
   }
 
   const mayor = data.mayor;
@@ -61,8 +61,8 @@ export function formatElectionData(data) {
   }
 
   if (!election) {
-    console.error(`${CleanPrefix} Could not fetch election data!`);
-    //return `${CleanPrefix} [Error] No (valid) election data found.`;
+    console.error(`${cleanChatPrefix} Could not fetch election data!`);
+    //return `${cleanChatPrefix} [Error] No (valid) election data found.`;
   }
 
   let message = `Current Election - Year ${election.year} | `;

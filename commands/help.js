@@ -1,8 +1,8 @@
-import { AQUA, GRAY, Prefix, WHITE, YELLOW } from "../utils/constants";
+import { AQUA, GRAY, chatPrefix, WHITE, YELLOW } from "../utils/constants";
 
 export const showHelpMenu = () => {
   ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
-  ChatLib.chat(`${Prefix} ${YELLOW}Available Commands:`);
+  ChatLib.chat(`${chatPrefix} ${YELLOW}Available Commands:`);
   ChatLib.chat("");
   ChatLib.chat(`${AQUA}/scc ${GRAY}- Opens the config menu`);
   ChatLib.chat(`${AQUA}/scc help ${GRAY}- Shows this help menu`);
@@ -26,7 +26,7 @@ export const help = (topic) => {
   switch (topic.toLowerCase()) {
     case "commands":
       ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
-      ChatLib.chat(`${Prefix} ${YELLOW}SBE Chat Commands:`);
+      ChatLib.chat(`${chatPrefix} ${YELLOW}SBE Chat Commands:`);
       ChatLib.chat("");
       ChatLib.chat(`${AQUA}!rng [item] ${GRAY}- Get RNG chance for an item`);
       ChatLib.chat(`${AQUA}!cf ${GRAY}- Flip a coin`);
@@ -65,7 +65,7 @@ export const help = (topic) => {
     case "blacklist":
     case "bl":
       ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
-      ChatLib.chat(`${Prefix} ${YELLOW}Blacklist Commands:`);
+      ChatLib.chat(`${chatPrefix} ${YELLOW}Blacklist Commands:`);
       ChatLib.chat("");
       ChatLib.chat(`${AQUA}/scc bl ${GRAY}- Show blacklisted users`);
       ChatLib.chat(`${AQUA}/scc bl add <username> ${GRAY}- Add user to blacklist`);
@@ -77,7 +77,7 @@ export const help = (topic) => {
 
     case "block":
       ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
-      ChatLib.chat(`${Prefix} ${YELLOW}Block Commands:`);
+      ChatLib.chat(`${chatPrefix} ${YELLOW}Block Commands:`);
       ChatLib.chat("");
       ChatLib.chat(`${AQUA}/scc block ${GRAY}- Show blocked users`);
       ChatLib.chat(`${AQUA}/scc block add <username> ${GRAY}- Block a user`);

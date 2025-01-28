@@ -1,5 +1,5 @@
 import apiWrapper from "./apiWrapper";
-import { CleanPrefix } from "./constants";
+import { cleanChatPrefix } from "./constants";
 
 export function getSlayerData(username) {
   return apiWrapper.getSkyCryptSlayers(username, true).then((result) => {
@@ -38,7 +38,7 @@ export function formatSlayerData(data, username) {
     .map((type) => `${type.name} ${data[type.key].level.currentLevel}`);
 
   if (slayerLevels.length === 0) {
-    console.error(`${CleanPrefix} ${username} has no slayer data`);
+    console.error(`${cleanChatPrefix} ${username} has no slayer data`);
   }
 
   return `${username}'s Slayer Levels: ${slayerLevels.join(", ")}`;

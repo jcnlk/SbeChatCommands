@@ -23,11 +23,12 @@ export const ITALIC = "§o";
 export const RESET = "§r";
 
 //Basic Stuff
-export const ModuleName = "SBEChatCommands";
-export const ModuleVersion = "1.1.0"; // IMPORTANT: This will define the module version (metadata.json excluded)
-export const Creator = "jcnlk"; // idk probably just me
-export const Prefix = `${DARK_GRAY}[${GOLD}SCC${DARK_GRAY}]${RESET}`;
-export const CleanPrefix = `[SCC]`;
+export const metadataContent = FileLib.read("SbeChatCommands", "metadata.json");
+export const moduleName = JSON.parse(metadataContent).name;
+export const moduleVersion = JSON.parse(metadataContent).version;
+export const moduleCreator = JSON.parse(metadataContent).author;
+export const chatPrefix = `${DARK_GRAY}[${GOLD}SCC${DARK_GRAY}]${RESET}`;
+export const cleanChatPrefix = `[SCC]`;
 
 // Checks if current server is hypixel
 export const InSkyblock = () => {

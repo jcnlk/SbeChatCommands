@@ -1,5 +1,5 @@
 import PogData from "PogData";
-import { Prefix, ModuleVersion, Creator, YELLOW, GREEN, GOLD, RESET, OBFUSCATED, AQUA, WHITE, GRAY, RED, BOLD } from "./constants";
+import { chatPrefix, moduleVersion, moduleCreator, YELLOW, GREEN, GOLD, RESET, OBFUSCATED, AQUA, WHITE, GRAY, RED, BOLD } from "./constants";
 
 class DefaultData {
   constructor() {
@@ -58,13 +58,7 @@ class DefaultData {
         description: 'Send "meow" 1000 times in SBE Chat',
         trigger: "meowCount",
         requirement: 1000,
-      }, //,
-      //COMMAND_MASTER: {
-      //    id: "COMMAND_MASTER",
-      //    name: "Command Master",
-      //    description: "Use all available SBE Chat commands at least once",
-      //    trigger: "commandMaster"
-      //}
+      },
     };
 
     // Initialize PogData with default values
@@ -105,9 +99,9 @@ class DefaultData {
     setTimeout(() => {
       ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
       ChatLib.chat(
-        `${YELLOW}${OBFUSCATED}|${RESET} ${GOLD}${BOLD}Welcome to SBE Chat Commands ${AQUA}v${ModuleVersion} ${YELLOW}${OBFUSCATED}|`
+        `${YELLOW}${OBFUSCATED}|${RESET} ${GOLD}${BOLD}Welcome to SBE Chat Commands ${AQUA}v${moduleVersion} ${YELLOW}${OBFUSCATED}|`
       );
-      ChatLib.chat(`${AQUA}✦ ${WHITE}Created by ${GOLD}${Creator} ${AQUA}✦`);
+      ChatLib.chat(`${AQUA}✦ ${WHITE}Created by ${GOLD}${moduleCreator} ${AQUA}✦`);
       ChatLib.chat("");
 
       ChatLib.chat(`${YELLOW}${BOLD}Available Commands:`);
@@ -152,7 +146,6 @@ class DefaultData {
       return null;
     }
 
-    // Simply select a random quote from the array
     const randomIndex = Math.floor(Math.random() * this.data.quotes.length);
     return this.data.quotes[randomIndex];
   }
@@ -236,6 +229,10 @@ class DefaultData {
     this.data.save();
   }
 
+  getPersonalMeowCount() {
+    return this.data.playerData.personalMeowCount;
+  }
+
   // Achievement Methods
   announceAchievement(achievementId) {
     const achievement = this.achievements[achievementId];
@@ -245,7 +242,7 @@ class DefaultData {
     ChatLib.chat(
       `${RESET}${YELLOW}${OBFUSCATED}a${GREEN}>>   ${GREEN}Achievement Unlocked: ${GOLD}${achievement.name}${GREEN}   <<${YELLOW}${OBFUSCATED}a${RESET}`
     );
-    ChatLib.chat(`${Prefix} ${GREEN}${achievement.description}`);
+    ChatLib.chat(`${chatPrefix} ${GREEN}${achievement.description}`);
   }
 
   checkAchievement(trigger, value = null) {
@@ -259,9 +256,6 @@ class DefaultData {
           case "meowCount":
             shouldUnlock = value >= achievement.requirement;
             break;
-          //case "commandMaster":
-          //    shouldUnlock = this.checkCommandMasterProgress();
-          //    break;
           default:
             shouldUnlock = true;
             break;
@@ -286,27 +280,6 @@ class DefaultData {
     }
   }
 
-  //checkCommandMasterProgress() {
-  //    // Only include commands that are actually implemented in the module
-  //    const requiredCommands = [
-  //        "rng",      // RNG chance command
-  //        "cf",       // Coinflip command
-  //        "8ball",    // Magic 8-ball command
-  //        "throw",    // Throw command
-  //        "dice",     // Dice roll command
-  //        "simp",     // Simp level command
-  //        "sus",      // Sus level command
-  //        "join",     // Party join command
-  //        "meow",     // Meow command
-  //        "quote",    // Quote command
-  //        "tps",      // TPS check command
-  //        "ping"      // Ping check command
-  //    ];
-  //
-  //    const usedCommands = this.data.playerData.usedCommands || [];
-  //    return requiredCommands.every(cmd => usedCommands.includes(cmd));
-  //}
-
   getAchievementProgress(achievementId) {
     const achievement = this.achievements[achievementId];
 
@@ -316,13 +289,6 @@ class DefaultData {
           current: this.data.playerData.personalMeowCount || 0,
           required: achievement.requirement,
         };
-      //case "commandMaster":
-      //    const usedCommands = this.data.playerData.usedCommands || [];
-      //    const totalCommands = 12; // Total number of implemented commands (excluding help commands)
-      //    return {
-      //        current: usedCommands.length,
-      //        required: totalCommands
-      //    };
       default:
         return null;
     }
@@ -335,17 +301,6 @@ class DefaultData {
     this.checkAchievement("meowCount", this.data.playerData.personalMeowCount);
   }
 
-  //addUsedCommand(command) {
-  //    if (!this.data.playerData.usedCommands) {
-  //        this.data.playerData.usedCommands = [];
-  //    }
-  //    if (!this.data.playerData.usedCommands.includes(command)) {
-  //        this.data.playerData.usedCommands.push(command);
-  //        this.data.save();
-  //        this.checkAchievement("commandMaster");
-  //    }
-  //}
-
   setFirstMessageSent() {
     if (!this.data.playerData.firstMessageSent) {
       this.data.playerData.firstMessageSent = true;
@@ -357,7 +312,7 @@ class DefaultData {
   // Achievement Display Command Handler
   displayAchievements() {
     ChatLib.chat(ChatLib.getChatBreak(`${AQUA}=`));
-    ChatLib.chat(`${Prefix} ${YELLOW}Achievement Progress:`);
+    ChatLib.chat(`${chatPrefix} ${YELLOW}Achievement Progress:`);
     ChatLib.chat("");
 
     Object.values(this.achievements).forEach((achievement) => {
