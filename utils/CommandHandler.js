@@ -617,7 +617,7 @@ class CommandHandler {
             totalWait = 4000;
         }
 
-        ChatLib.chat(`Waiting time: ${totalWait}`); //debug
+        //ChatLib.chat(`Waiting time: ${totalWait}`); //debug
 
         let canceled = false;
 
